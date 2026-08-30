@@ -124,6 +124,16 @@
     width:32px; height:32px; border-radius:8px; background:var(--brand-wash); color:var(--brand);
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
   }
+  .resource-thumb{
+    position:relative; width:72px; height:44px; border-radius:8px; flex-shrink:0; overflow:hidden;
+    background:var(--brand-wash);
+  }
+  .resource-thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .resource-thumb .play-badge{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.15); color:#fff;
+  }
+  .resource-thumb .play-badge svg{width:18px; height:18px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
   .resource-body{min-width:0;}
   .resource-title{font-size:13px; font-weight:700; color:var(--ink); line-height:1.4; margin-bottom:2px;}
   .resource-item:hover .resource-title{color:var(--brand);}
@@ -246,7 +256,7 @@
    TALKS & LINKS SIDEBAR
    ========================================================= */
 const RESOURCES = [
-  {title:"Talk: [add title here]", meta:"YouTube", url:"https://www.youtube.com/watch?v=Z3Gby7pIU8c", icon:"play"},
+  {title:"Inside Tech Careers: The Skills That Actually Build Tech Careers", meta:"YouTube", url:"https://youtu.be/Z3Gby7pIU8c?si=fvr5Yk6InjP68HwS", icon:"play"},
 ];
 
 const RESOURCE_ICONS = {
@@ -254,6 +264,11 @@ const RESOURCE_ICONS = {
   article: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>`,
   link: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>`,
 };
+
+function getYouTubeThumb(url){
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{6,})/);
+  return m ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg` : null;
+}
 
 const resourceCard = document.getElementById('resourceCard');
 if(RESOURCES.length === 0){
@@ -265,8 +280,12 @@ if(RESOURCES.length === 0){
     a.href = r.url;
     a.target = '_blank';
     a.rel = 'noopener';
+    const thumbUrl = r.thumbnail || getYouTubeThumb(r.url);
+    const mediaHtml = thumbUrl
+      ? `<div class="resource-thumb"><img src="${thumbUrl}" alt=""><div class="play-badge">${RESOURCE_ICONS.play}</div></div>`
+      : `<div class="resource-icon">${RESOURCE_ICONS[r.icon] || RESOURCE_ICONS.link}</div>`;
     a.innerHTML = `
-      <div class="resource-icon">${RESOURCE_ICONS[r.icon] || RESOURCE_ICONS.link}</div>
+      ${mediaHtml}
       <div class="resource-body">
         <div class="resource-title">${r.title}</div>
         <div class="resource-meta">${r.meta}</div>
