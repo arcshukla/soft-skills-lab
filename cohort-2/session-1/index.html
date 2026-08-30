@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1 — Build Your Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-soft:#57606F;
+    --paper:#EEF1F4;
+    --card:#FFFFFF;
+    --brand:#24437A;
+    --brand-soft:#5D7FB9;
+    --brand-wash:#E6ECF6;
+    --good:#2F8F5B;
+    --good-bg:#E8F5EC;
+    --good-line:#BFE2CC;
+    --bad:#C1443B;
+    --bad-bg:#FBEAE8;
+    --bad-line:#F0C4C0;
+    --line:#DBE1E7;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  .app{max-width:980px;margin:0 auto;padding:0 20px 80px;}
+  .hub-strip{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 0; font-size:12.5px; color:var(--ink-soft);
+  }
+  .hub-strip a{color:var(--brand); text-decoration:none; font-weight:600;}
+  .hub-strip a:hover{text-decoration:underline;}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    padding:10px 0 0;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--brand-soft); font-weight:600;
+  }
+  .masthead{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+    margin-top:6px; flex-wrap:wrap;
+  }
+  .masthead h1{
+    font-size:26px; font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.15;
+  }
+  .progress-pill{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+    color:var(--brand); background:var(--brand-wash);
+    padding:6px 12px; border-radius:100px; white-space:nowrap;
+  }
+  nav.tabs{
+    display:flex; flex-wrap:wrap; gap:2px 4px; margin-top:18px;
+    border-bottom:1px solid var(--line); padding-bottom:8px;
+  }
+  nav.tabs button{
+    font-family:'Inter',sans-serif; font-size:13.5px; font-weight:600;
+    color:var(--ink-soft); background:none; border:none; cursor:pointer;
+    padding:10px 14px 12px; white-space:nowrap; position:relative; top:1px;
+    border-bottom:2px solid transparent;
+  }
+  nav.tabs button.active{
+    color:var(--brand); border-bottom:2px solid var(--brand);
+  }
+  nav.tabs button:hover{color:var(--brand);}
+
+  main{padding-top:30px;}
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .lede{
+    font-size:15.5px; color:var(--ink-soft); max-width:640px; margin:6px 0 28px; line-height:1.55;
+  }
+  .module-tag{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--brand);
+    background:var(--brand-wash); padding:4px 10px; border-radius:6px; margin-bottom:10px;
+  }
+  h2.section-title{font-size:22px; margin:0 0 4px; font-weight:700;}
+
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; margin-bottom:16px;
+  }
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid-4{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:680px){.grid-2, .grid-4{grid-template-columns:1fr;}}
+
+  /* ---------- good/bad example bubbles ---------- */
+  .example-pair{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 6px;}
+  @media(max-width:680px){.example-pair{grid-template-columns:1fr;}}
+  .example{
+    border-radius:12px; padding:16px 16px 14px; border:1px solid;
+    font-size:14px; line-height:1.55;
+  }
+  .example.bad{background:var(--bad-bg); border-color:var(--bad-line);}
+  .example.good{background:var(--good-bg); border-color:var(--good-line);}
+  .example-label{
+    display:flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:10px;
+  }
+  .example.bad .example-label{color:var(--bad);}
+  .example.good .example-label{color:var(--good);}
+  .bubble{
+    background:var(--card); border-radius:10px; padding:12px 13px; color:var(--ink);
+    white-space:pre-wrap; font-size:13.5px; margin-bottom:10px; border:1px solid rgba(0,0,0,.05);
+  }
+  .example-why{color:var(--ink-soft); font-size:13px;}
+  .example-why b{color:var(--ink);}
+
+  /* ---------- rule cards ---------- */
+  .rule-card{
+    display:flex; gap:14px; align-items:flex-start; padding:18px 20px; margin-bottom:14px;
+  }
+  .rule-letter{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; color:#fff;
+    background:var(--brand); width:36px; height:36px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .rule-card h3{margin:0 0 4px; font-size:15.5px;}
+  .rule-card p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+
+  /* ---------- do/dont grid ---------- */
+  .dodont-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media(max-width:680px){.dodont-grid{grid-template-columns:1fr;}}
+  .dodont-item{
+    display:flex; gap:9px; align-items:flex-start; padding:11px 13px; border-radius:9px; font-size:13px; line-height:1.5;
+  }
+  .dodont-item.do{background:var(--good-bg); color:var(--ink);}
+  .dodont-item.dont{background:var(--bad-bg); color:var(--ink);}
+  .dodont-mark{font-weight:800; flex-shrink:0;}
+  .dodont-item.do .dodont-mark{color:var(--good);}
+  .dodont-item.dont .dodont-mark{color:var(--bad);}
+
+  /* ---------- comparison table ---------- */
+  table.compare{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.compare th, table.compare td{text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.compare th{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); font-weight:600;}
+  table.compare td:first-child{font-weight:600; color:var(--brand); width:150px;}
+
+  /* ---------- quiz ---------- */
+  .quiz-line{
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px;
+    margin-bottom:12px;
+  }
+  .quiz-text{font-size:14px; margin-bottom:12px; font-style:italic; color:var(--ink);}
+  .quiz-choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .choice-btn{
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer;
+    padding:8px 14px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink);
+  }
+  .choice-btn:hover{border-color:var(--brand-soft);}
+  .quiz-feedback{margin-top:10px; font-size:13px; display:none; padding:10px 12px; border-radius:8px;}
+  .quiz-feedback.show{display:block;}
+  .quiz-feedback.correct{background:var(--good-bg); color:var(--good);}
+  .quiz-feedback.wrong{background:var(--bad-bg); color:var(--bad);}
+
+  /* ---------- headline builder ---------- */
+  .builder-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media(max-width:760px){.builder-grid{grid-template-columns:1fr;}}
+  .field-label{font-size:12px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace; margin-bottom:5px; display:block;}
+  .field-input{
+    width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line);
+    font-family:'Inter',sans-serif; font-size:13.5px; margin-bottom:14px; color:var(--ink);
+  }
+  .field-input:focus{outline:none; border-color:var(--brand-soft);}
+  .headline-preview{
+    background:var(--brand-wash); border-radius:12px; padding:18px; font-family:'Space Grotesk',sans-serif;
+    font-size:15px; font-weight:600; color:var(--brand); line-height:1.5; min-height:60px;
+  }
+  .checks{display:flex; flex-direction:column; gap:10px; margin-top:14px;}
+  .check-row{
+    display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:11px 13px; font-size:13px;
+  }
+  .check-dot{width:9px; height:9px; border-radius:50%; background:#C7CDD4; flex-shrink:0;}
+  .check-row.pass .check-dot{background:var(--good);}
+  .check-row.fail .check-dot{background:var(--bad);}
+  .check-row .check-text b{display:block; font-weight:600; margin-bottom:1px;}
+  .check-row .check-text span{color:var(--ink-soft); font-size:12px;}
+
+  /* ---------- steps ---------- */
+  .step{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:none;}
+  .step-num{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--brand-soft); font-size:14px;
+    width:26px; flex-shrink:0;
+  }
+  .step h3{margin:0 0 4px; font-size:14.5px;}
+  .step p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+
+  /* ---------- audit checklist ---------- */
+  .audit-item{
+    display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--line);
+    border-radius:9px; margin-bottom:8px; background:var(--card); cursor:pointer; font-size:13.5px;
+  }
+  .audit-item input{width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .audit-item.done{opacity:.55; text-decoration:line-through;}
+
+  /* ---------- checklist (assignment) ---------- */
+  .task{
+    display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border:1px solid var(--line);
+    border-radius:12px; margin-bottom:10px; background:var(--card); cursor:pointer;
+  }
+  .task input{margin-top:3px; width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .task h3{margin:0 0 3px; font-size:14px;}
+  .task p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.5;}
+  .task.done{opacity:.55;}
+  .task.done h3{text-decoration:line-through;}
+  .progress-bar-track{height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:16px 0 20px;}
+  .progress-bar-fill{height:100%; background:var(--brand); width:0%; transition:width .35s ease;}
+
+  .about-strip{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 22px; margin-top:40px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+  }
+  .avatar-photo{
+    width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0;
+  }
+  .about-strip-body{flex:1; min-width:220px;}
+  .about-strip-name{font-size:14.5px; font-weight:700; color:var(--ink);}
+  .about-strip-role{font-size:12px; color:var(--brand-soft); font-weight:600;}
+  .link-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .link-chip{
+    display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+    background:var(--brand-wash); color:var(--brand); font-weight:700; font-size:12px;
+    padding:6px 12px 6px 6px; border-radius:100px; transition:background .15s ease;
+  }
+  .link-chip:hover{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon{background:#fff; color:var(--brand);}
+  .chip-icon{
+    width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:9px; font-weight:700; font-family:'IBM Plex Mono',monospace; flex-shrink:0; overflow:hidden;
+  }
+  .chip-icon svg{width:12px; height:12px;}
+  .chip-icon.li{background:#0A66C2; color:#fff; font-family:'Inter',sans-serif; font-style:italic; font-size:11px;}
+  .chip-icon.gh{background:#181717; color:#fff;}
+  .chip-icon.md{background:#000000; color:#fff;}
+  .chip-icon.tm{background:var(--brand); color:#fff;}
+  .chip-icon.ai{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon.li{background:#0A66C2; color:#fff;}
+  .link-chip:hover .chip-icon.gh{background:#181717; color:#fff;}
+  .link-chip:hover .chip-icon.md{background:#000000; color:#fff;}
+  .about-toggle{
+    background:none; border:none; color:var(--brand-soft); font-family:'Inter',sans-serif;
+    font-size:12px; font-weight:600; cursor:pointer; padding:0; margin-top:2px;
+  }
+  .about-bio{
+    font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:680px;
+    margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
+    display:none;
+  }
+  .about-bio.show{display:block;}
+  .copyright{margin-top:14px; color:var(--ink-soft); font-size:11.5px;}
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:12px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="hub-strip"><a href="../index.html">&larr; GeeksForGeeks Soft Skill Cohort - 2</a><span>Session 1 of 10</span></div>
+  <div class="topbar">
+    <div class="eyebrow">SOFT SKILLS SERIES · SESSION 1 OF 10</div>
+    <div class="masthead">
+      <h1>Build Your Brand</h1>
+      <div class="progress-pill" id="progressPill">Module 1 of 8</div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+
+  <main id="main"></main>
+
+  <div class="about-strip">
+    <img class="avatar-photo" src="../../assets/archana.jpg" alt="Archana Shukla">
+    <div class="about-strip-body">
+      <div class="about-strip-name">Archana Shukla</div>
+      <div class="about-strip-role">Technology Leader · AI Strategist · Builder</div>
+      <div class="about-bio" id="aboutBio">25+ years of experience bridging strategy and execution — from boardroom to production. I don't stop at proof-of-concept. I architect, build, and ship systems that work. Techno-functional by nature: I speak business fluently and translate it into technology that delivers real outcomes, end-to-end.</div>
+      <button class="about-toggle" id="aboutToggle">About the mentor ▾</button>
+    </div>
+    <div class="link-row">
+      <a class="link-chip" href="https://arcshukla-ai-profile-platform.hf.space/explore" target="_blank" rel="noopener"><span class="chip-icon ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.2L12 15l-1.6-4.8L6 9l4.4-1.2z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></span>AI Avatar</a>
+      <a class="link-chip" href="https://www.linkedin.com/in/archana-shukla-b5639411/" target="_blank" rel="noopener"><span class="chip-icon li">in</span>LinkedIn</a>
+      <a class="link-chip" href="https://medium.com/@arc.shukla" target="_blank" rel="noopener"><span class="chip-icon md"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z"/></svg></span>Medium</a>
+      <a class="link-chip" href="https://topmate.io/archana_shukla10" target="_blank" rel="noopener"><span class="chip-icon tm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg></span>Topmate</a>
+      <a class="link-chip" href="https://github.com/arcshukla" target="_blank" rel="noopener"><span class="chip-icon gh"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>GitHub</a>
+    </div>
+  </div>
+
+  <footer>Session 1 of 10 — Soft Skills Series<div class="copyright">© 2026 The Soft Skills Lab. All rights reserved.</div></footer>
+</div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const MODULES = [
+  {id:'linkedin', label:'The LinkedIn Magnet'},
+  {id:'engagement', label:'Engagement'},
+  {id:'github', label:'GitHub Portfolio'},
+  {id:'medium', label:'Technical Blogging'},
+  {id:'platform', label:'Platform Strategy'},
+  {id:'builder', label:'Headline Builder'},
+  {id:'makeover', label:'Live Makeover'},
+  {id:'challenge', label:'Weekly Challenge'},
+];
+
+const weakHeadlineWords = ['student', 'looking for', 'seeking opportunities', 'aspiring', 'fresher'];
+
+/* =========================================================
+   RENDER: TABS
+   ========================================================= */
+const tabsEl = document.getElementById('tabs');
+MODULES.forEach((m)=>{
+  const btn = document.createElement('button');
+  btn.textContent = m.label;
+  btn.dataset.id = m.id;
+  btn.onclick = ()=> showTab(m.id);
+  tabsEl.appendChild(btn);
+});
+
+function showTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  document.querySelectorAll('section.panel').forEach(s=>s.classList.toggle('active', s.id==='panel-'+id));
+  const idx = MODULES.findIndex(m=>m.id===id);
+  document.getElementById('progressPill').textContent = `Module ${idx+1} of ${MODULES.length}`;
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+/* =========================================================
+   RENDER: PANELS
+   ========================================================= */
+const main = document.getElementById('main');
+
+function exampleBad(title, bubble, why){
+  return `<div class="example bad">
+    <div class="example-label">✕ Bad — ${title}</div>
+    <div class="bubble">${bubble}</div>
+    <div class="example-why">${why}</div>
+  </div>`;
+}
+function exampleGood(title, bubble, why){
+  return `<div class="example good">
+    <div class="example-label">✓ Good — ${title}</div>
+    <div class="bubble">${bubble}</div>
+    <div class="example-why">${why}</div>
+  </div>`;
+}
+
+main.innerHTML = `
+
+<!-- MODULE 1: THE LINKEDIN MAGNET -->
+<section class="panel" id="panel-linkedin">
+  <div class="module-tag">Module 1</div>
+  <h2 class="section-title">The LinkedIn Magnet</h2>
+  <p class="lede">Most people treat LinkedIn like a static CV nobody reads. The goal: turn it into an active landing page that works for you 24/7.</p>
+
+  <div class="card rule-card">
+    <div class="rule-letter">1</div>
+    <div>
+      <h3>The Headline Formula</h3>
+      <p>Recruiters search by keyword, not by job title alone. [Current Role / Domain] | Building [Tech Stack / Specialization] | [Key Achievement or Value Prop] — three slots, all searchable, all specific.</p>
+    </div>
+  </div>
+  <div class="example-pair">
+    ${exampleBad('Generic student headline', `Student at XYZ College`, `<b>Why it fails:</b> zero keywords, zero specialization, zero achievement. A recruiter searching "Java" or "backend" will never surface this profile.`)}
+    ${exampleGood('Formula headline', `Backend Engineer | Building Java, Microservices, AWS | Built systems handling 10k daily users`, `<b>Why it works:</b> every segment is a searchable keyword, and the achievement makes it memorable instantly.`)}
+  </div>
+  <div class="example-pair">
+    ${exampleBad('Passive job-seeker headline', `Software Engineer looking for opportunities`, `<b>Why it fails:</b> "looking for opportunities" is about your need, not your value — it tells a recruiter nothing about what you can actually do.`)}
+    ${exampleGood('Data-focused formula headline', `Data Analyst | SQL, Python, Tableau | Cut reporting time from 3 days to 4 hours for a 12-person team`, `<b>Why it works:</b> a concrete before/after number makes the value immediately tangible, even to a non-technical recruiter.`)}
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The "About" Section: 4 Pillars</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-4px;">Open with why you build software. Make it human, not a job description.</p>
+    <div class="grid-4">
+      <div class="rule-card" style="margin:0;">
+        <div class="rule-letter" style="background:var(--brand-soft);">1</div>
+        <div><h3>The Hook</h3><p>Open with why you build software — make it human, not a job description.</p></div>
+      </div>
+      <div class="rule-card" style="margin:0;">
+        <div class="rule-letter" style="background:var(--brand-soft);">2</div>
+        <div><h3>Your Toolkit</h3><p>List your core stack and problem-solving philosophy. Be specific, not generic.</p></div>
+      </div>
+      <div class="rule-card" style="margin:0;">
+        <div class="rule-letter" style="background:var(--brand-soft);">3</div>
+        <div><h3>Impact Over Duties</h3><p>"Reduced API latency by 40%" beats "Responsible for backend" every time.</p></div>
+      </div>
+      <div class="rule-card" style="margin:0;">
+        <div class="rule-letter" style="background:var(--brand-soft);">4</div>
+        <div><h3>Call to Action</h3><p>End with an invitation: "Open to discussing backend architecture or platform roles."</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Put It Together: The Full About Section</h3>
+    <div class="example-pair">
+      ${exampleBad('The CV dump', `I am a Computer Science student at XYZ University. I have knowledge of Java, Python, and SQL. I am looking for internship opportunities. Please contact me if interested.`, `<b>Why it fails:</b> no hook, no personality, no proof of impact — reads like a form letter anyone could have written.`)}
+      ${exampleGood('Hook → Toolkit → Impact → CTA', `I build software because I like turning messy, ambiguous problems into systems that just work. My toolkit: Python, Go, distributed systems, and a healthy obsession with reducing latency. Recently, I cut API response times by 40% on a project simulating 10k concurrent users. Open to discussing backend or platform engineering roles — always happy to talk system design.`, `<b>Why it works:</b> hits all four pillars in one flowing paragraph — human opening, specific stack, a real number, and a clear invitation.`)}
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 2: ENGAGEMENT -->
+<section class="panel" id="panel-engagement">
+  <div class="module-tag">Module 1 · Engagement</div>
+  <h2 class="section-title">Engagement Without Burnout</h2>
+  <p class="lede">You don't need to publish articles daily. The Comment-First approach: leave thoughtful comments on posts by people you admire. One smart comment can outperform a mediocre post.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">Three ways to comment well</h3>
+    <div class="dodont-grid">
+      <div class="dodont-item do"><span class="dodont-mark">✓</span>Add a perspective, not just "Great post!"</div>
+      <div class="dodont-item do"><span class="dodont-mark">✓</span>Ask a genuine follow-up question</div>
+      <div class="dodont-item do"><span class="dodont-mark">✓</span>Share a related lesson from your own work</div>
+    </div>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('The empty comment', `Great post! Very insightful 👍`, `<b>Why it fails:</b> could be posted on literally any content ever published — proves you read the headline, not the post.`)}
+    ${exampleGood('The perspective comment', `This mirrors what we hit scaling our checkout service last year — curious how you handled cache invalidation across regions? We ended up eating some stale-read bugs before landing on a TTL-based approach.`, `<b>Why it works:</b> adds a real experience, asks a specific question, and signals genuine hands-on knowledge — the poster (and anyone reading) notices.`)}
+  </div>
+  <div class="example-pair">
+    ${exampleBad('The self-promotion comment', `Nice! I also write about this on my blog, check it out: [link]`, `<b>Why it fails:</b> hijacks someone else's post to promote yourself — reads as opportunistic, not engaged.`)}
+    ${exampleGood('The lesson-sharing comment', `Learned this the hard way on a side project — assumed the cache would just invalidate itself and shipped a nasty bug to prod. Would love to know if you hit any edge cases with concurrent writes.`, `<b>Why it works:</b> shares a real lesson without self-promoting, and the follow-up question invites a genuine reply.`)}
+  </div>
+</section>
+
+<!-- MODULE 3: GITHUB PORTFOLIO -->
+<section class="panel" id="panel-github">
+  <div class="module-tag">Module 2</div>
+  <h2 class="section-title">GitHub as a Living Portfolio</h2>
+  <p class="lede">A green contribution graph isn't enough. Recruiters and engineers want to see how you think, not just that you commit code.</p>
+
+  <div class="grid-2">
+    <div class="card rule-card" style="margin:0;">
+      <div class="rule-letter">1</div>
+      <div><h3>README as a Landing Page</h3><p>Include a problem statement, architecture diagram, setup steps, and a demo GIF. Treat it like a product page, not a file listing.</p></div>
+    </div>
+    <div class="card rule-card" style="margin:0;">
+      <div class="rule-letter">2</div>
+      <div><h3>Pin 3–6 Strategic Repos</h3><p>Curate repos that tell a coherent story about your skills and interests — not just class assignments.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Show Depth, Not Just Activity</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-4px;">One well-documented project beats ten empty repos. Quality signals seriousness far more than commit count.</p>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('The one-liner README', `This is a project I made for my course. It uses Python and does some stuff with data.`, `<b>Why it fails:</b> no problem statement, no setup steps, no visuals — a recruiter has to clone and run the code just to understand what it does.`)}
+    ${exampleGood('The landing-page README', `## Problem\nRetail teams manually reconcile inventory across 3 warehouses, taking 2+ hours/day.\n\n## What it does\nSyncs inventory in real time using a Kafka event pipeline.\n\n## Architecture\n[diagram: Warehouse APIs → Kafka → Postgres → Dashboard]\n\n## Setup\n1. clone repo  2. docker-compose up  3. visit localhost:3000\n\n## Demo\n[demo.gif — 10 second walkthrough]`, `<b>Why it works:</b> a stranger understands the problem, the solution, and how to run it in under 30 seconds — no cloning required.`)}
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('Six pinned repos, no story', `HelloWorld · Assignment1 · Assignment2 · TicTacToe-ClassProject · Notes · Fork-of-tutorial-repo`, `<b>Why it fails:</b> every repo is a class exercise or a fork — nothing here required original thinking or shows a specialization.`)}
+    ${exampleGood('Four pinned repos, one story', `Distributed Cache (Go) — README with load-test benchmarks · Realtime Chat App (WebSockets) — demo GIF + architecture diagram · ML Image Classifier — notebook walkthrough + accuracy metrics · Portfolio Site — deployed, live link in description`, `<b>Why it works:</b> four repos, each documented, together telling a clear story: backend systems + ML curiosity + the ability to ship.`)}
+  </div>
+</section>
+
+<!-- MODULE 4: MEDIUM -->
+<section class="panel" id="panel-medium">
+  <div class="module-tag">Module 2 · Technical Blogging</div>
+  <h2 class="section-title">Technical Blogging on Medium</h2>
+  <p class="lede">Explaining complex ideas in plain language builds deep understanding and signals authority to recruiters searching beyond LinkedIn.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">Three templates that always work</h3>
+    <div class="dodont-grid">
+      <div class="dodont-item do"><span class="dodont-mark">1</span>"How I solved X using Y"</div>
+      <div class="dodont-item do"><span class="dodont-mark">2</span>"Key lessons from building project Z"</div>
+      <div class="dodont-item do"><span class="dodont-mark">3</span>A breakdown of a technical concept you recently learned</div>
+    </div>
+    <p style="color:var(--ink-soft); font-size:13px; margin-top:14px; margin-bottom:0;"><b style="color:var(--ink);">Cross-link everything:</b> link your Medium articles from LinkedIn and GitHub. A multi-channel presence compounds credibility over time.</p>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('The vague title', `My Journey with Python`, `<b>Why it fails:</b> no specific problem, no outcome, no reason for a stranger to click — it's a diary entry, not an article.`)}
+    ${exampleGood('The specific title', `How I Cut API Response Time by 60% Using Redis Caching (With Benchmarks)`, `<b>Why it works:</b> names the technique, the outcome, and the proof — a recruiter searching "Redis caching" can actually find this.`)}
+  </div>
+  <div class="example-pair">
+    ${exampleBad('The generic lessons post', `What I Learned This Semester`, `<b>Why it fails:</b> could describe anyone's semester — no technical hook, nothing searchable, nothing memorable.`)}
+    ${exampleGood('The specific lessons post', `3 Lessons from Building a Real-Time Chat App with WebSockets`, `<b>Why it works:</b> names the project and the technology, promising concrete, applicable takeaways.`)}
+  </div>
+</section>
+
+<!-- MODULE 5: PLATFORM STRATEGY -->
+<section class="panel" id="panel-platform">
+  <div class="module-tag">Module 3</div>
+  <h2 class="section-title">Platform Strategy &amp; Social Boundaries</h2>
+  <p class="lede">Each platform has a distinct audience and intent. Mixing personal and professional content dilutes your signal.</p>
+
+  <div class="card" style="overflow-x:auto;">
+    <table class="compare">
+      <tr><th>Platform</th><th>What belongs here</th></tr>
+      <tr><td>LinkedIn</td><td>Career narrative, achievements, industry insights</td></tr>
+      <tr><td>GitHub</td><td>Code quality, project depth, collaboration</td></tr>
+      <tr><td>Instagram / Twitter</td><td>Audit privacy settings — keep personal separate from professional</td></tr>
+    </table>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('Mixed signals', `A LinkedIn feed with vacation party photos, political hot takes, and a resume screenshot all in the same week.`, `<b>Why it fails:</b> a recruiter scrolling your profile can't tell what you're about — the professional signal gets buried in noise.`)}
+    ${exampleGood('Clean separation', `LinkedIn stays entirely career-focused; personal photos and opinions live on a private Instagram recruiters never see.`, `<b>Why it works:</b> every platform does one job well — LinkedIn builds your professional case, uninterrupted.`)}
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Quick check — which platform is this for?</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-6px;">Tap the platform you think each piece of content belongs on.</p>
+    <div id="quizArea"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The Credibility Multiplier</h3>
+    <p style="color:var(--ink-soft); font-size:14px; line-height:1.6; margin:0;">A linked GitHub repo + a Medium article + an optimized LinkedIn profile create instant trust with recruiters — each one backs up the others.</p>
+  </div>
+</section>
+
+<!-- MODULE 6: HEADLINE BUILDER -->
+<section class="panel" id="panel-builder">
+  <div class="module-tag">Live Tool</div>
+  <h2 class="section-title">Headline Builder</h2>
+  <p class="lede">Fill in the three slots from the formula and watch your headline build itself — live checks flag anything too generic to be searchable.</p>
+
+  <div class="card builder-grid">
+    <div>
+      <label class="field-label">Current Role / Domain</label>
+      <input class="field-input" id="fRole" placeholder="e.g. Backend Engineer">
+      <label class="field-label">Tech Stack / Specialization</label>
+      <input class="field-input" id="fStack" placeholder="e.g. Java, Microservices, AWS">
+      <label class="field-label">Key Achievement / Value Prop</label>
+      <input class="field-input" id="fAchieve" placeholder="e.g. Built systems handling 10k daily users">
+    </div>
+    <div>
+      <label class="field-label">Live Preview</label>
+      <div class="headline-preview" id="headlinePreview">Your headline will appear here as you type...</div>
+      <div class="checks" id="builderChecks"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 7: LIVE MAKEOVER -->
+<section class="panel" id="panel-makeover">
+  <div class="module-tag">Module 3 · Live Workshop (30 min)</div>
+  <h2 class="section-title">Live Profile Makeovers</h2>
+  <p class="lede">Real-time feedback: we'll pull profiles from the chat and do constructive teardowns on screen.</p>
+
+  <div class="card">
+    <div class="step"><div class="step-num">01</div><div><h3>Drop Your Link</h3><p>Post your LinkedIn URL or GitHub profile in the chat.</p></div></div>
+    <div class="step"><div class="step-num">02</div><div><h3>We Pick 3 Profiles</h3><p>2 LinkedIn + 1 GitHub — one beginner, one mid-level — chosen live.</p></div></div>
+    <div class="step"><div class="step-num">03</div><div><h3>Teardown</h3><p>Fix the headline, critique the photo/banner, review pinned repos — all on screen.</p></div></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Self-Audit Checklist</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-6px;">Run through this on your own profile before (or instead of) a live teardown.</p>
+    <div class="audit-item" data-item="1"><input type="checkbox"><span>Headline follows the Role | Stack | Achievement formula</span></div>
+    <div class="audit-item" data-item="2"><input type="checkbox"><span>Profile photo is clear, professional, front-facing</span></div>
+    <div class="audit-item" data-item="3"><input type="checkbox"><span>About section has a hook, toolkit, impact, and CTA</span></div>
+    <div class="audit-item" data-item="4"><input type="checkbox"><span>3–6 pinned repos tell one coherent story</span></div>
+    <div class="audit-item" data-item="5"><input type="checkbox"><span>At least one README reads like a product page</span></div>
+  </div>
+</section>
+
+<!-- MODULE 8: WEEKLY CHALLENGE -->
+<section class="panel" id="panel-challenge">
+  <div class="module-tag">Due Before Session 2</div>
+  <h2 class="section-title">Your Weekly Challenge</h2>
+  <p class="lede">Three concrete actions. Complete them this week to lock in your progress.</p>
+
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="assignProgress"></div></div>
+
+  <div class="task" data-task="1">
+    <input type="checkbox">
+    <div><h3>Update Your Headline</h3><p>Rewrite your LinkedIn headline using the formula: Role | Stack | Achievement.</p></div>
+  </div>
+  <div class="task" data-task="2">
+    <input type="checkbox">
+    <div><h3>Upgrade a README</h3><p>Add a problem statement, architecture diagram, and demo GIF to at least 1 pinned repo.</p></div>
+  </div>
+  <div class="task" data-task="3">
+    <input type="checkbox">
+    <div><h3>Share One Takeaway</h3><p>Write a 5-line LinkedIn post about something you learned today. Tag your cohort.</p></div>
+  </div>
+</section>
+
+`;
+
+/* =========================================================
+   BEHAVIOR: platform quiz (module 5)
+   ========================================================= */
+const quizItems = [
+  {text:"A detailed breakdown of how you optimized a database query, with before/after benchmarks.", answer:'GitHub', why:"Technical depth with code and benchmarks belongs where the code lives — a README or a linked repo."},
+  {text:"A post celebrating a new certification, tagging the mentors who helped you get there.", answer:'LinkedIn', why:"Career milestones and industry-facing achievements are exactly what LinkedIn's audience expects."},
+  {text:"Weekend trip photos and personal opinions on unrelated topics.", answer:'Instagram / Twitter', why:"Personal, non-professional content belongs on a platform recruiters aren't actively screening."},
+];
+const quizArea = document.getElementById('quizArea');
+quizItems.forEach((q)=>{
+  const row = document.createElement('div');
+  row.className = 'quiz-line';
+  row.innerHTML = `
+    <div class="quiz-text">"${q.text}"</div>
+    <div class="quiz-choices">
+      <button class="choice-btn" data-choice="LinkedIn">LinkedIn</button>
+      <button class="choice-btn" data-choice="GitHub">GitHub</button>
+      <button class="choice-btn" data-choice="Instagram / Twitter">Instagram / Twitter</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  `;
+  row.querySelectorAll('.choice-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      const fb = row.querySelector('.quiz-feedback');
+      const correct = btn.dataset.choice === q.answer;
+      fb.className = 'quiz-feedback show ' + (correct ? 'correct' : 'wrong');
+      fb.textContent = (correct ? '✓ Correct — ' : `✕ Actually ${q.answer} — `) + q.why;
+    };
+  });
+  quizArea.appendChild(row);
+});
+
+/* =========================================================
+   BEHAVIOR: headline builder (module 6)
+   ========================================================= */
+const fRole = document.getElementById('fRole');
+const fStack = document.getElementById('fStack');
+const fAchieve = document.getElementById('fAchieve');
+const headlinePreview = document.getElementById('headlinePreview');
+const builderChecks = document.getElementById('builderChecks');
+
+function renderBuilder(){
+  const role = fRole.value.trim();
+  const stack = fStack.value.trim();
+  const achieve = fAchieve.value.trim();
+
+  if(!role && !stack && !achieve){
+    headlinePreview.textContent = 'Your headline will appear here as you type...';
+  } else {
+    headlinePreview.textContent = `${role || '[Role]'} | Building ${stack || '[Stack]'} | ${achieve || '[Achievement]'}`;
+  }
+
+  const roleLower = role.toLowerCase();
+  const roleWeak = weakHeadlineWords.some(w => roleLower.includes(w));
+  const roleOK = role.length > 0 && !roleWeak;
+  const stackOK = stack.length > 0;
+  const hasNumber = /\d/.test(achieve);
+  const achieveOK = achieve.length > 0 && hasNumber;
+
+  builderChecks.innerHTML = `
+    <div class="check-row ${role.length===0 ? '' : (roleOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Role is specific, not passive</b>
+      <span>${role.length===0 ? 'Start typing to check.' : roleOK ? 'Reads as a real title, not a job-seeker label.' : 'Avoid words like "student" or "looking for" — state your role directly.'}</span></div>
+    </div>
+    <div class="check-row ${stack.length===0 ? '' : (stackOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Stack is filled in</b>
+      <span>${stack.length===0 ? 'Add at least one specific technology or domain.' : 'Gives recruiters searchable keywords.'}</span></div>
+    </div>
+    <div class="check-row ${achieve.length===0 ? '' : (achieveOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Achievement has a number</b>
+      <span>${achieve.length===0 ? 'Start typing to check.' : achieveOK ? 'Concrete and memorable.' : 'Add a metric — even an estimate beats a vague claim.'}</span></div>
+    </div>
+  `;
+}
+[fRole, fStack, fAchieve].forEach(f => f.addEventListener('input', renderBuilder));
+renderBuilder();
+
+/* =========================================================
+   BEHAVIOR: audit checklist (module 7)
+   ========================================================= */
+document.querySelectorAll('.audit-item').forEach(item=>{
+  const cb = item.querySelector('input');
+  const toggle = ()=> item.classList.toggle('done', cb.checked);
+  cb.addEventListener('change', toggle);
+  item.addEventListener('click', (e)=>{
+    if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); }
+  });
+});
+
+/* =========================================================
+   BEHAVIOR: assignment checklist (module 8)
+   ========================================================= */
+document.querySelectorAll('.task').forEach(task=>{
+  const cb = task.querySelector('input');
+  const toggle = ()=>{
+    task.classList.toggle('done', cb.checked);
+    updateProgress();
+  };
+  cb.addEventListener('change', toggle);
+  task.addEventListener('click', (e)=>{
+    if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); }
+  });
+});
+function updateProgress(){
+  const total = document.querySelectorAll('.task').length;
+  const done = document.querySelectorAll('.task.done').length;
+  document.getElementById('assignProgress').style.width = (done/total*100) + '%';
+}
+
+
+document.getElementById('aboutToggle').onclick = function(){
+  const bio = document.getElementById('aboutBio');
+  const showing = bio.classList.toggle('show');
+  this.textContent = showing ? 'About the mentor ▴' : 'About the mentor ▾';
+};
+
+/* init */
+showTab('linkedin');
+</script>
+</body>
+</html>

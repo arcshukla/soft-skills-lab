@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 3 — Outbound Strategy & Handling Recruiters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-soft:#57606F;
+    --paper:#EEF1F4;
+    --card:#FFFFFF;
+    --brand:#24437A;
+    --brand-soft:#5D7FB9;
+    --brand-wash:#E6ECF6;
+    --good:#2F8F5B;
+    --good-bg:#E8F5EC;
+    --good-line:#BFE2CC;
+    --bad:#C1443B;
+    --bad-bg:#FBEAE8;
+    --bad-line:#F0C4C0;
+    --line:#DBE1E7;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- shell ---------- */
+  .app{max-width:980px;margin:0 auto;padding:0 20px 80px;}
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    padding:22px 0 0;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--brand-soft); font-weight:600;
+  }
+  .masthead{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+    margin-top:6px; flex-wrap:wrap;
+  }
+  .masthead h1{
+    font-size:26px; font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.15;
+  }
+  .progress-pill{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+    color:var(--brand); background:var(--brand-wash);
+    padding:6px 12px; border-radius:100px; white-space:nowrap;
+  }
+  nav.tabs{
+    display:flex; flex-wrap:wrap; gap:2px 4px; margin-top:18px;
+    border-bottom:1px solid var(--line); padding-bottom:8px;
+  }
+  nav.tabs button{
+    font-family:'Inter',sans-serif; font-size:13.5px; font-weight:600;
+    color:var(--ink-soft); background:none; border:none; cursor:pointer;
+    padding:10px 14px 12px; white-space:nowrap; position:relative; top:1px;
+    border-bottom:2px solid transparent;
+  }
+  nav.tabs button.active{
+    color:var(--brand); border-bottom:2px solid var(--brand);
+  }
+  nav.tabs button:hover{color:var(--brand);}
+
+  main{padding-top:30px;}
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .lede{
+    font-size:15.5px; color:var(--ink-soft); max-width:640px; margin:6px 0 28px; line-height:1.55;
+  }
+  .module-tag{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--brand);
+    background:var(--brand-wash); padding:4px 10px; border-radius:6px; margin-bottom:10px;
+  }
+  h2.section-title{font-size:22px; margin:0 0 4px; font-weight:700;}
+
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; margin-bottom:16px;
+  }
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media(max-width:680px){.grid-2{grid-template-columns:1fr;}}
+
+  /* ---------- good/bad example bubbles ---------- */
+  .example-pair{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 6px;}
+  @media(max-width:680px){.example-pair{grid-template-columns:1fr;}}
+  .example{
+    border-radius:12px; padding:16px 16px 14px; border:1px solid;
+    font-size:14px; line-height:1.55;
+  }
+  .example.bad{background:var(--bad-bg); border-color:var(--bad-line);}
+  .example.good{background:var(--good-bg); border-color:var(--good-line);}
+  .example-label{
+    display:flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:10px;
+  }
+  .example.bad .example-label{color:var(--bad);}
+  .example.good .example-label{color:var(--good);}
+  .bubble{
+    background:var(--card); border-radius:10px; padding:12px 13px; color:var(--ink);
+    white-space:pre-wrap; font-size:13.5px; margin-bottom:10px; border:1px solid rgba(0,0,0,.05);
+  }
+  .example-why{color:var(--ink-soft); font-size:13px;}
+  .example-why b{color:var(--ink);}
+
+  /* ---------- rule cards ---------- */
+  .rule-card{
+    display:flex; gap:14px; align-items:flex-start; padding:18px 20px; margin-bottom:14px;
+  }
+  .rule-letter{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; color:#fff;
+    background:var(--brand); width:38px; height:38px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .rule-card h3{margin:0 0 4px; font-size:16.5px;}
+  .rule-card p{margin:0; color:var(--ink-soft); font-size:14px; line-height:1.5;}
+
+  /* ---------- comparison table ---------- */
+  table.compare{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.compare th, table.compare td{text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.compare th{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); font-weight:600;}
+  table.compare td:first-child{font-weight:600; color:var(--brand); width:150px;}
+
+  /* ---------- audience quiz ---------- */
+  .quiz-line{
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px;
+    margin-bottom:12px;
+  }
+  .quiz-text{font-size:14px; margin-bottom:12px; font-style:italic; color:var(--ink);}
+  .quiz-choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .choice-btn{
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer;
+    padding:8px 14px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink);
+  }
+  .choice-btn:hover{border-color:var(--brand-soft);}
+  .quiz-feedback{margin-top:10px; font-size:13px; display:none; padding:10px 12px; border-radius:8px;}
+  .quiz-feedback.show{display:block;}
+  .quiz-feedback.correct{background:var(--good-bg); color:var(--good);}
+  .quiz-feedback.wrong{background:var(--bad-bg); color:var(--bad);}
+
+  /* ---------- templates ---------- */
+  .template-card{padding:20px;}
+  .template-card .tag{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; color:var(--brand); text-transform:uppercase; letter-spacing:.05em;}
+  .template-body{font-size:13.5px; line-height:1.7; margin-top:10px; white-space:pre-wrap; background:var(--paper); border-radius:8px; padding:14px;}
+  .placeholder{color:var(--brand); font-weight:600;}
+
+  /* ---------- scenario cards ---------- */
+  .scenario{margin-bottom:18px;}
+  .scenario h3{font-size:15.5px; margin:0 0 4px;}
+  .scenario .strategy-label{font-size:12px; color:var(--brand-soft); font-weight:700; text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace;}
+  .scenario p.strategy{font-size:13.5px; color:var(--ink-soft); margin:6px 0 12px; line-height:1.55;}
+
+  /* ---------- inspector ---------- */
+  .inspector-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:18px;}
+  @media(max-width:760px){.inspector-grid{grid-template-columns:1fr;}}
+  textarea#draftInput{
+    width:100%; min-height:190px; border-radius:12px; border:1.5px solid var(--line);
+    padding:14px; font-family:'IBM Plex Mono',monospace; font-size:13.5px; line-height:1.6;
+    resize:vertical; color:var(--ink); background:var(--card);
+  }
+  textarea#draftInput:focus{outline:none; border-color:var(--brand-soft);}
+  .checks{display:flex; flex-direction:column; gap:10px;}
+  .check-row{
+    display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:11px 13px; font-size:13px;
+  }
+  .check-dot{width:9px; height:9px; border-radius:50%; background:#C7CDD4; flex-shrink:0;}
+  .check-row.pass .check-dot{background:var(--good);}
+  .check-row.fail .check-dot{background:var(--bad);}
+  .check-row .check-text b{display:block; font-weight:600; margin-bottom:1px;}
+  .check-row .check-text span{color:var(--ink-soft); font-size:12px;}
+  .word-count{font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:13px;}
+
+  /* ---------- steps ---------- */
+  .step{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:none;}
+  .step-num{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--brand-soft); font-size:14px;
+    width:26px; flex-shrink:0;
+  }
+  .step h3{margin:0 0 4px; font-size:14.5px;}
+  .step p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+
+  /* ---------- checklist ---------- */
+  .task{
+    display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border:1px solid var(--line);
+    border-radius:12px; margin-bottom:10px; background:var(--card); cursor:pointer;
+  }
+  .task input{margin-top:3px; width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .task h3{margin:0 0 3px; font-size:14px;}
+  .task p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.5;}
+  .task.done{opacity:.55;}
+  .task.done h3{text-decoration:line-through;}
+  .progress-bar-track{height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:16px 0 20px;}
+  .progress-bar-fill{height:100%; background:var(--brand); width:0%; transition:width .35s ease;}
+
+  .hub-strip{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 0; font-size:12.5px; color:var(--ink-soft);
+  }
+  .hub-strip a{color:var(--brand); text-decoration:none; font-weight:600;}
+  .hub-strip a:hover{text-decoration:underline;}
+
+  .about-strip{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 22px; margin-top:40px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+  }
+  .avatar-photo{
+    width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0;
+  }
+  .about-strip-body{flex:1; min-width:220px;}
+  .about-strip-name{font-size:14.5px; font-weight:700; color:var(--ink);}
+  .about-strip-role{font-size:12px; color:var(--brand-soft); font-weight:600;}
+  .link-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .link-chip{
+    display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+    background:var(--brand-wash); color:var(--brand); font-weight:700; font-size:12px;
+    padding:6px 12px 6px 6px; border-radius:100px; transition:background .15s ease;
+  }
+  .link-chip:hover{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon{background:#fff; color:var(--brand);}
+  .chip-icon{
+    width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:9px; font-weight:700; font-family:'IBM Plex Mono',monospace; flex-shrink:0; overflow:hidden;
+  }
+  .chip-icon svg{width:12px; height:12px;}
+  .chip-icon.li{background:#0A66C2; color:#fff; font-family:'Inter',sans-serif; font-style:italic; font-size:11px;}
+  .chip-icon.gh{background:#181717; color:#fff;}
+  .chip-icon.md{background:#000000; color:#fff;}
+  .chip-icon.tm{background:var(--brand); color:#fff;}
+  .chip-icon.ai{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon.li{background:#0A66C2; color:#fff;}
+  .link-chip:hover .chip-icon.gh{background:#181717; color:#fff;}
+  .link-chip:hover .chip-icon.md{background:#000000; color:#fff;}
+  .about-toggle{
+    background:none; border:none; color:var(--brand-soft); font-family:'Inter',sans-serif;
+    font-size:12px; font-weight:600; cursor:pointer; padding:0; margin-top:2px;
+  }
+  .about-bio{
+    font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:680px;
+    margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
+    display:none;
+  }
+  .about-bio.show{display:block;}
+  .copyright{margin-top:14px; color:var(--ink-soft); font-size:11.5px;}
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:12px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="hub-strip"><a href="../index.html">&larr; GeeksForGeeks Soft Skill Cohort - 2</a><span>Session 3 of 10</span></div>
+  <div class="topbar">
+    <div class="eyebrow">SOFT SKILLS SERIES · SESSION 3 OF 10</div>
+    <div class="masthead">
+      <h1>Outbound Strategy &amp; Handling Recruiters</h1>
+      <div class="progress-pill" id="progressPill">Module 1 of 5</div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+
+  <main id="main"></main>
+
+  <div class="about-strip">
+    <img class="avatar-photo" src="../../assets/archana.jpg" alt="Archana Shukla">
+    <div class="about-strip-body">
+      <div class="about-strip-name">Archana Shukla</div>
+      <div class="about-strip-role">Technology Leader · AI Strategist · Builder</div>
+      <div class="about-bio" id="aboutBio">25+ years of experience bridging strategy and execution — from boardroom to production. I don't stop at proof-of-concept. I architect, build, and ship systems that work. Techno-functional by nature: I speak business fluently and translate it into technology that delivers real outcomes, end-to-end.</div>
+      <button class="about-toggle" id="aboutToggle">About the mentor ▾</button>
+    </div>
+    <div class="link-row">
+      <a class="link-chip" href="https://arcshukla-ai-profile-platform.hf.space/explore" target="_blank" rel="noopener"><span class="chip-icon ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.2L12 15l-1.6-4.8L6 9l4.4-1.2z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></span>AI Avatar</a>
+      <a class="link-chip" href="https://www.linkedin.com/in/archana-shukla-b5639411/" target="_blank" rel="noopener"><span class="chip-icon li">in</span>LinkedIn</a>
+      <a class="link-chip" href="https://medium.com/@arc.shukla" target="_blank" rel="noopener"><span class="chip-icon md"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z"/></svg></span>Medium</a>
+      <a class="link-chip" href="https://topmate.io/archana_shukla10" target="_blank" rel="noopener"><span class="chip-icon tm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg></span>Topmate</a>
+      <a class="link-chip" href="https://github.com/arcshukla" target="_blank" rel="noopener"><span class="chip-icon gh"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>GitHub</a>
+    </div>
+  </div>
+
+  <footer>Session 3 of 10 — Soft Skills Series<div class="copyright">© 2026 The Soft Skills Lab. All rights reserved.</div></footer>
+</div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const MODULES = [
+  {id:'why', label:'Why Outbound Works'},
+  {id:'rules', label:'The 3 Core Rules'},
+  {id:'audience', label:'Recruiters vs Hiring Managers'},
+  {id:'playbook', label:'The Playbook'},
+  {id:'scenarios', label:'Tough Conversations'},
+  {id:'workshop', label:'Live Draft-a-Thon'},
+  {id:'assignment', label:'Action Assignment'},
+];
+
+const badPhrases = [
+  "i hope this email finds you well",
+  "i hope this finds you well",
+  "to whom it may concern",
+  "i am writing to",
+  "i would like to introduce myself",
+  "i am very passionate about",
+  "i believe i would be a great fit",
+  "i am reaching out because i need a job",
+  "dear sir/madam",
+];
+
+/* =========================================================
+   RENDER: TABS
+   ========================================================= */
+const tabsEl = document.getElementById('tabs');
+MODULES.forEach((m,i)=>{
+  const btn = document.createElement('button');
+  btn.textContent = m.label;
+  btn.dataset.id = m.id;
+  btn.onclick = ()=> showTab(m.id);
+  tabsEl.appendChild(btn);
+});
+
+function showTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  document.querySelectorAll('section.panel').forEach(s=>s.classList.toggle('active', s.id==='panel-'+id));
+  const idx = MODULES.findIndex(m=>m.id===id);
+  document.getElementById('progressPill').textContent = `Module ${idx+1} of ${MODULES.length}`;
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+/* =========================================================
+   RENDER: PANELS
+   ========================================================= */
+const main = document.getElementById('main');
+
+function exampleBad(title, bubble, why){
+  return `<div class="example bad">
+    <div class="example-label">✕ Bad — ${title}</div>
+    <div class="bubble">${bubble}</div>
+    <div class="example-why">${why}</div>
+  </div>`;
+}
+function exampleGood(title, bubble, why){
+  return `<div class="example good">
+    <div class="example-label">✓ Good — ${title}</div>
+    <div class="bubble">${bubble}</div>
+    <div class="example-why">${why}</div>
+  </div>`;
+}
+function fearReality(fear, reality){
+  return `<div class="example-pair">
+    <div class="example bad">
+      <div class="example-label">😟 The Fear</div>
+      <div class="bubble">"${fear}"</div>
+    </div>
+    <div class="example good">
+      <div class="example-label">✅ The Reality</div>
+      <div class="bubble">${reality}</div>
+    </div>
+  </div>`;
+}
+
+main.innerHTML = `
+
+<!-- MODULE 1: WHY OUTBOUND WORKS -->
+<section class="panel" id="panel-why">
+  <div class="module-tag">Module 1</div>
+  <h2 class="section-title">Why Outbound Works</h2>
+  <p class="lede">Understanding the hidden job market — why a direct message beats the ATS queue every time.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">The Problem</h3>
+      <p style="color:var(--ink-soft); font-size:14px; line-height:1.6;">The moment a job goes live online, it collects <b>500+ ATS applications</b> within 48 hours. Most recruiters review only the top 10% before their screening pipeline fills up. Your perfectly formatted résumé never gets seen.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">The Strategy</h3>
+      <p style="color:var(--ink-soft); font-size:14px; line-height:1.6;">A concise, direct message bypasses the application stack entirely — landing on a decision-maker's screen before the queue even forms. Outbound doesn't compete with 500 applicants. It skips the line.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The funnel, visualized</h3>
+    <div id="funnelViz"></div>
+  </div>
+
+  <div class="card">
+    <div class="module-tag" style="margin-bottom:6px;">If You're Hesitant to Send That First Message</div>
+    <h3 style="margin-top:0">Every Fear Here Is Normal. None of Them Hold Up.</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-4px;">Outbound feels uncomfortable the first time for almost everyone in this room. Here's why the discomfort is misleading you.</p>
+
+    ${fearReality(`This is basically spam — I'd be bothering a stranger.`,
+      `Spam is mass, generic, and asks the reader to do work. A 40-word note about <i>their</i> team, asking for 5 minutes, is closer to networking than spam — the difference is specificity, not the fact that you reached out first.`)}
+    ${fearReality(`They'll think I'm desperate for sending this.`,
+      `Recruiters cold-message candidates every single day — it's a normal, expected part of how tech hiring works on both sides. Reaching out first reads as initiative, not desperation.`)}
+    ${fearReality(`What if they just say no?`,
+      `A "no" costs you 10 seconds of reading a rejection. Silence — never sending at all — costs you the interview entirely, guaranteed. One reply out of every 8–10 well-targeted messages is a completely normal, winning rate.`)}
+    ${fearReality(`I don't know anyone at this company, so why would they reply to me?`,
+      `Cold outbound doesn't rely on a personal connection — it relies on relevance. A message that names their actual team, project, or a real problem you've solved gets read on its merits, not on who you know.`)}
+    ${fearReality(`I'll just be annoying them — they're busy.`,
+      `Sourcing candidates <i>is</i> a recruiter's actual job. A concise, well-targeted message does part of that job for them — it's far less "annoying" than the 500-applicant pile they already have to sift through.`)}
+
+    <p style="color:var(--ink-soft); font-size:13px; margin-top:16px; margin-bottom:0;"><b style="color:var(--ink);">The real math:</b> if 9 out of 10 messages go unanswered, that's not failure — that's the baseline. The only version of outbound that truly fails is the message that never gets sent.</p>
+  </div>
+</section>
+
+<!-- MODULE 2: THE 3 CORE RULES -->
+<section class="panel" id="panel-rules">
+  <div class="module-tag">Module 1 · Rules</div>
+  <h2 class="section-title">The 3 Core Rules of Cold Outreach</h2>
+  <p class="lede">Every rule has a reason. Understanding the why is what makes these habits stick — and what separates a response from silence.</p>
+
+  <div class="card rule-card">
+    <div class="rule-letter">A</div>
+    <div>
+      <h3>Keep It Under 75 Words</h3>
+      <p>Recruiters scan messages on mobile between meetings. The instant your message requires scrolling, cognitive friction skyrockets — it gets marked "read for later," which usually means never.</p>
+    </div>
+  </div>
+  <div class="example-pair">
+    ${exampleBad('177 words', `Hello, I hope this email finds you well. My name is Arjun and I am a final year Computer Science student currently exploring exciting new opportunities in the software engineering space. I have been following your company for quite some time now and I am extremely passionate about the work that your engineering team does, especially in the backend and distributed systems space. I have worked on several projects during my degree including a full stack web application, a machine learning model for image classification, and a distributed caching system as part of my final year project. I believe my skills in Java, Python, and system design would make me a strong candidate for any open roles on your team. I have attached my resume for your review and would love the opportunity to discuss how I could contribute to your organization. Please let me know if you would like to schedule a call at your convenience. Thank you so much for your time and consideration.`, `<b>Why it fails:</b> requires 3+ screen scrolls on mobile. A recruiter skimming between meetings won't reach the ask.`)}
+    ${exampleGood('41 words', `Hi Priya — noticed your team is scaling the payments pipeline. I built a similar event-driven system handling 2M+ txns/day at a campus fintech project. Open to a quick 5-min chat this week to see if it's relevant?
+
+— Arjun`, `<b>Why it works:</b> fits in one glance, states value immediately, ends with a low-friction ask.`)}
+  </div>
+
+  <div class="card rule-card">
+    <div class="rule-letter">B</div>
+    <div>
+      <h3>Cut the Generic Fluff</h3>
+      <p>"I hope this finds you well" signals mass-produced spam immediately. Telling a recruiter "I need a job" shifts all the work onto them. Lead with "I built X to solve Y" instead.</p>
+    </div>
+  </div>
+  <div class="example-pair">
+    ${exampleBad('Generic opener', `I hope this email finds you well. I am currently looking for job opportunities and I am very passionate about technology. I believe I would be a great fit for your team.`, `<b>Why it fails:</b> every sentence is a template filler. Nothing here is specific to this recruiter, company, or role — it reads as copy-pasted to fifty people.`)}
+    ${exampleGood('Value-first opener', `Hi Rohan — saw your post on the new fraud-detection rollout. I shipped a similar rule-based detection layer that cut false positives by 30% in my last internship.`, `<b>Why it works:</b> the first line proves the sender actually looked at the company. It leads with a result, not a request.`)}
+  </div>
+
+  <div class="card rule-card">
+    <div class="rule-letter">C</div>
+    <div>
+      <h3>Ask for 5 Minutes, Not 30</h3>
+      <p>A 30-minute request feels like a calendar commitment. A 5-minute sanity check feels low-risk and easy to accept. Once you're on the phone, strong chemistry naturally extends the conversation.</p>
+    </div>
+  </div>
+  <div class="example-pair">
+    ${exampleBad('Heavy ask', `Would you be available for a 30-minute call sometime this week to walk through my background and discuss potential opportunities in detail?`, `<b>Why it fails:</b> "30 minutes" and "in detail" both signal a real calendar commitment before any trust has been built.`)}
+    ${exampleGood('Light ask', `Open for a quick 5-minute chat this Thursday to see if it's worth a longer conversation?`, `<b>Why it works:</b> framed as a low-risk sanity check, not a commitment — easy to say yes to.`)}
+  </div>
+</section>
+
+<!-- MODULE 3: AUDIENCE -->
+<section class="panel" id="panel-audience">
+  <div class="module-tag">Module 2</div>
+  <h2 class="section-title">Recruiters vs. Hiring Managers</h2>
+  <p class="lede">The biggest outreach mistake is sending the same message to everyone. These two audiences have completely different priorities.</p>
+
+  <div class="card" style="overflow-x:auto;">
+    <table class="compare">
+      <tr><th>Dimension</th><th>Recruiter / Talent Acquisition</th><th>Engineering Director / Hiring Manager</th></tr>
+      <tr><td>Primary KPI</td><td>Time-to-hire, pipeline volume, keyword compliance</td><td>System stability, delivery velocity, technical debt</td></tr>
+      <tr><td>Main pain point</td><td>Unqualified candidates wasting interview loops</td><td>Unfilled roles slowing product ship dates</td></tr>
+      <tr><td>Emphasize</td><td>Core skills, years of experience, domain, location, notice period</td><td>Technical trade-offs, system impact, architectural scope</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Quick check — who's this line for?</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-6px;">Tap the audience you think each opening line is written for.</p>
+    <div id="quizArea"></div>
+  </div>
+</section>
+
+<!-- MODULE 4: PLAYBOOK -->
+<section class="panel" id="panel-playbook">
+  <div class="module-tag">Module 2 · Templates</div>
+  <h2 class="section-title">The Outreach Playbook</h2>
+  <p class="lede">High-converting templates, tailored per audience — then the follow-up that reopens a stalled thread.</p>
+
+  <div class="grid-2">
+    <div class="card template-card">
+      <div class="tag">Template A — Internal Recruiter</div>
+      <div class="template-body">Subject: <span class="placeholder">[Target Role] — [Core Tech Stack/Domain]</span>
+e.g., Senior Backend Lead — Distributed Systems
+
+Hi <span class="placeholder">[Name]</span>,
+I noticed you're building out the <span class="placeholder">[Team/Domain]</span> team at <span class="placeholder">[Company]</span>.
+Over the last <span class="placeholder">[X]</span> years, I've specialized in <span class="placeholder">[Core Skill]</span>, most recently scaling a pipeline to handle 10M daily events.
+I'd love to see if my background matches your current needs. Open to a quick 5-minute chat this Thursday?
+
+Best, <span class="placeholder">[Your Name]</span> | <span class="placeholder">[LinkedIn]</span></div>
+    </div>
+    <div class="card template-card">
+      <div class="tag">Template B — Engineering Manager</div>
+      <div class="template-body">Subject: <span class="placeholder">[Specific problem/tech topic at their company]</span>
+
+Hi <span class="placeholder">[Name]</span>,
+Enjoyed your recent post on <span class="placeholder">[technical shift/release]</span>.
+As an engineer focused on <span class="placeholder">[Domain]</span>, I recently solved a similar challenge by <span class="placeholder">[1-sentence solution + metric]</span>.
+If you're building out your team this quarter, I'd welcome a brief 5-minute exchange.
+
+Best, <span class="placeholder">[Your Name]</span> | <span class="placeholder">[Portfolio/GitHub]</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="module-tag" style="margin-bottom:14px;">Module 3 · Follow-Up</div>
+    <h3 style="margin-top:0">The Golden Rule</h3>
+    <p style="color:var(--ink-soft); font-size:14px; line-height:1.6;">Follow up 3–5 days after your first message — and always include a <b>Value-Add</b>, not just "checking in." Over 50% of cold conversions happen on the first follow-up. Recruiters rarely ignore candidates out of spite — they're buried. A new data point re-engages attention without inducing guilt.</p>
+    <div class="example-pair">
+      ${exampleBad('The bare nudge', `Hi, just checking in to see if you had a chance to look at my message. Let me know!`, `<b>Why it fails:</b> "checking in" gives the recruiter zero new reason to reply — it just adds guilt without adding value.`)}
+      ${exampleGood('The value-add nudge', `Hi Priya, quick update since my last note — we just shipped a caching layer that cut p99 latency by 40%. Thought this might align with what your team is tackling. Still open for a 5-minute touchpoint this week!`, `<b>Why it works:</b> gives a fresh, concrete reason to re-engage — not a request for attention, a reason to pay attention.`)}
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 5: SCENARIOS -->
+<section class="panel" id="panel-scenarios">
+  <div class="module-tag">Handling High-Frequency Scenarios</div>
+  <h2 class="section-title">Tough Conversations</h2>
+  <p class="lede">Six situations every job seeker will face — and the strategy plus a live example for each.</p>
+
+  <div class="card scenario">
+    <h3>"What are your salary expectations?"</h3>
+    <div class="strategy-label">Strategy: Range Anchoring</div>
+    <p class="strategy">A rigid single number too early caps your leverage. Provide a realistic market benchmark range, and signal that finding the right technical fit is your primary focus. Never anchor first with a floor.</p>
+    <div class="example-pair">
+      ${exampleBad('Anchoring low', `My expected salary is ₹8 LPA, but I'm flexible and can go lower if needed.`, `Anchors a hard floor immediately and signals desperation — there is nowhere to negotiate up from here.`)}
+      ${exampleGood('Range anchoring', `Based on similar roles at this level, I'm looking in the ₹10–14 LPA range — though the technical fit and scope of the role matter most to me.`, `Gives a realistic band, not a floor, and reframes the conversation around fit rather than just number.`)}
+    </div>
+  </div>
+
+  <div class="card scenario">
+    <h3>Inbound offer for an under-leveled role</h3>
+    <div class="strategy-label">Strategy: Relationship Nurturing</div>
+    <p class="strategy">Rejecting abruptly closes doors permanently. Thank them, define your target level clearly, and offer to stay in their network or recommend a peer. Recruiters remember gracious candidates.</p>
+    <div class="example-pair">
+      ${exampleBad('Abrupt decline', `That's not really the level I'm looking for, so I'll pass. Thanks anyway.`, `Closes the door with no path back — this recruiter won't think of you again for a better-fit role.`)}
+      ${exampleGood('Gracious decline', `Thanks for thinking of me! This looks slightly junior to where I'm targeting — I'd love to stay on your radar for a mid-level opening, and happy to refer a friend who'd be a great fit for this one.`, `Keeps the relationship warm, is specific about what "right fit" means, and adds value back (a referral).`)}
+    </div>
+  </div>
+
+  <div class="card scenario">
+    <h3>Recruiter goes silent after initial contact</h3>
+    <div class="strategy-label">Strategy: Professional Nudge</div>
+    <p class="strategy">Silence usually means shifting internal priorities — not rejection. Send a polite, low-friction timeline query after 4–5 business days. One nudge is professional; three in a week is not.</p>
+    <div class="example-pair">
+      ${exampleBad('Over-pushing', `Hi again — following up on my message from yesterday. And the one from Monday. Just want to make sure you saw these! Let me know when you can.`, `Multiple nudges within days reads as impatient pressure, not professional persistence.`)}
+      ${exampleGood('One clean nudge', `Hi Priya, wanted to check if there's any update on timeline for the role — happy to work around your schedule whenever is convenient.`, `A single, low-pressure question sent after a reasonable gap — easy to answer, no guilt attached.`)}
+    </div>
+  </div>
+
+  <div class="card scenario">
+    <h3>"We don't have any openings right now."</h3>
+    <div class="strategy-label">Strategy: Redirect to the Long Game</div>
+    <p class="strategy">A closed door today isn't a closed door forever. Don't let the conversation end — ask to stay on their radar or get pointed toward a different team. Outbound builds a pipeline, not a single transaction.</p>
+    <div class="example-pair">
+      ${exampleBad('Dead end', `Oh okay, no worries. Let me know if anything opens up.`, `Passive and forgettable — puts 100% of the follow-through burden on them, and they won't remember to reach back out.`)}
+      ${exampleGood('Keep the door open', `Totally understand — would it be alright if I checked back in a couple months? Also, is there another team at [Company] that might be hiring for a similar profile?`, `Proposes a concrete next touchpoint and asks a specific redirect question — gives them an easy way to still be useful to you.`)}
+    </div>
+  </div>
+
+  <div class="card scenario">
+    <h3>"Why are you looking to leave / switch fields right now?"</h3>
+    <div class="strategy-label">Strategy: Forward-Looking, Never Negative</div>
+    <p class="strategy">Bad-mouthing a current employer or sounding like you're "escaping" something raises a red flag. Frame the move around what you're moving <i>toward</i>, not what you're running <i>from</i>.</p>
+    <div class="example-pair">
+      ${exampleBad('Backward-looking', `Honestly my current manager doesn't give me any good projects and the company culture isn't great, so I just want out.`, `Complaining about a current employer to a stranger signals a future risk — this recruiter now wonders what you'll say about them someday.`)}
+      ${exampleGood('Forward-looking', `I've grown a lot in my current role, and I'm now looking for a team working closer to large-scale distributed systems — which is exactly the kind of problem your team seems to be solving.`, `Stays positive about the past and ties the "why" directly to something specific about this opportunity.`)}
+    </div>
+  </div>
+
+  <div class="card scenario">
+    <h3>"Can you hop on a call right now?"</h3>
+    <div class="strategy-label">Strategy: Buy Time Without Losing the Opening</div>
+    <p class="strategy">Getting caught off guard is normal — you don't owe anyone an unprepared conversation. It's completely fine to ask for a scheduled slot instead; recruiters respect candidates who protect their own bandwidth.</p>
+    <div class="example-pair">
+      ${exampleBad('Freezing up', `Umm, I guess so? I wasn't really expecting this, give me a second...`, `Sounds unprepared and rattled — the recruiter's first live impression of you is scrambled, not confident.`)}
+      ${exampleGood('Confident reschedule', `I'd love to — I'm actually stepping into something right now, could we set up 15 minutes tomorrow instead? Happy to work around your schedule.`, `Shows enthusiasm while protecting your ability to show up prepared — reads as organized, not evasive.`)}
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 6: WORKSHOP -->
+<section class="panel" id="panel-workshop">
+  <div class="module-tag">Module 4 · Live Workshop (20 min)</div>
+  <h2 class="section-title">Draft-a-Thon &amp; Message Inspector</h2>
+  <p class="lede">Draft a real cold outreach message below — the inspector checks it live against the three core rules as you type.</p>
+
+  <div class="card inspector-grid">
+    <div>
+      <textarea id="draftInput" placeholder="Write your 50–75 word cold outreach message here... e.g. Hi [Name], noticed your team is..."></textarea>
+    </div>
+    <div class="checks" id="checksArea"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The 5 workshop steps</h3>
+    <div class="step"><div class="step-num">01</div><div><h3>Draft (3 min)</h3><p>Open a doc and write a 50–75 word cold outreach message to a real target company contact. Real company, real name, real role.</p></div></div>
+    <div class="step"><div class="step-num">02</div><div><h3>Select &amp; Display</h3><p>Three live submissions are picked from the chat and displayed on screen for group critique. Anonymous if preferred.</p></div></div>
+    <div class="step"><div class="step-num">03</div><div><h3>The Catch</h3><p>Identify what is genuinely strong about the message. Build on what's working before addressing what isn't.</p></div></div>
+    <div class="step"><div class="step-num">04</div><div><h3>The Friction</h3><p>Pinpoint exactly where the recruiter stalls or scrolls away — "notice how this sentence forces them to read 3 lines before seeing your core tech?"</p></div></div>
+    <div class="step"><div class="step-num">05</div><div><h3>The Pivot</h3><p>Rewrite the message live on screen to demonstrate the instant impact of applying the three core rules. The before/after contrast is the lesson.</p></div></div>
+  </div>
+</section>
+
+<!-- MODULE 7: ASSIGNMENT -->
+<section class="panel" id="panel-assignment">
+  <div class="module-tag">Due Before Session 4</div>
+  <h2 class="section-title">Your Action Assignment</h2>
+  <p class="lede">Three concrete tasks that move you from theory to pipeline. Tick each off as you complete it.</p>
+
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="assignProgress"></div></div>
+
+  <div class="task" data-task="1">
+    <input type="checkbox">
+    <div><h3>Research 3 Target Companies</h3><p>Identify 1 internal recruiter and 1 engineering manager/director for each company on LinkedIn. Verify they're active on the platform before outreaching.</p></div>
+  </div>
+  <div class="task" data-task="2">
+    <input type="checkbox">
+    <div><h3>Send 3 Tailored Cold Messages</h3><p>Customize and send using Template A or B — never copy-paste without personalizing the company, team, and achievement line. Every message under 75 words.</p></div>
+  </div>
+  <div class="task" data-task="3">
+    <input type="checkbox">
+    <div><h3>Log Outreach in a Spreadsheet</h3><p>Record contact name, company, date sent, and template used. Set a reminder to send your value-add follow-up exactly 4 business days later.</p></div>
+  </div>
+</section>
+
+`;
+
+/* =========================================================
+   BEHAVIOR: funnel viz (module 1)
+   ========================================================= */
+document.getElementById('funnelViz').innerHTML = `
+  <div style="display:flex; align-items:flex-end; gap:18px; height:120px; margin-top:8px;">
+    <div style="flex:1; text-align:center;">
+      <div style="background:var(--bad); opacity:.85; height:100px; border-radius:6px 6px 0 0;"></div>
+      <div class="mono" style="font-size:12px; margin-top:8px; color:var(--ink-soft);">500+ ATS applicants</div>
+    </div>
+    <div style="flex:1; text-align:center;">
+      <div style="background:var(--brand-soft); opacity:.85; height:26px; border-radius:6px 6px 0 0;"></div>
+      <div class="mono" style="font-size:12px; margin-top:8px; color:var(--ink-soft);">Top 10% reviewed</div>
+    </div>
+    <div style="flex:1; text-align:center;">
+      <div style="background:var(--good); height:56px; border-radius:6px 6px 0 0;"></div>
+      <div class="mono" style="font-size:12px; margin-top:8px; color:var(--ink-soft);">1 direct outbound msg</div>
+    </div>
+  </div>
+  <p style="color:var(--ink-soft); font-size:13px; margin-top:14px;">Outbound doesn't queue behind the 500 — it lands straight on the decision-maker's screen.</p>
+`;
+
+/* =========================================================
+   BEHAVIOR: audience quiz (module 3)
+   ========================================================= */
+const quizItems = [
+  {text:"I noticed you're scaling the payments team and have 3 open backend reqs this quarter.", answer:'Recruiter', why:"Pipeline volume and role-count language is a recruiter's world, not an engineer's."},
+  {text:"I read your write-up on migrating the monolith to microservices — I hit the same data-consistency wall last year.", answer:'Hiring Manager', why:"Speaks to technical architecture and trade-offs — a hiring manager's priority, not pipeline metrics."},
+  {text:"I'm currently serving notice and can join within 3 weeks, open to backend or infra roles.", answer:'Recruiter', why:"Notice period and role flexibility are exactly what a recruiter screens for first."},
+];
+const quizArea = document.getElementById('quizArea');
+quizItems.forEach((q,i)=>{
+  const row = document.createElement('div');
+  row.className = 'quiz-line';
+  row.innerHTML = `
+    <div class="quiz-text">"${q.text}"</div>
+    <div class="quiz-choices">
+      <button class="choice-btn" data-choice="Recruiter">Recruiter</button>
+      <button class="choice-btn" data-choice="Hiring Manager">Hiring Manager</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  `;
+  row.querySelectorAll('.choice-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      const fb = row.querySelector('.quiz-feedback');
+      const correct = btn.dataset.choice === q.answer;
+      fb.className = 'quiz-feedback show ' + (correct ? 'correct' : 'wrong');
+      fb.textContent = (correct ? '✓ Correct — ' : `✕ Actually ${q.answer} — `) + q.why;
+    };
+  });
+  quizArea.appendChild(row);
+});
+
+/* =========================================================
+   BEHAVIOR: message inspector (module 6)
+   ========================================================= */
+const draftInput = document.getElementById('draftInput');
+const checksArea = document.getElementById('checksArea');
+
+function renderChecks(){
+  const text = draftInput.value.trim();
+  const words = text.length ? text.split(/\s+/).filter(Boolean) : [];
+  const wordCount = words.length;
+  const lower = text.toLowerCase();
+
+  const lengthOK = wordCount > 0 && wordCount <= 75;
+  const foundFluff = badPhrases.find(p => lower.includes(p));
+  const fluffOK = text.length > 0 && !foundFluff;
+  const heavyAsk = /30[\s-]?minute|thirty[\s-]?minute|call to discuss in detail|schedule a call at your convenience/.test(lower);
+  const hasLightAsk = /5[\s-]?minute|five[\s-]?minute|quick chat|quick call/.test(lower);
+  const askOK = text.length > 0 && !heavyAsk && (hasLightAsk || wordCount>0);
+
+  checksArea.innerHTML = `
+    <div class="check-row ${text.length===0 ? '' : (lengthOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Rule A — Under 75 words <span class="word-count">(${wordCount})</span></b>
+      <span>${text.length===0 ? 'Start typing to check.' : lengthOK ? 'Fits in a mobile glance.' : 'Too long — trim it down.'}</span></div>
+    </div>
+    <div class="check-row ${text.length===0 ? '' : (fluffOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Rule B — No generic fluff</b>
+      <span>${text.length===0 ? 'Start typing to check.' : fluffOK ? 'No template filler detected.' : `Found: "${foundFluff}" — cut it, lead with value instead.`}</span></div>
+    </div>
+    <div class="check-row ${text.length===0 ? '' : (!heavyAsk?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Rule C — Light ask (5 min, not 30)</b>
+      <span>${text.length===0 ? 'Start typing to check.' : heavyAsk ? 'Sounds like a calendar commitment — ask for 5 minutes instead.' : hasLightAsk ? 'Low-friction ask detected.' : 'No time-ask detected yet — consider adding one.'}</span></div>
+    </div>
+  `;
+}
+draftInput.addEventListener('input', renderChecks);
+renderChecks();
+
+/* =========================================================
+   BEHAVIOR: assignment checklist (module 7)
+   ========================================================= */
+document.querySelectorAll('.task').forEach(task=>{
+  const cb = task.querySelector('input');
+  const toggle = ()=>{
+    task.classList.toggle('done', cb.checked);
+    updateProgress();
+  };
+  cb.addEventListener('change', toggle);
+  task.addEventListener('click', (e)=>{
+    if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); }
+  });
+});
+function updateProgress(){
+  const total = document.querySelectorAll('.task').length;
+  const done = document.querySelectorAll('.task.done').length;
+  document.getElementById('assignProgress').style.width = (done/total*100) + '%';
+}
+
+
+document.getElementById('aboutToggle').onclick = function(){
+  const bio = document.getElementById('aboutBio');
+  const showing = bio.classList.toggle('show');
+  this.textContent = showing ? 'About the mentor ▴' : 'About the mentor ▾';
+};
+
+/* init */
+showTab('why');
+</script>
+</body>
+</html>
