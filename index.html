@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Soft Skills Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-soft:#57606F;
+    --paper:#EEF1F4;
+    --card:#FFFFFF;
+    --brand:#24437A;
+    --brand-soft:#5D7FB9;
+    --brand-wash:#E6ECF6;
+    --good:#2F8F5B;
+    --good-bg:#E8F5EC;
+    --line:#DBE1E7;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  .app{max-width:1040px; margin:0 auto; padding:50px 20px 80px;}
+
+  /* ---------- hero ---------- */
+  .hero{display:flex; align-items:center; gap:36px; margin-bottom:46px;}
+  .hero-text{flex:1.1; min-width:280px;}
+  .hero-art{flex:1; min-width:220px; display:flex; justify-content:center;}
+  @media(max-width:760px){.hero{flex-direction:column;} .hero-art{order:-1;}}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--brand-soft); font-weight:600;
+  }
+  h1.title{font-size:38px; font-weight:700; margin:8px 0 10px; letter-spacing:-.01em;}
+  p.tagline{font-size:16px; color:var(--ink-soft); max-width:520px; line-height:1.6; margin:0 0 28px;}
+
+  .stats-row{display:flex; gap:28px; flex-wrap:wrap;}
+  .stat .num{font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; color:var(--brand);}
+  .stat .label{font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.04em;}
+
+  /* ---------- about / mentor footer strip ---------- */
+  .about-strip{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 22px; margin-top:56px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+  }
+  .avatar-photo{
+    width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0;
+  }
+  .about-strip-body{flex:1; min-width:220px;}
+  .about-strip-name{font-size:14.5px; font-weight:700; color:var(--ink);}
+  .about-strip-role{font-size:12px; color:var(--brand-soft); font-weight:600;}
+  .link-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .link-chip{
+    display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+    background:var(--brand-wash); color:var(--brand); font-weight:700; font-size:12px;
+    padding:6px 12px 6px 6px; border-radius:100px; transition:background .15s ease;
+  }
+  .link-chip:hover{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon{background:#fff; color:var(--brand);}
+  .chip-icon{
+    width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:9px; font-weight:700; font-family:'IBM Plex Mono',monospace; flex-shrink:0; overflow:hidden;
+  }
+  .chip-icon svg{width:12px; height:12px;}
+  .chip-icon.li{background:#0A66C2; color:#fff; font-family:'Inter',sans-serif; font-style:italic; font-size:11px;}
+  .chip-icon.gh{background:#181717; color:#fff;}
+  .chip-icon.md{background:#000000; color:#fff;}
+  .chip-icon.tm{background:var(--brand); color:#fff;}
+  .chip-icon.ai{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon.li{background:#0A66C2; color:#fff;}
+  .link-chip:hover .chip-icon.gh{background:#181717; color:#fff;}
+  .link-chip:hover .chip-icon.md{background:#000000; color:#fff;}
+  .about-toggle{
+    background:none; border:none; color:var(--brand-soft); font-family:'Inter',sans-serif;
+    font-size:12px; font-weight:600; cursor:pointer; padding:0; margin-top:2px;
+  }
+  .about-bio{
+    font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:680px;
+    margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
+    display:none;
+  }
+  .about-bio.show{display:block;}
+
+  /* ---------- session grid ---------- */
+  .section-label{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink-soft); margin:0 0 14px;
+  }
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px;}
+
+  .session-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; display:flex; flex-direction:column; gap:10px; position:relative;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .session-card.available{cursor:pointer;}
+  .session-card.available:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(36,67,122,.08);}
+  .session-card.locked{opacity:.55;}
+
+  .session-icon{
+    width:38px; height:38px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    background:var(--brand-wash); color:var(--brand); margin-bottom:2px;
+  }
+  .session-card.locked .session-icon{background:var(--paper); color:var(--ink-soft);}
+
+  .session-num{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--brand-soft);
+  }
+  .session-card.locked .session-num{color:var(--ink-soft);}
+  .session-card h3{margin:0; font-size:17px; line-height:1.3;}
+  .session-card p{margin:0; font-size:13.5px; color:var(--ink-soft); line-height:1.5; flex-grow:1;}
+
+  .badge{
+    display:inline-flex; align-items:center; gap:5px; font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    padding:4px 9px; border-radius:100px; width:fit-content;
+  }
+  .badge.live{background:var(--good-bg); color:var(--good);}
+  .badge.soon{background:var(--paper); color:var(--ink-soft); border:1px solid var(--line);}
+
+  .cta{
+    font-family:'Inter',sans-serif; font-weight:700; font-size:13px; color:var(--brand);
+    display:flex; align-items:center; gap:5px; margin-top:4px;
+  }
+
+  a.card-link{text-decoration:none; color:inherit; display:block;}
+
+  footer{margin-top:60px; text-align:center; color:var(--ink-soft); font-size:12px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="hero">
+    <div class="hero-text">
+      <div class="eyebrow">SOFT SKILLS MENTORSHIP</div>
+      <h1 class="title">The Soft Skills Lab</h1>
+      <p class="tagline">Interactive companions for every mentorship session — live drills, message inspectors, timers, and good/bad examples you can run right in class.</p>
+      <div class="stats-row">
+        <div class="stat"><div class="num">2</div><div class="label">Sessions Live</div></div>
+        <div class="stat"><div class="num">8</div><div class="label">Coming Soon</div></div>
+        <div class="stat"><div class="num">10</div><div class="label">Total Series</div></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg width="260" height="220" viewBox="0 0 260 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="110" r="100" fill="#E6ECF6"/>
+
+        <!-- dotted footpath connecting each stepping stone -->
+        <path d="M48 168 L80 146 L110 156 L142 121 L170 133 L197 92"
+              stroke="#5D7FB9" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 9" fill="none"/>
+
+        <!-- stepping stones = mentorship sessions along the path -->
+        <circle cx="48" cy="168" r="8" fill="#5D7FB9"/>
+        <circle cx="80" cy="146" r="8" fill="#5D7FB9"/>
+        <circle cx="110" cy="156" r="8" fill="#5D7FB9"/>
+        <circle cx="142" cy="121" r="8" fill="#5D7FB9"/>
+        <circle cx="170" cy="133" r="8" fill="#5D7FB9"/>
+        <circle cx="197" cy="92" r="9" fill="#24437A"/>
+
+        <!-- flag = the goal at the end of the mentorship journey -->
+        <line x1="197" y1="92" x2="197" y2="48" stroke="#24437A" stroke-width="3" stroke-linecap="round"/>
+        <path d="M197 48 L224 56 L197 64 Z" fill="#2F8F5B"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="section-label">Sessions</div>
+  <div class="grid" id="sessionGrid"></div>
+
+  <div class="about-strip">
+    <img class="avatar-photo" src="assets/archana.jpg" alt="Archana Shukla">
+    <div class="about-strip-body">
+      <div class="about-strip-name">Archana Shukla</div>
+      <div class="about-strip-role">Technology Leader · AI Strategist · Builder</div>
+      <div class="about-bio" id="aboutBio">25+ years of experience bridging strategy and execution — from boardroom to production. I don't stop at proof-of-concept. I architect, build, and ship systems that work. Techno-functional by nature: I speak business fluently and translate it into technology that delivers real outcomes, end-to-end.</div>
+      <button class="about-toggle" id="aboutToggle">About the mentor ▾</button>
+    </div>
+    <div class="link-row">
+      <a class="link-chip" href="https://arcshukla-ai-profile-platform.hf.space/explore" target="_blank" rel="noopener"><span class="chip-icon ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.2L12 15l-1.6-4.8L6 9l4.4-1.2z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></span>AI Avatar</a>
+      <a class="link-chip" href="https://www.linkedin.com/in/archana-shukla-b5639411/" target="_blank" rel="noopener"><span class="chip-icon li">in</span>LinkedIn</a>
+      <a class="link-chip" href="https://medium.com/@arc.shukla" target="_blank" rel="noopener"><span class="chip-icon md"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z"/></svg></span>Medium</a>
+      <a class="link-chip" href="https://topmate.io/archana_shukla10" target="_blank" rel="noopener"><span class="chip-icon tm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg></span>Topmate</a>
+      <a class="link-chip" href="https://github.com/arcshukla" target="_blank" rel="noopener"><span class="chip-icon gh"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>GitHub</a>
+    </div>
+  </div>
+
+  <footer>The Soft Skills Lab</footer>
+</div>
+
+<script>
+const ICONS = {
+  outbound: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>`,
+  video: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M22 9l-6 3 6 3V9z"/></svg>`,
+  soon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`,
+};
+
+const SESSIONS = [
+  {n:1, title:"Session 1", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:2, title:"Session 2", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:3, title:"Outbound Strategy & Handling Recruiters", desc:"Cold outreach rules, templates, follow-ups, and a live message inspector for the draft-a-thon.", status:"live", href:"session-3/index.html", icon:"outbound"},
+  {n:4, title:"Interview Etiquette & First Impressions", desc:"Virtual presence, the first 5 minutes, crisis recovery scripts, and a live pitch timer with curveball drills.", status:"live", href:"session-4/index.html", icon:"video"},
+  {n:5, title:"Session 5", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:6, title:"Session 6", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:7, title:"Session 7", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:8, title:"Session 8", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:9, title:"Session 9", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:10, title:"Session 10", desc:"Coming soon.", status:"soon", icon:"soon"},
+];
+
+const grid = document.getElementById('sessionGrid');
+SESSIONS.forEach(s=>{
+  const isLive = s.status === 'live';
+  const inner = `
+    <div class="session-icon">${ICONS[s.icon] || ICONS.soon}</div>
+    <div class="session-num">Session ${s.n}</div>
+    <h3>${s.title}</h3>
+    <p>${s.desc}</p>
+    <div class="badge ${isLive ? 'live' : 'soon'}">${isLive ? '● Live' : 'Coming Soon'}</div>
+    ${isLive ? `<div class="cta">Open session &rarr;</div>` : ''}
+  `;
+  const card = document.createElement(isLive ? 'a' : 'div');
+  if(isLive){ card.href = s.href; card.className = 'card-link'; }
+  card.innerHTML = `<div class="session-card ${isLive ? 'available' : 'locked'}">${inner}</div>`;
+  grid.appendChild(card);
+});
+
+document.getElementById('aboutToggle').onclick = function(){
+  const bio = document.getElementById('aboutBio');
+  const showing = bio.classList.toggle('show');
+  this.textContent = showing ? 'About the mentor ▴' : 'About the mentor ▾';
+};
+</script>
+</body>
+</html>
