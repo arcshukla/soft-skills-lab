@@ -154,17 +154,17 @@
 <body>
 
 <div class="app">
-  <div class="hub-strip"><a href="../index.html">&larr; The Soft Skills Lab</a><span>Cohort 2</span></div>
+  <div class="hub-strip"><a href="../index.html">&larr; The Soft Skills Lab</a><span>Marathon Cohort 1</span></div>
 
   <div class="hero">
     <div class="hero-text">
-      <div class="eyebrow">COHORT 2 · GEEKSFORGEEKS SOFT SKILLS</div>
-      <h1 class="title">GeeksForGeeks Soft Skill Cohort - 2</h1>
-      <p class="tagline">Interactive companions for every session in this cohort — live drills, message inspectors, timers, and good/bad examples you can run right in class.</p>
+      <div class="eyebrow">MARATHON COHORT 1 · GEEKSFORGEEKS PLACEMENT READINESS</div>
+      <h1 class="title">GeeksForGeeks Placement Readiness Marathon</h1>
+      <p class="tagline">A four-session marathon preparing students to present, articulate, and perform with confidence at every stage of the hiring process — completed live for GeeksForGeeks students.</p>
       <div class="stats-row">
-        <div class="stat"><div class="num">5</div><div class="label">Sessions Live</div></div>
-        <div class="stat"><div class="num">5</div><div class="label">Coming Soon</div></div>
-        <div class="stat"><div class="num">10</div><div class="label">Total Series</div></div>
+        <div class="stat"><div class="num">Online</div><div class="label">Delivery Mode</div></div>
+        <div class="stat"><div class="num">4</div><div class="label">Sessions</div></div>
+        <div class="stat"><div class="num">10</div><div class="label">Hours Total</div></div>
       </div>
     </div>
     <div class="hero-art">
@@ -220,20 +220,17 @@ const ICONS = {
   soon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`,
   brand: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>`,
   resume: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>`,
-  story: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H8l-4 4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="11.5" x2="13" y2="11.5"/></svg>`,
+  identity: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 15c1.2-1.3 2.6-2 4-2s2.8.7 4 2"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/></svg>`,
+  star: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15,9 22,9.5 17,14.5 18.5,22 12,18 5.5,22 7,14.5 2,9.5 9,9"/></svg>`,
+  shield: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5z"/></svg>`,
+  users: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="8.5" r="2.4"/><path d="M15.5 14.2c2.9.4 4.9 2.4 4.9 5.3"/></svg>`,
 };
 
 const SESSIONS = [
-  {n:1, title:"Build Your Brand", desc:"LinkedIn headline formula, GitHub as a living portfolio, technical blogging, and a live headline builder.", status:"live", href:"session-1/index.html", icon:"brand"},
-  {n:2, title:"Modern Resume & Cover Letter Architecture", desc:"ATS-safe formatting, the XYZ bullet formula, modular cover letters, and a live bullet point inspector.", status:"live", href:"session-2/index.html", icon:"resume"},
-  {n:3, title:"Outbound Strategy & Handling Recruiters", desc:"Cold outreach rules, templates, follow-ups, and a live message inspector for the draft-a-thon.", status:"live", href:"session-3/index.html", icon:"outbound"},
-  {n:4, title:"Interview Etiquette & First Impressions", desc:"Virtual presence, the first 5 minutes, crisis recovery scripts, and a live pitch timer with curveball drills.", status:"live", href:"session-4/index.html", icon:"video"},
-  {n:5, title:"Presenting Your Skills & Technical Storytelling", desc:"The Context-Constraint-Solution-Impact story arc, trade-off framing, concept flashcards, and a live pitch builder with a 3-minute timer.", status:"live", href:"session-5/index.html", icon:"story"},
-  {n:6, title:"Session 6", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:7, title:"Session 7", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:8, title:"Session 8", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:9, title:"Session 9", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:10, title:"Session 10", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:1, title:"You & Your Image", desc:"Digital footprint, resume/LinkedIn/GitHub branding, Googleability, webcam presence, and a live profile audit.", status:"live", href:"session-1/index.html", icon:"identity"},
+  {n:2, title:"Who Are You?", desc:"The 90-second pitch, the STAR method, communication mechanics, and a live STAR & pitch builder with a rehearsal timer.", status:"live", href:"session-2/index.html", icon:"star"},
+  {n:3, title:"Handling Difficult Conversations", desc:"Tricky HR questions, technical think-aloud articulation, and a live Hot Seat rapid-fire pressure drill.", status:"live", href:"session-3/index.html", icon:"shield"},
+  {n:4, title:"Group Collaboration, GD & Wrap-Up", desc:"Virtual group dynamics, a live problem-solving sprint timer, program recap, and open Q&A.", status:"live", href:"session-4/index.html", icon:"users"},
 ];
 
 

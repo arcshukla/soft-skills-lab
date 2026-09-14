@@ -15,6 +15,12 @@ Interactive companion site for a soft skills mentorship practice, organized by c
 │   ├── session-2/index.html
 │   ├── session-3/index.html
 │   └── session-4/index.html
+├── marathon-cohort-1/
+│   ├── index.html          → GeeksForGeeks Placement Readiness Marathon: lists its sessions
+│   ├── session-1/index.html
+│   ├── session-2/index.html
+│   ├── session-3/index.html
+│   └── session-4/index.html
 └── cohort-N/                → add new cohorts the same way
     ├── index.html
     └── session-1/index.html

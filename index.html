@@ -193,8 +193,8 @@
       <h1 class="title">The Soft Skills Lab</h1>
       <p class="tagline">Interactive companions for every cohort I mentor — pick a cohort below to dive into its sessions.</p>
       <div class="stats-row">
-        <div class="stat"><div class="num">1</div><div class="label">Active Cohorts</div></div>
-        <div class="stat"><div class="num">4</div><div class="label">Sessions Live</div></div>
+        <div class="stat"><div class="num">2</div><div class="label">Active Cohorts</div></div>
+        <div class="stat"><div class="num">9</div><div class="label">Sessions Live</div></div>
       </div>
     </div>
     <div class="hero-art">
@@ -300,11 +300,13 @@ if(RESOURCES.length === 0){
    ========================================================= */
 const COHORT_ICONS = {
   group: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="8.5" r="2.4"/><path d="M15.5 14.2c2.9.4 4.9 2.4 4.9 5.3"/></svg>`,
+  marathon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6M12 2v3"/></svg>`,
   soon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`,
 };
 
 const COHORTS = [
-  {title:"GeeksForGeeks Soft Skill Cohort - 2", desc:"4 live sessions: Build Your Brand, Resume Architecture, Outbound Strategy, Interview Etiquette.", status:"live", href:"cohort-2/index.html", sessions:4, icon:"group"},
+  {title:"GeeksForGeeks Soft Skill Cohort - 2", desc:"5 live sessions: Build Your Brand, Resume Architecture, Outbound Strategy, Interview Etiquette, Technical Storytelling.", status:"live", href:"cohort-2/index.html", sessions:5, icon:"group"},
+  {title:"GeeksForGeeks Placement Readiness Marathon", desc:"A completed 10-hour, 4-session marathon: Your Image, Who Are You, Difficult Conversations, Group Dynamics & GD.", status:"live", href:"marathon-cohort-1/index.html", sessions:4, icon:"marathon"},
 ];
 
 const cohortGrid = document.getElementById('cohortGrid');
