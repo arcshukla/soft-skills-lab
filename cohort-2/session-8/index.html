@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 8 — Workplace Etiquette & Professional Communication</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430; --ink-soft:#57606F; --paper:#EEF1F4; --card:#FFFFFF;
+    --brand:#24437A; --brand-soft:#5D7FB9; --brand-wash:#E6ECF6;
+    --good:#2F8F5B; --good-bg:#E8F5EC; --good-line:#BFE2CC;
+    --bad:#C1443B; --bad-bg:#FBEAE8; --bad-line:#F0C4C0;
+    --warn:#B8860B; --warn-bg:#FBF3DC; --warn-line:#EAD9A0;
+    --line:#DBE1E7; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .app{max-width:980px;margin:0 auto;padding:0 20px 80px;}
+  .hub-strip{display:flex; align-items:center; justify-content:space-between; padding:10px 0; font-size:12.5px; color:var(--ink-soft);}
+  .hub-strip a{color:var(--brand); text-decoration:none; font-weight:600;}
+  .hub-strip a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50; background:var(--paper); padding:10px 0 0;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--brand-soft); font-weight:600;}
+  .masthead{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-top:6px; flex-wrap:wrap;}
+  .masthead h1{font-size:26px; font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.15;}
+  .progress-pill{font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:var(--brand); background:var(--brand-wash); padding:6px 12px; border-radius:100px; white-space:nowrap;}
+  nav.tabs{display:flex; flex-wrap:wrap; gap:2px 4px; margin-top:18px; border-bottom:1px solid var(--line); padding-bottom:8px;}
+  nav.tabs button{font-family:'Inter',sans-serif; font-size:13.5px; font-weight:600; color:var(--ink-soft); background:none; border:none; cursor:pointer; padding:10px 14px 12px; white-space:nowrap; position:relative; top:1px; border-bottom:2px solid transparent;}
+  nav.tabs button.active{color:var(--brand); border-bottom:2px solid var(--brand);}
+  nav.tabs button:hover{color:var(--brand);}
+  main{padding-top:30px;}
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  .lede{font-size:15.5px; color:var(--ink-soft); max-width:640px; margin:6px 0 28px; line-height:1.55;}
+  .module-tag{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--brand); background:var(--brand-wash); padding:4px 10px; border-radius:6px; margin-bottom:10px;}
+  h2.section-title{font-size:22px; margin:0 0 4px; font-weight:700;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:16px;}
+  .example-pair{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 6px;}
+  @media(max-width:680px){.example-pair{grid-template-columns:1fr;}}
+  .example{border-radius:12px; padding:16px 16px 14px; border:1px solid; font-size:14px; line-height:1.55;}
+  .example.bad{background:var(--bad-bg); border-color:var(--bad-line);}
+  .example.good{background:var(--good-bg); border-color:var(--good-line);}
+  .example-label{display:flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:10px;}
+  .example.bad .example-label{color:var(--bad);}
+  .example.good .example-label{color:var(--good);}
+  .bubble{background:var(--card); border-radius:10px; padding:12px 13px; color:var(--ink); white-space:pre-wrap; font-size:13.5px; margin-bottom:10px; border:1px solid rgba(0,0,0,.05);}
+  .example-why{color:var(--ink-soft); font-size:13px;}
+  .example-why b{color:var(--ink);}
+  .rule-card{display:flex; gap:14px; align-items:flex-start; padding:18px 20px; margin-bottom:14px;}
+  .rule-letter{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:#fff; background:var(--brand); width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .rule-card h3{margin:0 0 4px; font-size:15px;}
+  .rule-card p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+  .step{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:none;}
+  .step-num{font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--brand-soft); font-size:14px; width:26px; flex-shrink:0;}
+  .step h3{margin:0 0 4px; font-size:14.5px;}
+  .step p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+  .template-card{padding:20px;}
+  .template-card .tag{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; color:var(--brand); text-transform:uppercase; letter-spacing:.05em;}
+  .template-body{font-size:13.5px; line-height:1.7; margin-top:10px; white-space:pre-wrap; background:var(--paper); border-radius:8px; padding:14px;}
+  .placeholder{color:var(--brand); font-weight:600;}
+
+  /* ---------- channel matrix table ---------- */
+  table.compare{width:100%; border-collapse:collapse; font-size:13px;}
+  table.compare th, table.compare td{text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.compare th{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); font-weight:600;}
+  table.compare td:first-child{font-weight:700; color:var(--brand); width:130px;}
+  table.compare td.avoid{color:var(--bad);}
+
+  /* ---------- builder ---------- */
+  .builder-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media(max-width:760px){.builder-grid{grid-template-columns:1fr;}}
+  .field-label{font-size:12px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace; margin-bottom:5px; display:block;}
+  textarea.field-input{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); font-family:'Inter',sans-serif; font-size:13.5px; margin-bottom:14px; color:var(--ink); resize:vertical; min-height:52px;}
+  textarea.field-input:focus{outline:none; border-color:var(--brand-soft);}
+  .assembled-preview{background:var(--brand-wash); border-radius:12px; padding:16px; font-size:13.5px; color:var(--ink); line-height:1.6; min-height:120px; white-space:pre-wrap; font-family:'IBM Plex Mono',monospace;}
+  .checks{display:flex; flex-direction:column; gap:10px; margin-top:14px;}
+  .check-row{display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 13px; font-size:13px;}
+  .check-dot{width:9px; height:9px; border-radius:50%; background:#C7CDD4; flex-shrink:0;}
+  .check-row.pass .check-dot{background:var(--good);}
+  .check-row.fail .check-dot{background:var(--bad);}
+  .check-row .check-text b{display:block; font-weight:600; margin-bottom:1px;}
+  .check-row .check-text span{color:var(--ink-soft); font-size:12px;}
+
+  /* ---------- dilemma poll ---------- */
+  .dilemma-card{margin-bottom:22px;}
+  .dilemma-num{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; color:var(--brand-soft); text-transform:uppercase; letter-spacing:.04em;}
+  .dilemma-scenario{font-size:14px; color:var(--ink); line-height:1.6; margin:8px 0 16px; background:var(--paper); border-radius:10px; padding:14px 16px;}
+  .poll-options{display:flex; flex-direction:column; gap:8px;}
+  .poll-btn{
+    text-align:left; font-family:'Inter',sans-serif; font-size:13.5px; cursor:pointer;
+    padding:12px 14px; border-radius:10px; border:1.5px solid var(--line); background:var(--card); color:var(--ink);
+    line-height:1.5;
+  }
+  .poll-btn:hover{border-color:var(--brand-soft);}
+  .poll-btn b{color:var(--brand); font-family:'IBM Plex Mono',monospace; margin-right:6px;}
+  .poll-btn.picked-good{border-color:var(--good); background:var(--good-bg);}
+  .poll-btn.picked-bad{border-color:var(--bad); background:var(--bad-bg);}
+  .poll-btn.picked-warn{border-color:var(--warn); background:var(--warn-bg);}
+  .poll-btn.disabled{cursor:default;}
+  .poll-feedback{margin-top:12px; padding:13px 15px; border-radius:10px; font-size:13px; line-height:1.6; display:none;}
+  .poll-feedback.show{display:block;}
+  .poll-feedback.good{background:var(--good-bg); color:var(--ink); border:1px solid var(--good-line);}
+  .poll-feedback.bad{background:var(--bad-bg); color:var(--ink); border:1px solid var(--bad-line);}
+  .poll-feedback.warn{background:var(--warn-bg); color:var(--ink); border:1px solid var(--warn-line);}
+  .poll-feedback .verdict{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:5px;}
+  .poll-feedback.good .verdict{color:var(--good);}
+  .poll-feedback.bad .verdict{color:var(--bad);}
+  .poll-feedback.warn .verdict{color:var(--warn);}
+
+  /* ---------- checklist ---------- */
+  .task{display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:var(--card); cursor:pointer;}
+  .task input{margin-top:3px; width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .task h3{margin:0 0 3px; font-size:14px;}
+  .task p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.5;}
+  .task.done{opacity:.55;}
+  .task.done h3{text-decoration:line-through;}
+  .progress-bar-track{height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:16px 0 20px;}
+  .progress-bar-fill{height:100%; background:var(--brand); width:0%; transition:width .35s ease;}
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:12px;}
+  .about-strip{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; margin-top:40px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;}
+  .avatar-photo{width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0;}
+  .about-strip-body{flex:1; min-width:220px;}
+  .about-strip-name{font-size:14.5px; font-weight:700; color:var(--ink);}
+  .about-strip-role{font-size:12px; color:var(--brand-soft); font-weight:600;}
+  .link-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .link-chip{display:inline-flex; align-items:center; gap:7px; text-decoration:none; background:var(--brand-wash); color:var(--brand); font-weight:700; font-size:12px; padding:6px 12px 6px 6px; border-radius:100px; transition:background .15s ease;}
+  .link-chip:hover{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon{background:#fff; color:var(--brand);}
+  .chip-icon{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; font-family:'IBM Plex Mono',monospace; flex-shrink:0; overflow:hidden;}
+  .chip-icon svg{width:12px; height:12px;}
+  .chip-icon.li{background:#0A66C2; color:#fff; font-family:'Inter',sans-serif; font-style:italic; font-size:11px;}
+  .chip-icon.gh{background:#181717; color:#fff;}
+  .chip-icon.md{background:#000000; color:#fff;}
+  .chip-icon.tm{background:var(--brand); color:#fff;}
+  .chip-icon.ai{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon.li{background:#0A66C2; color:#fff;}
+  .link-chip:hover .chip-icon.gh{background:#181717; color:#fff;}
+  .link-chip:hover .chip-icon.md{background:#000000; color:#fff;}
+  .about-toggle{background:none; border:none; color:var(--brand-soft); font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; padding:0; margin-top:2px;}
+  .about-bio{font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:680px; margin-top:12px; padding-top:12px; border-top:1px solid var(--line); display:none;}
+  .about-bio.show{display:block;}
+  .copyright{margin-top:14px; color:var(--ink-soft); font-size:11.5px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="hub-strip"><a href="../index.html">&larr; GeeksForGeeks Soft Skill Cohort - 2</a><span>Session 8 of 10</span></div>
+  <div class="topbar">
+    <div class="eyebrow">PHASE 4: LONG-TERM CAREER SUCCESS · SESSION 8 OF 10</div>
+    <div class="masthead">
+      <h1>Workplace Etiquette &amp; Professional Communication</h1>
+      <div class="progress-pill" id="progressPill">Module 1 of 6</div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+
+  <main id="main"></main>
+
+  <div class="about-strip">
+    <img class="avatar-photo" src="../../assets/archana.jpg" alt="Archana Shukla">
+    <div class="about-strip-body">
+      <div class="about-strip-name">Archana Shukla</div>
+      <div class="about-strip-role">Technology Leader · AI Strategist · Builder</div>
+      <div class="about-bio" id="aboutBio">25+ years of experience bridging strategy and execution — from boardroom to production. I don't stop at proof-of-concept. I architect, build, and ship systems that work. Techno-functional by nature: I speak business fluently and translate it into technology that delivers real outcomes, end-to-end.</div>
+      <button class="about-toggle" id="aboutToggle">About the mentor ▾</button>
+    </div>
+    <div class="link-row">
+      <a class="link-chip" href="https://arcshukla-ai-profile-platform.hf.space/explore" target="_blank" rel="noopener"><span class="chip-icon ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.2L12 15l-1.6-4.8L6 9l4.4-1.2z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></span>AI Avatar</a>
+      <a class="link-chip" href="https://www.linkedin.com/in/archana-shukla-b5639411/" target="_blank" rel="noopener"><span class="chip-icon li">in</span>LinkedIn</a>
+      <a class="link-chip" href="https://medium.com/@arc.shukla" target="_blank" rel="noopener"><span class="chip-icon md"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z"/></svg></span>Medium</a>
+      <a class="link-chip" href="https://topmate.io/archana_shukla10" target="_blank" rel="noopener"><span class="chip-icon tm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg></span>Topmate</a>
+      <a class="link-chip" href="https://github.com/arcshukla" target="_blank" rel="noopener"><span class="chip-icon gh"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>GitHub</a>
+    </div>
+  </div>
+
+  <footer>Session 8 of 10 — Soft Skills Series<div class="copyright">© 2026 The Soft Skills Lab. All rights reserved.</div></footer>
+</div>
+
+<script>
+const MODULES = [
+  {id:'matrix', label:'Communication Matrix'},
+  {id:'slack', label:'Slack Etiquette & BLUF'},
+  {id:'diplomacy', label:'Workplace Diplomacy'},
+  {id:'builder', label:'Status Update Builder'},
+  {id:'dilemmas', label:'Scenario Dilemmas'},
+  {id:'assignment', label:'Action Assignment'},
+];
+
+const DILEMMAS = [
+  {
+    title:'The Urgent Friday Evening Ping',
+    scenario:'A peer sends a Slack message at 7:00 PM on Friday: "Hey, can you review this PR real quick?" It is not a production-outage emergency.',
+    options:[
+      {label:'A', text:'Ignore it completely until Monday morning.', verdict:'warn', feedback:'Not wrong, but a quick acknowledgment costs you nothing and prevents the sender from wondering if their message got lost.'},
+      {label:'B', text:'Drop everything and review it immediately to look like a team player.', verdict:'bad', feedback:'This trains your team that pinging you after hours works — you\'ll get more of these, and burnout follows.'},
+      {label:'C', text:'Send a quick scheduled reply: "Hey! Settling down for the weekend, but I\'ll make this my first priority on Monday morning at 9 AM."', verdict:'good', feedback:'Optimal. Setting a healthy boundary with a clear, specific commitment builds trust without causing friction or burnout.'},
+    ]
+  },
+  {
+    title:'The Scope Creep Trap',
+    scenario:'Mid-way through a sprint, your product manager asks you to add "one small extra feature" to your current task without updating the sprint timeline.',
+    options:[
+      {label:'A', text:'Agree quietly and work late to finish it all.', verdict:'bad', feedback:'This hides the real cost of the request from the person who needs to see it — and normalizes silent overwork.'},
+      {label:'B', text:'Refuse flatly and tell them it\'s against sprint policy.', verdict:'warn', feedback:'Technically defensible, but "policy" as a reason reads as rigid rather than collaborative — it doesn\'t educate them on the actual trade-off.'},
+      {label:'C', text:'Offer a trade-off: "We can definitely add this! To keep our release date on track, which feature from our current sprint should we push to next sprint?"', verdict:'good', feedback:'Optimal. Framing scope creep as a resource trade-off educates stakeholders on capacity limits while maintaining a collaborative relationship.'},
+    ]
+  },
+  {
+    title:'Public Error Attribution',
+    scenario:'In a group channel, a senior colleague mistakenly blames your code change for a bug that was actually caused by an upstream service failure.',
+    options:[
+      {label:'A', text:'Reply sharply in the main channel with logs proving it wasn\'t your fault.', verdict:'bad', feedback:'Technically correct but socially costly — a public callout reads as defensive, even when you\'re right.'},
+      {label:'B', text:'Say nothing and fix it yourself anyway.', verdict:'warn', feedback:'Generous, but it leaves the incorrect attribution on record — and doesn\'t help the team learn where the real issue lives.'},
+      {label:'C', text:'Thread a calm, factual note with metrics: "Looked into the trace logs — the error is actually from the upstream service call. I\'ve notified the team lead so they can patch it."', verdict:'good', feedback:'Optimal. Factual, non-defensive problem-solving restores accurate attribution while demonstrating professional maturity under pressure.'},
+    ]
+  },
+];
+
+const tabsEl = document.getElementById('tabs');
+MODULES.forEach((m)=>{
+  const btn = document.createElement('button');
+  btn.textContent = m.label;
+  btn.dataset.id = m.id;
+  btn.onclick = ()=> showTab(m.id);
+  tabsEl.appendChild(btn);
+});
+function showTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  document.querySelectorAll('section.panel').forEach(s=>s.classList.toggle('active', s.id==='panel-'+id));
+  const idx = MODULES.findIndex(m=>m.id===id);
+  document.getElementById('progressPill').textContent = `Module ${idx+1} of ${MODULES.length}`;
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+const main = document.getElementById('main');
+function exampleBad(title, bubble, why){
+  return `<div class="example bad"><div class="example-label">✕ Bad — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+}
+function exampleGood(title, bubble, why){
+  return `<div class="example good"><div class="example-label">✓ Good — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+}
+
+main.innerHTML = `
+
+<!-- MODULE 1: COMMUNICATION MATRIX -->
+<section class="panel" id="panel-matrix">
+  <div class="module-tag">Module 1</div>
+  <h2 class="section-title">The Corporate Communication Matrix</h2>
+  <p class="lede">Early-career engineers assume the job is 100% writing code. As you scale, your impact is measured by how clearly you align stakeholders, document trade-offs, and eliminate ambiguity. Match the channel to the complexity and urgency of the message.</p>
+
+  <div class="card" style="overflow-x:auto;">
+    <table class="compare">
+      <tr><th>Channel</th><th>Best Used For</th><th>What to Avoid</th></tr>
+      <tr><td>Async Chat<br>(Slack/Teams)</td><td>Quick blocking queries, immediate status pings, team celebrations, informal alignment.</td><td class="avoid">Multi-page architecture proposals or emotional/conflict-heavy feedback in open channels.</td></tr>
+      <tr><td>Doc / Email</td><td>Strategic updates, RFCs, formal decisions, cross-team requests.</td><td class="avoid">Short, fragmented threads that force back-and-forth replies when a clean doc is needed.</td></tr>
+      <tr><td>1:1 or Live Sync</td><td>Complex technical alignment, delicate performance feedback, resolving multi-person deadlocks.</td><td class="avoid">Calling a meeting without a pre-shared written agenda or outcome goal.</td></tr>
+    </table>
+    <p style="color:var(--ink-soft); font-size:13px; margin-top:14px; margin-bottom:0;"><b style="color:var(--ink);">Why:</b> over-meeting causes context-switching fatigue, while under-documenting leads to architectural decay. Senior engineers default to clear written documentation first and reserve live meetings for alignment.</p>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('Wrong channel for the content', `[posts a 10-paragraph architecture proposal, with diagrams, directly into #eng-general]`, `<b>Why it fails:</b> buries a decision that needs careful async review inside a fast-moving chat feed — it will be scrolled past within minutes.`)}
+    ${exampleGood('Right channel, right format', `Wrote up the proposal as an RFC doc — sharing here for async review: [link]. TL;DR: proposing we move from REST to gRPC for internal services, mainly for the latency win on high-frequency calls.`, `<b>Why it works:</b> the heavy content lives in a searchable doc; Slack is used only for a short pointer and summary.`)}
+  </div>
+</section>
+
+<!-- MODULE 2: SLACK ETIQUETTE & BLUF -->
+<section class="panel" id="panel-slack">
+  <div class="module-tag">Module 2</div>
+  <h2 class="section-title">Slack/Teams Etiquette &amp; Status Updates</h2>
+  <p class="lede">Core rules of modern asynchronous etiquette, and the BLUF (Bottom Line Up Front) framework for status updates that don't surprise your manager.</p>
+
+  <div class="rule-card card">
+    <div class="rule-letter">A</div>
+    <div><h3>Never Send a Standalone "Hi"</h3><p>A bare greeting creates an idle context-switch for the recipient — they have to reply "what's up?" before you even state your need.</p></div>
+  </div>
+  <div class="example-pair">
+    ${exampleBad('The context-free ping', `Hi`, `<b>Why it fails:</b> forces a back-and-forth just to find out what you actually need — wastes both people's time.`)}
+    ${exampleGood('Context in the same message', `Hi Priya — quick question on the payment API specs when you have a moment: does the /charge endpoint support partial refunds?`, `<b>Why it works:</b> greeting and question arrive together — Priya can answer the moment she reads it, no round trip needed.`)}
+  </div>
+
+  <div class="rule-card card">
+    <div class="rule-letter">B</div>
+    <div><h3>Use Threading and Status Badges Intentionally</h3><p>Replying in the main channel clutter-bombs everyone's feed. Threading preserves channel readability while keeping technical discussion searchable.</p></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The 3-Bullet BLUF Rule</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-4px;">Ditch vague updates like "Worked on backend API." Every status update covers exactly three things:</p>
+    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">1</div><div><h3>Done</h3><p>What was completed, with metrics or links.</p></div></div>
+    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">2</div><div><h3>In Progress</h3><p>What's currently underway, and expected ETA.</p></div></div>
+    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">3</div><div><h3>Blockers or Risks</h3><p>What's blocking you, and what action is needed to clear it.</p></div></div>
+  </div>
+
+  <div class="card template-card">
+    <div class="tag">High-Impact Status Update Template</div>
+    <div class="template-body">Project Update: <span class="placeholder">Auth Module Migration</span>
+
+<b>Done:</b> Completed JWT token validation logic; unit test coverage now at 92%.
+<b>In Progress:</b> Integrating DB schema updates; targeting staging deployment by Thursday EOD.
+<b>Blocker:</b> Awaiting security audit approval from <span class="placeholder">[Team/Name]</span> (Ticket #1234). If unblocked by tomorrow 2 PM, we remain on schedule.</div>
+    <p style="color:var(--ink-soft); font-size:12.5px; margin-top:12px; margin-bottom:0;"><b style="color:var(--ink);">Why:</b> managers hate being surprised by missed deadlines. Flagging blockers before they cause a delay positions you as a proactive, reliable leader.</p>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('Vague update', `Worked on backend API. Still going. Should be done soon hopefully.`, `<b>Why it fails:</b> no metrics, no ETA, no mention of risk — a manager reading this learns nothing they can act on.`)}
+    ${exampleGood('BLUF update', `Done: Completed JWT token validation logic; test coverage now at 92%. In Progress: DB schema updates, targeting Thursday EOD. Blocker: awaiting security audit approval — on schedule if cleared by tomorrow 2 PM.`, `<b>Why it works:</b> three clear parts, each actionable — a manager instantly knows what's done, what's next, and what needs their help.`)}
+  </div>
+</section>
+
+<!-- MODULE 3: WORKPLACE DIPLOMACY -->
+<section class="panel" id="panel-diplomacy">
+  <div class="module-tag">Module 3</div>
+  <h2 class="section-title">Workplace Diplomacy &amp; Constructive Disagreement</h2>
+  <p class="lede">Disagreeing with peers or managers is normal — how you disagree dictates your professional reputation.</p>
+
+  <div class="rule-card card">
+    <div class="rule-letter">C</div>
+    <div><h3>Separate the Person from the System</h3><p>Focus on system trade-offs and shared goals instead of criticizing an individual's idea — this keeps discussions objective and removes ego from engineering decisions.</p></div>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('Attacking the idea, not the system', `This approach doesn't make sense — we should just do it my way, Option A has too many problems.`, `<b>Why it fails:</b> "doesn't make sense" and "my way" make it personal and closed — invites defensiveness instead of a real discussion.`)}
+    ${exampleGood('Disagree and commit script', `I agree with the goal of reducing latency here. My concern with Option A is that it increases our database write-load during peak hours. What if we evaluated Option B to offload reads to a cache instead?`, `<b>Why it works:</b> opens with shared goals, names a specific system trade-off, and proposes an alternative — objective, not personal.`)}
+  </div>
+</section>
+
+<!-- MODULE 4: STATUS UPDATE BUILDER -->
+<section class="panel" id="panel-builder">
+  <div class="module-tag">Live Tool</div>
+  <h2 class="section-title">The BLUF Status Update Builder</h2>
+  <p class="lede">Fill in your own project's status and watch it assemble into a manager-ready update, live.</p>
+
+  <div class="card builder-grid">
+    <div>
+      <label class="field-label">Project Name</label>
+      <textarea class="field-input" id="bProject" placeholder="e.g. Auth Module Migration" style="min-height:36px;"></textarea>
+      <label class="field-label">Done (with metrics/links)</label>
+      <textarea class="field-input" id="bDone" placeholder="What was completed?"></textarea>
+      <label class="field-label">In Progress (with ETA)</label>
+      <textarea class="field-input" id="bProgress" placeholder="What's underway, and by when?"></textarea>
+      <label class="field-label">Blocker or Risk (with action needed)</label>
+      <textarea class="field-input" id="bBlocker" placeholder="What's blocking you, and what's needed to clear it?"></textarea>
+    </div>
+    <div>
+      <label class="field-label">Live Preview</label>
+      <div class="assembled-preview" id="statusPreview">Your status update will assemble here as you type...</div>
+      <div class="checks" id="statusChecks"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 5: DILEMMAS -->
+<section class="panel" id="panel-dilemmas">
+  <div class="module-tag">Interactive Value Segment · Scenario Analysis (25 min)</div>
+  <h2 class="section-title">Live Dilemma Polling</h2>
+  <p class="lede">Three real workplace dilemmas. Pick your response, then see the live breakdown of why each option lands where it does.</p>
+  <div id="dilemmaList"></div>
+</section>
+
+<!-- MODULE 6: ASSIGNMENT -->
+<section class="panel" id="panel-assignment">
+  <div class="module-tag">Due Before Session 9</div>
+  <h2 class="section-title">Your Action Assignment</h2>
+  <p class="lede">Three tasks to put today's frameworks into practice this week.</p>
+
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="assignProgress"></div></div>
+
+  <div class="task" data-task="1">
+    <input type="checkbox">
+    <div><h3>Audit a Week of Slack/Teams Messages</h3><p>Eliminate standalone "Hi" messages, and transition all status updates to the BLUF framework.</p></div>
+  </div>
+  <div class="task" data-task="2">
+    <input type="checkbox">
+    <div><h3>Draft a 3-Bullet Status Update</h3><p>For your current project or a personal study milestone, using the Done / In Progress / Blockers template.</p></div>
+  </div>
+  <div class="task" data-task="3">
+    <input type="checkbox">
+    <div><h3>Practice the Trade-Off Script</h3><p>"We can do X, but the trade-off is Y" — use it in your next project or peer decision discussion.</p></div>
+  </div>
+</section>
+
+`;
+
+/* Status Update Builder */
+const bProject = document.getElementById('bProject');
+const bDone = document.getElementById('bDone');
+const bProgress = document.getElementById('bProgress');
+const bBlocker = document.getElementById('bBlocker');
+const statusPreview = document.getElementById('statusPreview');
+const statusChecks = document.getElementById('statusChecks');
+const etaWords = ['by','eta','monday','tuesday','wednesday','thursday','friday','eod','am','pm','tomorrow','week','today'];
+const actionWords = ['if','once','need','pending','waiting on','approval','awaiting','requires','unblock'];
+
+function renderStatus(){
+  const project = bProject.value.trim(), done = bDone.value.trim(), progress = bProgress.value.trim(), blocker = bBlocker.value.trim();
+  if(!project && !done && !progress && !blocker){
+    statusPreview.textContent = 'Your status update will assemble here as you type...';
+  } else {
+    statusPreview.textContent = `Project Update: ${project || '[Project Name]'}\n\nDone: ${done || '[what was completed]'}\nIn Progress: ${progress || '[what\'s underway]'}\nBlocker: ${blocker || '[what\'s blocking, and what\'s needed]'}`;
+  }
+  const doneHasMetric = /\d|%/.test(done);
+  const doneOK = done.length > 0 && doneHasMetric;
+  const progressLower = progress.toLowerCase();
+  const progressOK = progress.length > 0 && etaWords.some(w => progressLower.includes(w));
+  const blockerLower = blocker.toLowerCase();
+  const blockerOK = blocker.length > 0 && actionWords.some(w => blockerLower.includes(w));
+
+  statusChecks.innerHTML = `
+    <div class="check-row ${done.length===0 ? '' : (doneOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Done includes a metric</b><span>${done.length===0 ? 'Start typing to check.' : doneOK ? 'A number or % makes this verifiable.' : 'Add a number — test coverage, count, or a link.'}</span></div>
+    </div>
+    <div class="check-row ${progress.length===0 ? '' : (progressOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>In Progress has an ETA</b><span>${progress.length===0 ? 'Start typing to check.' : progressOK ? 'A timeframe is visible.' : 'Add a day or deadline — "soon" isn\'t an ETA.'}</span></div>
+    </div>
+    <div class="check-row ${blocker.length===0 ? '' : (blockerOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Blocker names the action needed</b><span>${blocker.length===0 ? 'Start typing to check.' : blockerOK ? 'Clear on what would unblock this.' : 'State what specifically would clear this blocker, and by when.'}</span></div>
+    </div>
+  `;
+}
+[bProject, bDone, bProgress, bBlocker].forEach(f => f.addEventListener('input', renderStatus));
+renderStatus();
+
+/* Dilemma polling */
+const dilemmaList = document.getElementById('dilemmaList');
+DILEMMAS.forEach((d, di)=>{
+  const card = document.createElement('div');
+  card.className = 'card dilemma-card';
+  card.innerHTML = `
+    <div class="dilemma-num">Dilemma ${di+1}</div>
+    <h3 style="margin:4px 0 0;">${d.title}</h3>
+    <div class="dilemma-scenario">${d.scenario}</div>
+    <div class="poll-options" id="poll-${di}"></div>
+    <div class="poll-feedback" id="feedback-${di}"></div>
+  `;
+  dilemmaList.appendChild(card);
+  const pollDiv = card.querySelector(`#poll-${di}`);
+  const feedbackDiv = card.querySelector(`#feedback-${di}`);
+  d.options.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className = 'poll-btn';
+    btn.innerHTML = `<b>${opt.label})</b> ${opt.text}`;
+    btn.onclick = ()=>{
+      pollDiv.querySelectorAll('.poll-btn').forEach(b=>{ b.classList.add('disabled'); b.disabled = true; });
+      btn.classList.add('picked-'+opt.verdict);
+      const verdictLabel = opt.verdict === 'good' ? '✓ Optimal Choice' : opt.verdict === 'bad' ? '✕ Higher-Risk Choice' : '~ Workable, Not Optimal';
+      feedbackDiv.className = 'poll-feedback show ' + opt.verdict;
+      feedbackDiv.innerHTML = `<span class="verdict">${verdictLabel}</span>${opt.feedback}`;
+    };
+    pollDiv.appendChild(btn);
+  });
+});
+
+/* Assignment checklist */
+document.querySelectorAll('.task').forEach(task=>{
+  const cb = task.querySelector('input');
+  const toggle = ()=>{ task.classList.toggle('done', cb.checked); updateProgress(); };
+  cb.addEventListener('change', toggle);
+  task.addEventListener('click', (e)=>{ if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); } });
+});
+function updateProgress(){
+  const total = document.querySelectorAll('.task').length;
+  const done = document.querySelectorAll('.task.done').length;
+  document.getElementById('assignProgress').style.width = (done/total*100) + '%';
+}
+
+document.getElementById('aboutToggle')?.addEventListener('click', function(){
+  const bio = document.getElementById('aboutBio');
+  const showing = bio.classList.toggle('show');
+  this.textContent = showing ? 'About the mentor ▴' : 'About the mentor ▾';
+});
+
+showTab('matrix');
+</script>
+</body>
+</html>

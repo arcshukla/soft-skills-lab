@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 6 — Behavioral Interviews & Tough Questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430; --ink-soft:#57606F; --paper:#EEF1F4; --card:#FFFFFF;
+    --brand:#24437A; --brand-soft:#5D7FB9; --brand-wash:#E6ECF6;
+    --good:#2F8F5B; --good-bg:#E8F5EC; --good-line:#BFE2CC;
+    --bad:#C1443B; --bad-bg:#FBEAE8; --bad-line:#F0C4C0;
+    --line:#DBE1E7; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .app{max-width:980px;margin:0 auto;padding:0 20px 80px;}
+  .hub-strip{display:flex; align-items:center; justify-content:space-between; padding:10px 0; font-size:12.5px; color:var(--ink-soft);}
+  .hub-strip a{color:var(--brand); text-decoration:none; font-weight:600;}
+  .hub-strip a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50; background:var(--paper); padding:10px 0 0;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--brand-soft); font-weight:600;}
+  .masthead{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-top:6px; flex-wrap:wrap;}
+  .masthead h1{font-size:26px; font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.15;}
+  .progress-pill{font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:var(--brand); background:var(--brand-wash); padding:6px 12px; border-radius:100px; white-space:nowrap;}
+  nav.tabs{display:flex; flex-wrap:wrap; gap:2px 4px; margin-top:18px; border-bottom:1px solid var(--line); padding-bottom:8px;}
+  nav.tabs button{font-family:'Inter',sans-serif; font-size:13.5px; font-weight:600; color:var(--ink-soft); background:none; border:none; cursor:pointer; padding:10px 14px 12px; white-space:nowrap; position:relative; top:1px; border-bottom:2px solid transparent;}
+  nav.tabs button.active{color:var(--brand); border-bottom:2px solid var(--brand);}
+  nav.tabs button:hover{color:var(--brand);}
+  main{padding-top:30px;}
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  .lede{font-size:15.5px; color:var(--ink-soft); max-width:640px; margin:6px 0 28px; line-height:1.55;}
+  .module-tag{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--brand); background:var(--brand-wash); padding:4px 10px; border-radius:6px; margin-bottom:10px;}
+  h2.section-title{font-size:22px; margin:0 0 4px; font-weight:700;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:16px;}
+  .example-pair{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 6px;}
+  @media(max-width:680px){.example-pair{grid-template-columns:1fr;}}
+  .example{border-radius:12px; padding:16px 16px 14px; border:1px solid; font-size:14px; line-height:1.55;}
+  .example.bad{background:var(--bad-bg); border-color:var(--bad-line);}
+  .example.good{background:var(--good-bg); border-color:var(--good-line);}
+  .example-label{display:flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:10px;}
+  .example.bad .example-label{color:var(--bad);}
+  .example.good .example-label{color:var(--good);}
+  .bubble{background:var(--card); border-radius:10px; padding:12px 13px; color:var(--ink); white-space:pre-wrap; font-size:13.5px; margin-bottom:10px; border:1px solid rgba(0,0,0,.05);}
+  .example-why{color:var(--ink-soft); font-size:13px;}
+  .example-why b{color:var(--ink);}
+  .rule-card{display:flex; gap:14px; align-items:flex-start; padding:18px 20px; margin-bottom:14px;}
+  .rule-letter{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:#fff; background:var(--brand); width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .rule-card h3{margin:0 0 4px; font-size:15px;}
+  .rule-card p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+  .scenario{margin-bottom:18px;}
+  .scenario h3{font-size:15px; margin:0 0 4px;}
+  .scenario .strategy-label{font-size:11.5px; color:var(--brand-soft); font-weight:700; text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace;}
+  .scenario p.strategy{font-size:13.5px; color:var(--ink-soft); margin:6px 0 12px; line-height:1.55;}
+  .step{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:none;}
+  .step-num{font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--brand-soft); font-size:14px; width:26px; flex-shrink:0;}
+  .step h3{margin:0 0 4px; font-size:14.5px;}
+  .step p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+
+  /* ---------- time ratio bar ---------- */
+  .ratio-bar{display:flex; width:100%; height:38px; border-radius:9px; overflow:hidden; margin:14px 0 8px;}
+  .ratio-seg{display:flex; align-items:center; justify-content:center; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700;}
+  .ratio-seg.st{background:var(--brand-soft); flex:0 0 17.5%;}
+  .ratio-seg.action{background:var(--brand); flex:0 0 65%;}
+  .ratio-seg.result{background:var(--good); flex:0 0 17.5%;}
+  .ratio-legend{display:flex; gap:18px; flex-wrap:wrap; font-size:12px; color:var(--ink-soft); margin-bottom:6px;}
+  .ratio-legend span b{color:var(--ink);}
+
+  /* ---------- vault ---------- */
+  .filter-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .filter-chip{
+    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700; cursor:pointer;
+    padding:8px 14px; border-radius:100px; border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
+  }
+  .filter-chip.active{background:var(--brand); color:#fff; border-color:var(--brand);}
+  .filter-chip:hover:not(.active){border-color:var(--brand-soft); color:var(--brand);}
+  .vault-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px; font-family:'IBM Plex Mono',monospace;}
+  .vault-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:10px;}
+  .vault-cat{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--brand-soft); margin-bottom:6px;}
+  .vault-q{font-size:14.5px; font-weight:700; font-style:italic; margin-bottom:8px; line-height:1.4;}
+  .vault-strategy{font-size:13px; color:var(--ink-soft); line-height:1.55; margin-bottom:10px;}
+  .vault-strategy b{color:var(--ink); font-style:normal;}
+  .vault-sample{background:var(--brand-wash); border-radius:8px; padding:10px 12px; font-size:12.5px; color:var(--ink); line-height:1.5;}
+  .vault-sample b{color:var(--brand); font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.03em; display:block; margin-bottom:3px; font-weight:700;}
+
+  /* ---------- hot seat ---------- */
+  .curveball-box{background:var(--brand-wash); border-radius:12px; padding:20px; text-align:center; margin-top:6px;}
+  .curveball-text{font-size:15px; font-weight:600; color:var(--brand); min-height:44px; display:flex; align-items:center; justify-content:center; padding:0 10px;}
+  .curveball-btn{font-family:'Inter',sans-serif; font-weight:700; font-size:13.5px; cursor:pointer; padding:10px 20px; border-radius:9px; border:none; background:var(--brand); color:#fff; margin-top:12px;}
+  .countdown-display{font-family:'IBM Plex Mono',monospace; font-size:32px; font-weight:700; color:var(--bad); text-align:center; margin-top:10px; display:none;}
+  .countdown-display.show{display:block;}
+  .drill-checklist{margin-top:14px; text-align:left;}
+
+  /* ---------- checklist (assignment) ---------- */
+  .task{display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:var(--card); cursor:pointer;}
+  .task input{margin-top:3px; width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .task h3{margin:0 0 3px; font-size:14px;}
+  .task p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.5;}
+  .task.done{opacity:.55;}
+  .task.done h3{text-decoration:line-through;}
+  .progress-bar-track{height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:16px 0 20px;}
+  .progress-bar-fill{height:100%; background:var(--brand); width:0%; transition:width .35s ease;}
+  .audit-item{display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--line); border-radius:9px; margin-bottom:8px; background:var(--card); cursor:pointer; font-size:13.5px;}
+  .audit-item input{width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .audit-item.done{opacity:.55; text-decoration:line-through;}
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:12px;}
+  .about-strip{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; margin-top:40px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;}
+  .avatar-photo{width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0;}
+  .about-strip-body{flex:1; min-width:220px;}
+  .about-strip-name{font-size:14.5px; font-weight:700; color:var(--ink);}
+  .about-strip-role{font-size:12px; color:var(--brand-soft); font-weight:600;}
+  .link-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .link-chip{display:inline-flex; align-items:center; gap:7px; text-decoration:none; background:var(--brand-wash); color:var(--brand); font-weight:700; font-size:12px; padding:6px 12px 6px 6px; border-radius:100px; transition:background .15s ease;}
+  .link-chip:hover{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon{background:#fff; color:var(--brand);}
+  .chip-icon{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; font-family:'IBM Plex Mono',monospace; flex-shrink:0; overflow:hidden;}
+  .chip-icon svg{width:12px; height:12px;}
+  .chip-icon.li{background:#0A66C2; color:#fff; font-family:'Inter',sans-serif; font-style:italic; font-size:11px;}
+  .chip-icon.gh{background:#181717; color:#fff;}
+  .chip-icon.md{background:#000000; color:#fff;}
+  .chip-icon.tm{background:var(--brand); color:#fff;}
+  .chip-icon.ai{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon.li{background:#0A66C2; color:#fff;}
+  .link-chip:hover .chip-icon.gh{background:#181717; color:#fff;}
+  .link-chip:hover .chip-icon.md{background:#000000; color:#fff;}
+  .about-toggle{background:none; border:none; color:var(--brand-soft); font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; padding:0; margin-top:2px;}
+  .about-bio{font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:680px; margin-top:12px; padding-top:12px; border-top:1px solid var(--line); display:none;}
+  .about-bio.show{display:block;}
+  .copyright{margin-top:14px; color:var(--ink-soft); font-size:11.5px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="hub-strip"><a href="../index.html">&larr; GeeksForGeeks Soft Skill Cohort - 2</a><span>Session 6 of 10</span></div>
+  <div class="topbar">
+    <div class="eyebrow">SOFT SKILLS SERIES · SESSION 6 OF 10</div>
+    <div class="masthead">
+      <h1>Behavioral Interviews &amp; Tough Questions</h1>
+      <div class="progress-pill" id="progressPill">Module 1 of 6</div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+
+  <main id="main"></main>
+
+  <div class="about-strip">
+    <img class="avatar-photo" src="../../assets/archana.jpg" alt="Archana Shukla">
+    <div class="about-strip-body">
+      <div class="about-strip-name">Archana Shukla</div>
+      <div class="about-strip-role">Technology Leader · AI Strategist · Builder</div>
+      <div class="about-bio" id="aboutBio">25+ years of experience bridging strategy and execution — from boardroom to production. I don't stop at proof-of-concept. I architect, build, and ship systems that work. Techno-functional by nature: I speak business fluently and translate it into technology that delivers real outcomes, end-to-end.</div>
+      <button class="about-toggle" id="aboutToggle">About the mentor ▾</button>
+    </div>
+    <div class="link-row">
+      <a class="link-chip" href="https://arcshukla-ai-profile-platform.hf.space/explore" target="_blank" rel="noopener"><span class="chip-icon ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.2L12 15l-1.6-4.8L6 9l4.4-1.2z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></span>AI Avatar</a>
+      <a class="link-chip" href="https://www.linkedin.com/in/archana-shukla-b5639411/" target="_blank" rel="noopener"><span class="chip-icon li">in</span>LinkedIn</a>
+      <a class="link-chip" href="https://medium.com/@arc.shukla" target="_blank" rel="noopener"><span class="chip-icon md"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z"/></svg></span>Medium</a>
+      <a class="link-chip" href="https://topmate.io/archana_shukla10" target="_blank" rel="noopener"><span class="chip-icon tm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg></span>Topmate</a>
+      <a class="link-chip" href="https://github.com/arcshukla" target="_blank" rel="noopener"><span class="chip-icon gh"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>GitHub</a>
+    </div>
+  </div>
+
+  <footer>Session 6 of 10 — Soft Skills Series<div class="copyright">© 2026 The Soft Skills Lab. All rights reserved.</div></footer>
+</div>
+
+<script>
+const MODULES = [
+  {id:'ratio', label:'The Golden Time Ratio'},
+  {id:'failure', label:'The Failure Story'},
+  {id:'scenarios', label:'Conflict, Deadlines & Gaps'},
+  {id:'vault', label:'Tough Question Vault'},
+  {id:'hotseat', label:'Rapid-Fire Drill'},
+  {id:'assignment', label:'Action Assignment'},
+];
+
+/* =========================================================
+   THE EXPANDED TOUGH QUESTION VAULT
+   Goes well beyond the deck's 3 scenarios — organized by category
+   ========================================================= */
+const VAULT = [
+  {cat:'conflict', q:'Describe a disagreement with a manager or tech lead.', strategy:'<b>Disagree and commit.</b> Use data over emotion, and show you backed the team decision once made, even if your preference differed.', sample:'"We disagreed on the architecture choice. I gathered benchmarks on both options, presented the trade-offs, and once a decision was made, I fully committed to executing it."'},
+  {cat:'conflict', q:'Tell me about a time you had to work with a difficult team member.', strategy:'Focus on the specific behavior change <b>you</b> made to improve the working relationship — never a blanket character judgment of the other person.', sample:'"Rather than escalating immediately, I set up a 1:1 to understand what was driving their pushback — turned out it was a scoping concern I hadn\'t addressed."'},
+  {cat:'conflict', q:'Describe a time you had to give difficult feedback to a peer.', strategy:'Show you led with one specific, observable behavior — not a vague or personal criticism.', sample:'"I focused on one specific PR pattern rather than generalizing about their work, and framed it around the impact on review time."'},
+  {cat:'conflict', q:'Tell me about a time you had to persuade someone to see your point of view.', strategy:'Lead with the other person\'s incentives and priorities, not just your own logic.', sample:'"I reframed the proposal around the metric their team was actually measured on, not the one I cared about."'},
+  {cat:'failure', q:'Tell me about a time you shipped code that broke production.', strategy:'Own it fast, show the immediate fix, and end with the guardrail you added afterward — never shift blame.', sample:'"I caught the pattern in monitoring within 10 minutes, rolled back immediately, then added an alert that would catch this exact case earlier next time."'},
+  {cat:'failure', q:'Tell me about a time you missed a deadline.', strategy:'Show what changed in how early you now flag risk — not just an excuse for what happened.', sample:'"I underestimated a dependency\'s complexity and didn\'t flag the risk early enough. Since then, I flag anything uncertain in the first 48 hours, not the last 48."'},
+  {cat:'failure', q:'Tell me about a mistake you made and how you handled it.', strategy:'Keep it small, real, and honestly owned — a concrete fix beats a philosophical lesson.', sample:'"I misread a config value in a migration script. I caught it in staging, not production, because I\'d started running a diff check before every deploy."'},
+  {cat:'failure', q:'How do you handle receiving critical feedback?', strategy:'Show you can separate the feedback from your ego, and cite a real behavior change that followed.', sample:'"My manager once told me my PR descriptions were too thin to review efficiently. I changed my template that same week."'},
+  {cat:'pressure', q:'How do you handle scope creep or unrealistic deadlines?', strategy:'<b>Pragmatic prioritization.</b> Bring stakeholders options and trade-offs, not panic or complaints.', sample:'"I stepped back to separate must-have from nice-to-have, then brought stakeholders a prioritized roadmap with clear trade-offs for Phase 2."'},
+  {cat:'pressure', q:'Tell me about a time you had too much on your plate.', strategy:'Show your actual triage method — never just "I worked harder."', sample:'"I ranked tasks by deadline times impact, then openly renegotiated the lowest-priority one with my manager instead of silently falling behind on everything."'},
+  {cat:'pressure', q:'Tell me about a time you had to say no to a stakeholder.', strategy:'Give a reason and an alternative — a refusal alone reads as inflexible.', sample:'"I couldn\'t commit to the date as scoped, so I offered a smaller v1 that could realistically ship on time."'},
+  {cat:'pressure', q:'How do you handle stress or the risk of burnout?', strategy:'Name a real, specific coping system — a cliché like "I stay positive" reads as unprepared.', sample:'"I noticed my output dipping during a crunch, so I started blocking recovery time on my calendar the same way I block meetings."'},
+  {cat:'leadership', q:'Tell me about a time you led without formal authority.', strategy:'Show influence through clarity and initiative — never through title.', sample:'"No one owned the migration, so I wrote the plan, got buy-in from two teams, and drove the timeline myself."'},
+  {cat:'leadership', q:'Tell me about a time you went above and beyond.', strategy:'Tie it to real, measurable impact — not just extra hours worked.', sample:'"I noticed a recurring support ticket pattern and built a fix nobody had asked for — it saved the team roughly 5 hours a week."'},
+  {cat:'leadership', q:'Describe your leadership style.', strategy:'Back any claimed style with one concrete story — adjectives alone are forgettable.', sample:'"I lead by clarifying scope early. On a recent project that meant writing a one-page brief before anyone touched code."'},
+  {cat:'adapt', q:'How do you explain a gap on your resume?', strategy:'<b>Unapologetic ownership.</b> Frame it as a deliberate period of growth or focus, never passive downtime.', sample:'"I took intentional time to upskill in cloud infrastructure and built a project deploying a full CI/CD pipeline from scratch."'},
+  {cat:'adapt', q:'Tell me about a time your priorities changed suddenly.', strategy:'Show calm re-planning in the moment, not frustration at the disruption.', sample:'"Our top-priority feature got reprioritized mid-sprint. I re-sequenced my week within the day and flagged the new risk areas to my team."'},
+  {cat:'adapt', q:'How do you handle ambiguity or an unclear task?', strategy:'Show sharp clarifying questions and a reasonable working assumption — not freezing until every detail is confirmed.', sample:'"I drafted my interpretation of the ask and confirmed it in a 10-minute call before writing any code, rather than guessing silently."'},
+];
+
+const CATEGORIES = [
+  {id:'all', label:'All Questions'},
+  {id:'conflict', label:'Conflict & Disagreement'},
+  {id:'failure', label:'Failure & Mistakes'},
+  {id:'pressure', label:'Pressure & Prioritization'},
+  {id:'leadership', label:'Leadership & Initiative'},
+  {id:'adapt', label:'Adaptability & Self-Awareness'},
+];
+
+const hotSeatQuestions = [
+  {q:'Tell me about a time you shipped code that broke production.', tip:'Own it fast, show the fix, end with the guardrail you added afterward.'},
+  {q:'Describe a situation where you had to work with a difficult team member.', tip:'Focus on the behavior change you made — never a character judgment of them.'},
+  {q:'Tell me about a project that fell behind schedule and how you handled it.', tip:'Show what changed in how early you now flag risk, not just what happened.'},
+  {q:'Describe a disagreement with a manager or tech lead.', tip:'Disagree and commit — data over emotion, then back the final decision.'},
+  {q:'Tell me about a time you had too much on your plate.', tip:'Show your actual triage method, not just "I worked harder."'},
+  {q:'How do you explain a gap on your resume?', tip:'Unapologetic ownership — frame it as deliberate, not passive.'},
+];
+
+const tabsEl = document.getElementById('tabs');
+MODULES.forEach((m)=>{
+  const btn = document.createElement('button');
+  btn.textContent = m.label;
+  btn.dataset.id = m.id;
+  btn.onclick = ()=> showTab(m.id);
+  tabsEl.appendChild(btn);
+});
+function showTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  document.querySelectorAll('section.panel').forEach(s=>s.classList.toggle('active', s.id==='panel-'+id));
+  const idx = MODULES.findIndex(m=>m.id===id);
+  document.getElementById('progressPill').textContent = `Module ${idx+1} of ${MODULES.length}`;
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+const main = document.getElementById('main');
+function exampleBad(title, bubble, why){
+  return `<div class="example bad"><div class="example-label">✕ Bad — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+}
+function exampleGood(title, bubble, why){
+  return `<div class="example good"><div class="example-label">✓ Good — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+}
+
+main.innerHTML = `
+
+<!-- MODULE 1: GOLDEN TIME RATIO -->
+<section class="panel" id="panel-ratio">
+  <div class="module-tag">Module 1 · De-Constructing STAR/CAR</div>
+  <h2 class="section-title">The Time-Allocation Trap</h2>
+  <p class="lede">Most candidates spend 70% of their answer on Situation/Task, leaving only 30% for Action and Result — the interviewer gets bored before the part that actually evaluates them.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">The Golden Time Formula</h3>
+    <div class="ratio-bar">
+      <div class="ratio-seg st">S/T</div>
+      <div class="ratio-seg action">ACTION</div>
+      <div class="ratio-seg result">RESULT</div>
+    </div>
+    <div class="ratio-legend">
+      <span><b>15–20%</b> Situation &amp; Task — set the stage briefly</span>
+      <span><b>60–65%</b> Action — YOUR individual ownership</span>
+      <span><b>15–20%</b> Result — quantifiable outcome + reflection</span>
+    </div>
+    <p style="color:var(--ink-soft); font-size:13px; margin-top:14px; margin-bottom:0;"><b style="color:var(--ink);">Why:</b> interviewers assess your personal problem-solving and leadership, not your team's background setting. Concentrating on Action shows proactive ownership.</p>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('70% on Situation/Task', `So our team was working on this big project, there were like 6 of us, and we had a really tight deadline because the client moved up the launch date, and there was also some confusion about requirements, and my manager was out that week too, so... [continues for 90 seconds before reaching any action]`, `<b>Why it fails:</b> the interviewer has almost nothing to evaluate — nearly the entire answer is scene-setting with no sign of what the candidate actually did.`)}
+    ${exampleGood('20/65/15 balance', `Our launch date moved up by a week with unclear requirements. [Situation, 10 seconds] I audited the ambiguous specs myself, flagged 3 blockers to the PM within a day, then built a fallback for the riskiest one while waiting on clarification. [Action, 40 seconds] We shipped on time with zero P1 bugs. [Result, 10 seconds]`, `<b>Why it works:</b> minimal setup, maximum detail on individual action, and a crisp quantified close.`)}
+  </div>
+</section>
+
+<!-- MODULE 2: FAILURE STORY -->
+<section class="panel" id="panel-failure">
+  <div class="module-tag">Module 2 · "Tell Me About a Time You Failed"</div>
+  <h2 class="section-title">The Anatomy of a Great Failure Story</h2>
+  <p class="lede">This isn't a trap to expose weakness — it evaluates self-awareness, psychological safety, and how fast you build feedback loops.</p>
+
+  <div class="rule-card card"><div class="rule-letter">1</div><div><h3>The Real Failure</h3><p>A genuine technical or process oversight — a missed edge case, a misjudged timeline. Never a fake failure like "I worked too hard."</p></div></div>
+  <div class="rule-card card"><div class="rule-letter">2</div><div><h3>Immediate Mitigation</h3><p>What you did to fix the immediate problem, without shifting blame onto anyone else.</p></div></div>
+  <div class="rule-card card"><div class="rule-letter">3</div><div><h3>Root Cause Analysis</h3><p>How you actually analyzed why it broke — not just that it did.</p></div></div>
+  <div class="rule-card card"><div class="rule-letter">4</div><div><h3>Permanent Prevention</h3><p>The process, automated test, or system guardrail you added so it can never happen the same way again.</p></div></div>
+
+  <div class="example-pair">
+    ${exampleBad('Disguised non-failure', `My biggest failure is that I care too much about quality and sometimes take on too much work because I want to help everyone.`, `<b>Why it fails:</b> a transparent humble-brag — interviewers hear this constantly and it signals you're avoiding a real answer.`)}
+    ${exampleGood('Real failure, full framework', `I shipped a deploy that missed an edge case in currency rounding, causing incorrect totals for a small % of international orders. I rolled it back within 20 minutes and manually corrected the affected orders. The root cause was a missing test for non-USD currencies. I added currency-specific test cases to our suite and a pre-deploy checklist item for any change touching pricing logic.`, `<b>Why it works:</b> a real, specific failure with all 4 steps — including a concrete, permanent system change.`)}
+  </div>
+</section>
+
+<!-- MODULE 3: CONFLICT, DEADLINES & GAPS -->
+<section class="panel" id="panel-scenarios">
+  <div class="module-tag">Module 3 · Navigating Conflict, Disagreements &amp; Career Gaps</div>
+  <h2 class="section-title">The Core Question Vault</h2>
+  <p class="lede">Three scenarios every candidate should have a rehearsed answer for.</p>
+
+  <div class="card scenario">
+    <h3>"Describe a disagreement with a manager or tech lead."</h3>
+    <div class="strategy-label">Strategy: Disagree and Commit</div>
+    <p class="strategy">Focus on data over emotion, and show you back team decisions once finalized — even when your personal preference differed.</p>
+  </div>
+
+  <div class="card scenario">
+    <h3>"How do you handle scope creep or tight, unrealistic deadlines?"</h3>
+    <div class="strategy-label">Strategy: Pragmatic Prioritization</div>
+    <p class="strategy">Shows you don't panic or complain under pressure — instead, you manage expectations with clear options.</p>
+  </div>
+
+  <div class="card scenario">
+    <h3>"How do you explain a gap on your resume?"</h3>
+    <div class="strategy-label">Strategy: Unapologetic Ownership</div>
+    <p class="strategy">Frame gaps as deliberate periods of personal growth or necessary focus, never as passive downtime.</p>
+    <div class="example-pair">
+      ${exampleBad('Apologetic framing', `Um, yeah, I wasn't working for about 8 months, I was just kind of figuring things out and looking for the right opportunity.`, `<b>Why it fails:</b> "just kind of figuring things out" sounds passive and unintentional — it invites doubt rather than answering it.`)}
+      ${exampleGood('Deliberate framing', `I took intentional time to upskill in cloud infrastructure. During that period I built and deployed a full CI/CD pipeline project to stay hands-on while I targeted the right next role.`, `<b>Why it works:</b> "intentional" and a concrete project reframe the gap as a deliberate choice with a visible outcome.`)}
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 4: TOUGH QUESTION VAULT -->
+<section class="panel" id="panel-vault">
+  <div class="module-tag">Expanded Reference · Not in the Original Deck</div>
+  <h2 class="section-title">The Tough Question Vault</h2>
+  <p class="lede">18 more behavioral questions you're likely to face, organized by category — each with a strategy and a sample opening line. Filter by the type of question you want to practice.</p>
+
+  <div class="filter-row" id="filterRow"></div>
+  <div class="vault-count" id="vaultCount"></div>
+  <div id="vaultList"></div>
+</section>
+
+<!-- MODULE 5: HOT SEAT -->
+<section class="panel" id="panel-hotseat">
+  <div class="module-tag">Interactive Value Segment · Rapid-Fire Mock Drills (25 min)</div>
+  <h2 class="section-title">The Hot Seat</h2>
+  <p class="lede">Selected students answer a surprise behavioral question in 90 seconds.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">Rapid-Fire Question Generator</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-6px;">Draw a question, then use the 90-second countdown to respond live.</p>
+    <div class="curveball-box">
+      <div class="curveball-text" id="curveballText">Click below to draw a question</div>
+      <button class="curveball-btn" id="curveballBtn">Draw a Question</button>
+      <button class="curveball-btn" id="countdownBtn" style="background:var(--bad); display:none;">Start 90s Countdown</button>
+      <div class="countdown-display" id="countdownDisplay">90</div>
+      <p id="curveballTip" style="font-size:13px; color:var(--ink-soft); margin:14px 0 0; display:none;"></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Live Teardown Checklist</h3>
+    <div class="drill-checklist">
+      <div class="audit-item" data-item="1"><input type="checkbox"><span>Stuck to the Golden Time Ratio — roughly 60% spent on Action</span></div>
+      <div class="audit-item" data-item="2"><input type="checkbox"><span>Said "I" instead of defaulting to "We"</span></div>
+      <div class="audit-item" data-item="3"><input type="checkbox"><span>Result was quantified with a clear takeaway</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 6: ASSIGNMENT -->
+<section class="panel" id="panel-assignment">
+  <div class="module-tag">Due Before Session 7</div>
+  <h2 class="section-title">Your Action Assignment</h2>
+  <p class="lede">Two tasks to lock in today's stories before the next session.</p>
+
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="assignProgress"></div></div>
+
+  <div class="task" data-task="1">
+    <input type="checkbox">
+    <div><h3>Write 3 STAR Stories</h3><p>In bullet points, covering: a major failure, a conflict/disagreement, and a tight deadline delivery.</p></div>
+  </div>
+  <div class="task" data-task="2">
+    <input type="checkbox">
+    <div><h3>Add a Metric and a Reflection to Each</h3><p>Every story should end with a clear quantifiable metric and one key reflection lesson.</p></div>
+  </div>
+</section>
+
+`;
+
+/* Vault filter + render */
+const filterRow = document.getElementById('filterRow');
+const vaultList = document.getElementById('vaultList');
+const vaultCount = document.getElementById('vaultCount');
+let activeCategory = 'all';
+
+CATEGORIES.forEach(c=>{
+  const chip = document.createElement('button');
+  chip.className = 'filter-chip' + (c.id==='all' ? ' active' : '');
+  chip.textContent = c.label;
+  chip.dataset.cat = c.id;
+  chip.onclick = ()=>{
+    activeCategory = c.id;
+    document.querySelectorAll('.filter-chip').forEach(el=>el.classList.toggle('active', el.dataset.cat===c.id));
+    renderVault();
+  };
+  filterRow.appendChild(chip);
+});
+
+function renderVault(){
+  const filtered = activeCategory === 'all' ? VAULT : VAULT.filter(v=>v.cat===activeCategory);
+  vaultCount.textContent = `${filtered.length} question${filtered.length===1?'':'s'}`;
+  const catLabel = id => CATEGORIES.find(c=>c.id===id).label;
+  vaultList.innerHTML = filtered.map(v => `
+    <div class="vault-card">
+      <div class="vault-cat">${catLabel(v.cat)}</div>
+      <div class="vault-q">"${v.q}"</div>
+      <div class="vault-strategy">${v.strategy}</div>
+      <div class="vault-sample"><b>Sample opener</b>${v.sample}</div>
+    </div>
+  `).join('');
+}
+renderVault();
+
+/* Hot seat generator */
+const curveballText = document.getElementById('curveballText');
+const curveballTip = document.getElementById('curveballTip');
+const countdownBtn = document.getElementById('countdownBtn');
+const countdownDisplay = document.getElementById('countdownDisplay');
+let countdownInterval = null;
+
+document.getElementById('curveballBtn').onclick = ()=>{
+  const pick = hotSeatQuestions[Math.floor(Math.random()*hotSeatQuestions.length)];
+  curveballText.textContent = pick.q;
+  curveballTip.textContent = pick.tip;
+  curveballTip.style.display = 'block';
+  countdownBtn.style.display = 'inline-block';
+  countdownDisplay.classList.remove('show');
+  countdownDisplay.textContent = '90';
+  clearInterval(countdownInterval);
+};
+
+countdownBtn.onclick = ()=>{
+  clearInterval(countdownInterval);
+  let secondsLeft = 90;
+  countdownDisplay.classList.add('show');
+  countdownDisplay.textContent = secondsLeft;
+  countdownInterval = setInterval(()=>{
+    secondsLeft--;
+    if(secondsLeft <= 0){
+      countdownDisplay.textContent = "Time's up";
+      clearInterval(countdownInterval);
+    } else {
+      countdownDisplay.textContent = secondsLeft;
+    }
+  }, 1000);
+};
+
+/* Checklists */
+document.querySelectorAll('.audit-item').forEach(item=>{
+  const cb = item.querySelector('input');
+  const toggle = ()=> item.classList.toggle('done', cb.checked);
+  cb.addEventListener('change', toggle);
+  item.addEventListener('click', (e)=>{ if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); } });
+});
+document.querySelectorAll('.task').forEach(task=>{
+  const cb = task.querySelector('input');
+  const toggle = ()=>{ task.classList.toggle('done', cb.checked); updateProgress(); };
+  cb.addEventListener('change', toggle);
+  task.addEventListener('click', (e)=>{ if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); } });
+});
+function updateProgress(){
+  const total = document.querySelectorAll('.task').length;
+  const done = document.querySelectorAll('.task.done').length;
+  document.getElementById('assignProgress').style.width = (done/total*100) + '%';
+}
+
+document.getElementById('aboutToggle')?.addEventListener('click', function(){
+  const bio = document.getElementById('aboutBio');
+  const showing = bio.classList.toggle('show');
+  this.textContent = showing ? 'About the mentor ▴' : 'About the mentor ▾';
+});
+
+showTab('ratio');
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career FAQ — Will AI Replace Software Engineers?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430; --ink-soft:#57606F; --paper:#EEF1F4; --card:#FFFFFF;
+    --brand:#24437A; --brand-soft:#5D7FB9; --brand-wash:#E6ECF6;
+    --good:#2F8F5B; --good-bg:#E8F5EC; --good-line:#BFE2CC;
+    --line:#DBE1E7; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .app{max-width:820px;margin:0 auto;padding:0 20px 80px;}
+
+  .hub-strip{display:flex; align-items:center; justify-content:space-between; padding:24px 0 0; font-size:12.5px; color:var(--ink-soft);}
+  .hub-strip a{color:var(--brand); text-decoration:none; font-weight:600;}
+  .hub-strip a:hover{text-decoration:underline;}
+
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--brand-soft); font-weight:600; margin-top:18px; display:block;}
+  h1.title{font-size:28px; font-weight:700; margin:8px 0 10px; letter-spacing:-.01em; line-height:1.2;}
+  p.lede{font-size:15.5px; color:var(--ink-soft); max-width:600px; line-height:1.6; margin:0 0 32px;}
+
+  /* ---------- accordion ---------- */
+  .faq-item{border:1px solid var(--line); border-radius:14px; margin-bottom:12px; overflow:hidden; background:var(--card);}
+  .faq-q{
+    padding:18px 20px; font-size:15px; font-weight:700; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center; gap:14px;
+  }
+  .faq-q:hover{background:var(--brand-wash);}
+  .faq-q .faq-tag{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; color:var(--brand-soft);
+    text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:5px;
+  }
+  .faq-arrow{transition:transform .25s ease; color:var(--brand-soft); flex-shrink:0; font-size:18px;}
+  .faq-item.open .faq-arrow{transform:rotate(180deg);}
+  .faq-a{
+    padding:0 20px; max-height:0; overflow:hidden;
+    transition:max-height .35s ease, padding .35s ease;
+  }
+  .faq-item.open .faq-a{padding:0 20px 22px; max-height:900px;}
+
+  .faq-block{margin-bottom:14px;}
+  .faq-block:last-child{margin-bottom:0;}
+  .faq-block-label{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.04em; color:var(--brand); margin-bottom:6px; display:block;
+  }
+  .faq-block.takeaway .faq-block-label{color:var(--good);}
+  .faq-block p{margin:0; font-size:13.8px; color:var(--ink-soft); line-height:1.65;}
+  .faq-block ul{margin:6px 0 0; padding-left:18px;}
+  .faq-block li{font-size:13.8px; color:var(--ink-soft); line-height:1.6; margin-bottom:4px;}
+  .faq-block li b{color:var(--ink);}
+
+  .equation-box{
+    background:var(--brand-wash); border-radius:10px; padding:16px 18px; text-align:center;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--brand); font-weight:600;
+    margin:10px 0 14px; line-height:1.6;
+  }
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:12px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="hub-strip"><a href="index.html">&larr; The Soft Skills Lab</a><span>Career FAQ</span></div>
+
+  <span class="eyebrow">CAREER FAQ</span>
+  <h1 class="title">Will AI Replace Software Engineers?</h1>
+  <p class="lede">Straight answers to the questions students ask most about AI, job security, and what actually matters in interviews now. Tap a question to expand it.</p>
+
+  <div id="faqList"></div>
+
+  <footer>The Soft Skills Lab</footer>
+</div>
+
+<script>
+const FAQ = [
+  {
+    tag: 'Q1',
+    q: 'Is coding dead? Should I still learn software engineering?',
+    reality: "Coding syntax is commoditized; software engineering is thriving. AI can generate boilerplate code instantly, but building reliable products requires understanding system boundaries, security, performance trade-offs, and complex business logic.",
+    takeaway: 'The role is evolving from "writing lines of code" to "orchestrating system architecture and validating outputs." Engineers who know how systems work end-to-end are more critical than ever.',
+  },
+  {
+    tag: 'Q2',
+    q: 'Will software roles be completely eliminated by AI?',
+    reality: "Junior roles aren't disappearing — they're transforming. The baseline bar for entry has shifted up: pure syntax typists are no longer needed, but juniors who leverage AI tools to build, debug, and ship features at senior velocity are in high demand.",
+    takeaway: 'Position yourself as an AI-augmented builder. Show that you can write code, write comprehensive test suites, and audit AI outputs for hallucinated dependencies or edge cases.',
+  },
+  {
+    tag: 'Q3',
+    q: 'If AI can write system design and LeetCode solutions, what actually matters in tech interviews now?',
+    reality: "Companies know candidates use AI for prep. Because of this, interviewers are shifting focus away from memorized algorithms toward:",
+    realityList: [
+      '<b>System Debugging & Troubleshooting</b> — can you fix a broken, complex system in real time?',
+      '<b>Trade-off Evaluation</b> — why choose architecture A over architecture B for a given business constraint?',
+      '<b>Ownership & Communication</b> — can you manage stakeholders, write clear RFCs, and drive cross-team alignment?',
+    ],
+    takeaway: 'Memorization is dead — rationalization and operational judgment are your primary interview currencies now.',
+  },
+  {
+    tag: 'Q4',
+    q: 'Should I switch my focus entirely to AI/ML engineering, or stay in traditional backend/full-stack?',
+    reality: "You don't need a PhD in machine learning to be highly valuable. The biggest industry gap is AI Systems Integration — backend and full-stack engineers who know how to connect LLMs to databases, build RAG (Retrieval-Augmented Generation) pipelines, manage latency, and secure data flows.",
+    takeaway: 'Solid computer science foundations — distributed systems, database design, API security — combined with practical AI integration skills make you far more versatile than a pure specialist.',
+  },
+  {
+    tag: 'Q5',
+    q: "How do I future-proof my career so I don't get replaced in 3–5 years?",
+    reality: 'Technical stacks will keep changing, but core human leverage remains constant:',
+    equation: '[ Domain Expertise + System Architecture + High-Impact Communication ] = Irreplaceable Engineer',
+    takeaway: 'Focus on business domain knowledge (fintech, supply chain, healthcare...), master async communication, and cultivate an ownership mindset. AI manages tasks; software engineers solve business problems.',
+  },
+];
+
+const faqList = document.getElementById('faqList');
+FAQ.forEach((item, i)=>{
+  const div = document.createElement('div');
+  div.className = 'faq-item';
+
+  const realityHtml = item.realityList
+    ? `<p>${item.reality}</p><ul>${item.realityList.map(li => `<li>${li}</li>`).join('')}</ul>`
+    : `<p>${item.reality}</p>`;
+
+  const equationHtml = item.equation ? `<div class="equation-box">${item.equation}</div>` : '';
+
+  div.innerHTML = `
+    <div class="faq-q"><div><span class="faq-tag">${item.tag}</span>${item.q}</div><span class="faq-arrow">▾</span></div>
+    <div class="faq-a">
+      <div class="faq-block">
+        <span class="faq-block-label">The Reality</span>
+        ${realityHtml}
+        ${equationHtml}
+      </div>
+      <div class="faq-block takeaway">
+        <span class="faq-block-label">The Takeaway</span>
+        <p>${item.takeaway}</p>
+      </div>
+    </div>
+  `;
+  div.querySelector('.faq-q').onclick = ()=> div.classList.toggle('open');
+  faqList.appendChild(div);
+  if(i === 0) div.classList.add('open');
+});
+</script>
+</body>
+</html>

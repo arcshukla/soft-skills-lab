@@ -65,7 +65,37 @@ Open the root `index.html`, find the `RESOURCES` array near the top of the `<scr
 ```js
 {title:"Your Talk Title", meta:"YouTube", url:"https://youtube.com/watch?v=...", icon:"play"},
 ```
-`icon` can be `play` (video), `article` (blog post/doc), or `link` (anything else). Newest entries should go last in the array — they render top to bottom. This sidebar only lives on the root homepage, not on individual cohort pages.
+`icon` can be `play` (video), `article` (blog post/doc/FAQ page), or `link` (anything else). Newest entries should go last in the array — they render top to bottom. This sidebar only lives on the root homepage, not on individual cohort pages.
+
+Links can point anywhere — an external URL (opens in a new tab automatically) or a page inside this repo, like `career-faq.html`.
+
+## Adding a standalone FAQ-style page (accordion)
+
+`career-faq.html` at the repo root is a template for this: a single page with expandable question/answer cards, not tied to any specific cohort or session. To make a new one:
+
+1. Copy `career-faq.html` to a new filename (e.g. `salary-faq.html`)
+2. Update the `<title>`, the eyebrow, and the `<h1>` text
+3. Replace the `FAQ` array in the `<script>` section — each entry needs `tag` (e.g. "Q1"), `q` (the question), `reality`, and `takeaway`. Add `realityList: [...]` for a bulleted sub-list instead of a plain paragraph, or `equation: "..."` for a highlighted formula box
+4. Add it to the `RESOURCES` array on the root homepage so it's discoverable, same as any other link
+
+## Locking a session (or a whole cohort) ahead of delivery
+
+You can build sessions well in advance and check them into the repo without making them visible yet. Every session and cohort card supports an `unlocked` flag, separate from `status`:
+
+```js
+{n:9, title:"...", status:"live", unlocked:false, href:"session-9/index.html", icon:"..."},
+```
+
+- `unlocked` **missing entirely**, or set to `true` → behaves exactly like a normal live session.
+- `unlocked:false` → the card renders as a greyed-out "Coming Soon" tile, same as a session that hasn't been built yet — no clickable link, no "Open session" text. The page itself, the file, and all its content stay fully checked into the repo untouched.
+
+**On the day you're ready to deliver it:** delete `unlocked:false` (or flip it to `true`) from that one session's line, save, and push. That's the only change needed — the "Sessions Live" / "Coming Soon" counts on that cohort's homepage recalculate automatically from the data, so you don't need to touch any numbers by hand.
+
+The same `unlocked` flag works on cohort entries in the root `index.html`'s `COHORTS` array, if you want to hide an entire upcoming cohort until its first session is ready.
+
+**Important limitation:** this only hides a session from the grid — it does not restrict direct access. Since there's no login system, anyone with the exact URL (e.g. `cohort-2/session-9/index.html`) can still open it directly, locked or not. This is a "don't advertise it yet" toggle, not real access control. The access-gated version is a separate future build (see Notes below).
+
+**Note for the root homepage specifically:** the "Sessions Live" number there is a manually maintained rollup across all cohorts (a static site can't automatically total up numbers living in separate cohort files without a build step). If you lock or unlock a session inside a cohort, update that root-level number by hand to match. The "Active Cohorts" number on the root page *does* auto-compute, since that data lives directly in the root file.
 
 ## Deploying to GitHub Pages
 

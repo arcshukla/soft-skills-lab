@@ -162,8 +162,8 @@
       <h1 class="title">GeeksForGeeks Soft Skill Cohort - 2</h1>
       <p class="tagline">Interactive companions for every session in this cohort — live drills, message inspectors, timers, and good/bad examples you can run right in class.</p>
       <div class="stats-row">
-        <div class="stat"><div class="num">5</div><div class="label">Sessions Live</div></div>
-        <div class="stat"><div class="num">5</div><div class="label">Coming Soon</div></div>
+        <div class="stat"><div class="num" id="statLive">10</div><div class="label">Sessions Live</div></div>
+        <div class="stat"><div class="num" id="statSoon">0</div><div class="label">Coming Soon</div></div>
         <div class="stat"><div class="num">10</div><div class="label">Total Series</div></div>
       </div>
     </div>
@@ -221,6 +221,11 @@ const ICONS = {
   brand: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>`,
   resume: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>`,
   story: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H8l-4 4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="11.5" x2="13" y2="11.5"/></svg>`,
+  vault: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>`,
+  grad: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>`,
+  workplace: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 9l3 2-3 2M13 13h4"/></svg>`,
+  ownership: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 7 1-5 5 1.5 7L12 17.5 5.5 21 7 14 2 9l7-1z"/></svg>`,
+  trajectory: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16,8 13,13 8,16 11,11"/></svg>`,
 };
 
 const SESSIONS = [
@@ -229,17 +234,17 @@ const SESSIONS = [
   {n:3, title:"Outbound Strategy & Handling Recruiters", desc:"Cold outreach rules, templates, follow-ups, and a live message inspector for the draft-a-thon.", status:"live", href:"session-3/index.html", icon:"outbound"},
   {n:4, title:"Interview Etiquette & First Impressions", desc:"Virtual presence, the first 5 minutes, crisis recovery scripts, and a live pitch timer with curveball drills.", status:"live", href:"session-4/index.html", icon:"video"},
   {n:5, title:"Presenting Your Skills & Technical Storytelling", desc:"The Context-Constraint-Solution-Impact story arc, trade-off framing, concept flashcards, and a live pitch builder with a 3-minute timer.", status:"live", href:"session-5/index.html", icon:"story"},
-  {n:6, title:"Session 6", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:7, title:"Session 7", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:8, title:"Session 8", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:9, title:"Session 9", desc:"Coming soon.", status:"soon", icon:"soon"},
-  {n:10, title:"Session 10", desc:"Coming soon.", status:"soon", icon:"soon"},
+  {n:6, title:"Behavioral Interviews & Tough Questions", desc:"The Golden Time Ratio, the failure-story framework, an 18-question filterable Tough Question Vault, and a rapid-fire Hot Seat drill.", status:"live", unlocked:false, href:"session-6/index.html", icon:"vault"},
+  {n:7, title:"Advanced Interview Dynamics & Series Graduation", desc:"The Intersection Pitch, an 8-question closing Q&A vault, salary range anchoring, and a 10-minute mock-interview stage timer.", status:"live", unlocked:false, href:"session-7/index.html", icon:"grad"},
+  {n:8, title:"Workplace Etiquette & Professional Communication", desc:"The Communication Matrix, BLUF status updates, disagree-and-commit diplomacy, a status update builder, and live dilemma polling.", status:"live", unlocked:false, href:"session-8/index.html", icon:"workplace"},
+  {n:9, title:"Taking Ownership & Thinking Beyond Tasks", desc:"The Ownership Spectrum, managing up, the accountability mindset, a live 3-Option Recommendation Builder, and Corporate Real-Talk scenarios.", status:"live", unlocked:false, href:"session-9/index.html", icon:"ownership"},
+  {n:10, title:"Career Trajectory, Mentorship & Series Graduation", desc:"IC vs. EM tracks, the mentorship flywheel, the 70/20/10 learning rule, a live 90-Day Roadmap builder, and the full cohort graduation recap.", status:"live", unlocked:false, href:"session-10/index.html", icon:"trajectory"},
 ];
 
 
 const grid = document.getElementById('sessionGrid');
 SESSIONS.forEach(s=>{
-  const isLive = s.status === 'live';
+  const isLive = s.status === 'live' && s.unlocked !== false;
   const inner = `
     <div class="session-icon">${ICONS[s.icon] || ICONS.soon}</div>
     <div class="session-num">Session ${s.n}</div>
@@ -253,6 +258,10 @@ SESSIONS.forEach(s=>{
   card.innerHTML = `<div class="session-card ${isLive ? 'available' : 'locked'}">${inner}</div>`;
   grid.appendChild(card);
 });
+
+const liveCount = SESSIONS.filter(s => s.status === 'live' && s.unlocked !== false).length;
+document.getElementById('statLive').textContent = liveCount;
+document.getElementById('statSoon').textContent = SESSIONS.length - liveCount;
 
 document.getElementById('aboutToggle').onclick = function(){
   const bio = document.getElementById('aboutBio');

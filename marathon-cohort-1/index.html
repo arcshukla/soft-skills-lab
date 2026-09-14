@@ -236,7 +236,7 @@ const SESSIONS = [
 
 const grid = document.getElementById('sessionGrid');
 SESSIONS.forEach(s=>{
-  const isLive = s.status === 'live';
+  const isLive = s.status === 'live' && s.unlocked !== false;
   const inner = `
     <div class="session-icon">${ICONS[s.icon] || ICONS.soon}</div>
     <div class="session-num">Session ${s.n}</div>

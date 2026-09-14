@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 9 — Taking Ownership & Thinking Beyond Tasks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430; --ink-soft:#57606F; --paper:#EEF1F4; --card:#FFFFFF;
+    --brand:#24437A; --brand-soft:#5D7FB9; --brand-wash:#E6ECF6;
+    --good:#2F8F5B; --good-bg:#E8F5EC; --good-line:#BFE2CC;
+    --bad:#C1443B; --bad-bg:#FBEAE8; --bad-line:#F0C4C0;
+    --line:#DBE1E7; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .app{max-width:980px;margin:0 auto;padding:0 20px 80px;}
+  .hub-strip{display:flex; align-items:center; justify-content:space-between; padding:10px 0; font-size:12.5px; color:var(--ink-soft);}
+  .hub-strip a{color:var(--brand); text-decoration:none; font-weight:600;}
+  .hub-strip a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50; background:var(--paper); padding:10px 0 0;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--brand-soft); font-weight:600;}
+  .masthead{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-top:6px; flex-wrap:wrap;}
+  .masthead h1{font-size:26px; font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.15;}
+  .progress-pill{font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:var(--brand); background:var(--brand-wash); padding:6px 12px; border-radius:100px; white-space:nowrap;}
+  nav.tabs{display:flex; flex-wrap:wrap; gap:2px 4px; margin-top:18px; border-bottom:1px solid var(--line); padding-bottom:8px;}
+  nav.tabs button{font-family:'Inter',sans-serif; font-size:13.5px; font-weight:600; color:var(--ink-soft); background:none; border:none; cursor:pointer; padding:10px 14px 12px; white-space:nowrap; position:relative; top:1px; border-bottom:2px solid transparent;}
+  nav.tabs button.active{color:var(--brand); border-bottom:2px solid var(--brand);}
+  nav.tabs button:hover{color:var(--brand);}
+  main{padding-top:30px;}
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  .lede{font-size:15.5px; color:var(--ink-soft); max-width:640px; margin:6px 0 28px; line-height:1.55;}
+  .module-tag{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--brand); background:var(--brand-wash); padding:4px 10px; border-radius:6px; margin-bottom:10px;}
+  h2.section-title{font-size:22px; margin:0 0 4px; font-weight:700;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:16px;}
+  .example-pair{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 6px;}
+  @media(max-width:680px){.example-pair{grid-template-columns:1fr;}}
+  .example{border-radius:12px; padding:16px 16px 14px; border:1px solid; font-size:14px; line-height:1.55;}
+  .example.bad{background:var(--bad-bg); border-color:var(--bad-line);}
+  .example.good{background:var(--good-bg); border-color:var(--good-line);}
+  .example-label{display:flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:10px;}
+  .example.bad .example-label{color:var(--bad);}
+  .example.good .example-label{color:var(--good);}
+  .bubble{background:var(--card); border-radius:10px; padding:12px 13px; color:var(--ink); white-space:pre-wrap; font-size:13.5px; margin-bottom:10px; border:1px solid rgba(0,0,0,.05);}
+  .example-why{color:var(--ink-soft); font-size:13px;}
+  .example-why b{color:var(--ink);}
+  .rule-card{display:flex; gap:14px; align-items:flex-start; padding:18px 20px; margin-bottom:14px;}
+  .rule-letter{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:#fff; background:var(--brand); width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .rule-card h3{margin:0 0 4px; font-size:15px;}
+  .rule-card p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+  .rule-card .rule-quote{display:block; margin-top:6px; font-style:italic; color:var(--brand); font-size:13px;}
+
+  /* ---------- builder ---------- */
+  .builder-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media(max-width:760px){.builder-grid{grid-template-columns:1fr;}}
+  .field-label{font-size:12px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace; margin-bottom:5px; display:block;}
+  textarea.field-input{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); font-family:'Inter',sans-serif; font-size:13.5px; margin-bottom:14px; color:var(--ink); resize:vertical; min-height:48px;}
+  textarea.field-input:focus{outline:none; border-color:var(--brand-soft);}
+  .assembled-preview{background:var(--brand-wash); border-radius:12px; padding:16px; font-size:13.5px; color:var(--ink); line-height:1.6; min-height:120px; white-space:pre-wrap;}
+  .checks{display:flex; flex-direction:column; gap:10px; margin-top:14px;}
+  .check-row{display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 13px; font-size:13px;}
+  .check-dot{width:9px; height:9px; border-radius:50%; background:#C7CDD4; flex-shrink:0;}
+  .check-row.pass .check-dot{background:var(--good);}
+  .check-row.fail .check-dot{background:var(--bad);}
+  .check-row .check-text b{display:block; font-weight:600; margin-bottom:1px;}
+  .check-row .check-text span{color:var(--ink-soft); font-size:12px;}
+
+  /* ---------- Q&A accordion ---------- */
+  .qa-item{border:1px solid var(--line); border-radius:10px; margin-bottom:10px; overflow:hidden;}
+  .qa-q{padding:15px 18px; font-size:14px; font-weight:700; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:var(--card); gap:12px;}
+  .qa-q:hover{background:var(--brand-wash);}
+  .qa-q .qa-scenario-tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; color:var(--brand-soft); text-transform:uppercase; display:block; margin-bottom:4px;}
+  .qa-a{padding:0 18px; max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; font-size:13.5px; color:var(--ink-soft); line-height:1.6; background:var(--paper);}
+  .qa-item.open .qa-a{padding:14px 18px 18px; max-height:260px;}
+  .qa-a b{color:var(--ink);}
+  .qa-arrow{transition:transform .2s ease; color:var(--brand-soft); flex-shrink:0;}
+  .qa-item.open .qa-arrow{transform:rotate(180deg);}
+
+  /* ---------- checklist ---------- */
+  .task{display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:var(--card); cursor:pointer;}
+  .task input{margin-top:3px; width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .task h3{margin:0 0 3px; font-size:14px;}
+  .task p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.5;}
+  .task.done{opacity:.55;}
+  .task.done h3{text-decoration:line-through;}
+  .progress-bar-track{height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:16px 0 20px;}
+  .progress-bar-fill{height:100%; background:var(--brand); width:0%; transition:width .35s ease;}
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:12px;}
+  .about-strip{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; margin-top:40px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;}
+  .avatar-photo{width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0;}
+  .about-strip-body{flex:1; min-width:220px;}
+  .about-strip-name{font-size:14.5px; font-weight:700; color:var(--ink);}
+  .about-strip-role{font-size:12px; color:var(--brand-soft); font-weight:600;}
+  .link-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .link-chip{display:inline-flex; align-items:center; gap:7px; text-decoration:none; background:var(--brand-wash); color:var(--brand); font-weight:700; font-size:12px; padding:6px 12px 6px 6px; border-radius:100px; transition:background .15s ease;}
+  .link-chip:hover{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon{background:#fff; color:var(--brand);}
+  .chip-icon{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; font-family:'IBM Plex Mono',monospace; flex-shrink:0; overflow:hidden;}
+  .chip-icon svg{width:12px; height:12px;}
+  .chip-icon.li{background:#0A66C2; color:#fff; font-family:'Inter',sans-serif; font-style:italic; font-size:11px;}
+  .chip-icon.gh{background:#181717; color:#fff;}
+  .chip-icon.md{background:#000000; color:#fff;}
+  .chip-icon.tm{background:var(--brand); color:#fff;}
+  .chip-icon.ai{background:var(--brand); color:#fff;}
+  .link-chip:hover .chip-icon.li{background:#0A66C2; color:#fff;}
+  .link-chip:hover .chip-icon.gh{background:#181717; color:#fff;}
+  .link-chip:hover .chip-icon.md{background:#000000; color:#fff;}
+  .about-toggle{background:none; border:none; color:var(--brand-soft); font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; padding:0; margin-top:2px;}
+  .about-bio{font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:680px; margin-top:12px; padding-top:12px; border-top:1px solid var(--line); display:none;}
+  .about-bio.show{display:block;}
+  .copyright{margin-top:14px; color:var(--ink-soft); font-size:11.5px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="hub-strip"><a href="../index.html">&larr; GeeksForGeeks Soft Skill Cohort - 2</a><span>Session 9 of 10</span></div>
+  <div class="topbar">
+    <div class="eyebrow">PHASE 4: LONG-TERM CAREER SUCCESS · SESSION 9 OF 10</div>
+    <div class="masthead">
+      <h1>Taking Ownership &amp; Thinking Beyond Tasks</h1>
+      <div class="progress-pill" id="progressPill">Module 1 of 6</div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+
+  <main id="main"></main>
+
+  <div class="about-strip">
+    <img class="avatar-photo" src="../../assets/archana.jpg" alt="Archana Shukla">
+    <div class="about-strip-body">
+      <div class="about-strip-name">Archana Shukla</div>
+      <div class="about-strip-role">Technology Leader · AI Strategist · Builder</div>
+      <div class="about-bio" id="aboutBio">25+ years of experience bridging strategy and execution — from boardroom to production. I don't stop at proof-of-concept. I architect, build, and ship systems that work. Techno-functional by nature: I speak business fluently and translate it into technology that delivers real outcomes, end-to-end.</div>
+      <button class="about-toggle" id="aboutToggle">About the mentor ▾</button>
+    </div>
+    <div class="link-row">
+      <a class="link-chip" href="https://arcshukla-ai-profile-platform.hf.space/explore" target="_blank" rel="noopener"><span class="chip-icon ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.2L12 15l-1.6-4.8L6 9l4.4-1.2z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></span>AI Avatar</a>
+      <a class="link-chip" href="https://www.linkedin.com/in/archana-shukla-b5639411/" target="_blank" rel="noopener"><span class="chip-icon li">in</span>LinkedIn</a>
+      <a class="link-chip" href="https://medium.com/@arc.shukla" target="_blank" rel="noopener"><span class="chip-icon md"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z"/></svg></span>Medium</a>
+      <a class="link-chip" href="https://topmate.io/archana_shukla10" target="_blank" rel="noopener"><span class="chip-icon tm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg></span>Topmate</a>
+      <a class="link-chip" href="https://github.com/arcshukla" target="_blank" rel="noopener"><span class="chip-icon gh"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>GitHub</a>
+    </div>
+  </div>
+
+  <footer>Session 9 of 10 — Soft Skills Series<div class="copyright">© 2026 The Soft Skills Lab. All rights reserved.</div></footer>
+</div>
+
+<script>
+const MODULES = [
+  {id:'spectrum', label:'The Ownership Spectrum'},
+  {id:'managingup', label:'Managing Up'},
+  {id:'accountability', label:'The Accountability Mindset'},
+  {id:'builder', label:'3-Option Recommendation Builder'},
+  {id:'realtalk', label:'Corporate Real-Talk'},
+  {id:'assignment', label:'Action Assignment'},
+];
+
+const REALTALK = [
+  {tag:'Scenario 1', title:'Working with an Overbearing Micro-Manager', problem:'Your lead demands constant updates every 2 hours and micromanages every line of code.', fix:'Over-communicate before they ask. Send a proactive 9:00 AM status note detailing your exact focus for the day and when you\'ll post updates. Proactive transparency eliminates a manager\'s anxiety and earns you autonomy.'},
+  {tag:'Scenario 2', title:'Inheriting a Messy, Undocumented Codebase', problem:'You are assigned a legacy module with zero documentation and buggy code, but are still expected to ship features fast.', fix:'Treat the lack of documentation as your first high-visibility contribution. As you reverse-engineer the codebase, write the missing documentation and present a lightweight refactoring plan alongside your feature delivery.'},
+  {tag:'Scenario 3', title:'Feeling Unheard in Team Architecture Discussions', problem:'You have a great idea for a system improvement, but senior engineers talk over you during syncs.', fix:'Move from verbal suggestions to a brief written RFC. A well-structured 1-page doc with data, diagrams, and trade-offs carries far more weight than an interrupted comment in a noisy meeting.'},
+];
+
+const tabsEl = document.getElementById('tabs');
+MODULES.forEach((m)=>{
+  const btn = document.createElement('button');
+  btn.textContent = m.label;
+  btn.dataset.id = m.id;
+  btn.onclick = ()=> showTab(m.id);
+  tabsEl.appendChild(btn);
+});
+function showTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  document.querySelectorAll('section.panel').forEach(s=>s.classList.toggle('active', s.id==='panel-'+id));
+  const idx = MODULES.findIndex(m=>m.id===id);
+  document.getElementById('progressPill').textContent = `Module ${idx+1} of ${MODULES.length}`;
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+const main = document.getElementById('main');
+function exampleBad(title, bubble, why){
+  return `<div class="example bad"><div class="example-label">✕ Task-Follower — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+}
+function exampleGood(title, bubble, why){
+  return `<div class="example good"><div class="example-label">✓ Ownership — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+}
+
+main.innerHTML = `
+
+<!-- MODULE 1: OWNERSHIP SPECTRUM -->
+<section class="panel" id="panel-spectrum">
+  <div class="module-tag">Module 1</div>
+  <h2 class="section-title">The Ownership Spectrum</h2>
+  <p class="lede">Most early-career professionals wait to be handed step-by-step instructions. Senior leaders look for engineers operating at Level 3 and Level 4.</p>
+
+  <div class="rule-card card"><div class="rule-letter">1</div><div><h3>Passive Execution</h3><p>Waiting to be told exactly what to do.<span class="rule-quote">"Tell me what to do."</span></p></div></div>
+  <div class="rule-card card"><div class="rule-letter">2</div><div><h3>Surfacing Problems, No Solutions</h3><p>Noticing an issue but handing it back unsolved.<span class="rule-quote">"I found a problem, what should I do?"</span></p></div></div>
+  <div class="rule-card card"><div class="rule-letter">3</div><div><h3>Proactive Ownership</h3><p>Bringing the problem alongside real options.<span class="rule-quote">"Here is the problem, and here are 2 viable solutions with trade-offs."</span></p></div></div>
+  <div class="rule-card card"><div class="rule-letter">4</div><div><h3>Full Autonomy</h3><p>Diagnosing, deciding, executing, and monitoring — end to end.<span class="rule-quote">"I noticed a risk, analyzed options, executed Solution A, and monitored the metrics."</span></p></div></div>
+
+  <div class="card">
+    <p style="color:var(--ink-soft); font-size:13px; margin:0;"><b style="color:var(--ink);">Why:</b> managers and leads are constantly context-switching. A problem with no options doubles their workload. A recommendation with trade-offs turns a 30-minute troubleshooting session into a 10-second "Approved."</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The 3-Option Recommendation Framework</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-4px;">Never just say "this isn't working." Structure every blocker this way:</p>
+    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">A</div><div><h3>The Quick Fix</h3><p>Low effort, temporary band-aid, with trade-offs.</p></div></div>
+    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">B</div><div><h3>The Recommended Path</h3><p>Balanced effort, scalable, with trade-offs.</p></div></div>
+    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">C</div><div><h3>The Complete Overhaul</h3><p>High effort, long timeline, with trade-offs.</p></div></div>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('The unhelpful escalation', `This isn't working. The search is too slow. Can someone help?`, `<b>Why it fails:</b> hands the problem back with zero analysis — the manager now has to do the diagnostic work themselves.`)}
+    ${exampleGood('The 3-option recommendation', `We hit a latency bottleneck with the search indexing service. I analyzed three options: Option A reduces payload size, Option B adds a Redis caching layer, and Option C rewrites the query architecture. I recommend Option B because it solves 90% of the latency within our current sprint timeline. Let me know if you agree, and I'll execute.`, `<b>Why it works:</b> full strategic thinking, a clear recommendation, and a decision the manager can approve in seconds.`)}
+  </div>
+</section>
+
+<!-- MODULE 2: MANAGING UP -->
+<section class="panel" id="panel-managingup">
+  <div class="module-tag">Module 2</div>
+  <h2 class="section-title">Managing Up &amp; Building Rapid Stakeholder Trust</h2>
+  <p class="lede">Managing up is not brown-nosing or doing your boss's job. It's predicting your manager's priorities, removing obstacles for them, and communicating in a way that minimizes their stress.</p>
+
+  <div class="rule-card card">
+    <div class="rule-letter">A</div>
+    <div><h3>Never Let Your Manager Discover a Missed Deadline From Someone Else</h3><p>Bad news delivered early is an operational update; bad news delivered late is an excuse.</p></div>
+  </div>
+  <div class="example-pair">
+    ${exampleBad('The surprise delay', `[Manager finds out in a leadership meeting that the project is 2 weeks behind, from someone else]`, `<b>Why it fails:</b> a manager blindsided in front of leadership loses trust in you immediately, regardless of the reason for the delay.`)}
+    ${exampleGood('Early notification', `Wanted to flag early — we're tracking about a week behind on the migration due to an unexpected schema conflict. Here's the revised timeline and what I'm doing to mitigate the slip.`, `<b>Why it works:</b> delivered early, with a timeline and mitigation plan — reads as an update, not an excuse.`)}
+  </div>
+
+  <div class="rule-card card">
+    <div class="rule-letter">B</div>
+    <div><h3>Align With Your Manager's KPIs</h3><p>If your manager is under pressure to reduce infrastructure costs, pitching an expensive new framework won't land well. Understand what success looks like for their team's metrics.</p></div>
+  </div>
+</section>
+
+<!-- MODULE 3: ACCOUNTABILITY -->
+<section class="panel" id="panel-accountability">
+  <div class="module-tag">Module 3</div>
+  <h2 class="section-title">The Accountability Mindset</h2>
+  <p class="lede">Extreme ownership vs. blame shifting — the same event, described two different ways.</p>
+
+  <div class="example-pair">
+    ${exampleBad('When a bug hits production', `The requirements were vague, and QA didn't catch it.`, `Shifts blame to two other parties — leaves no sign that anything will change next time.`)}
+    ${exampleGood('When a bug hits production', `I missed this edge case during unit testing. I've patched it and added an automated test to prevent recurrence.`, `Owns the miss and closes the loop with a permanent system fix.`)}
+  </div>
+  <div class="example-pair">
+    ${exampleBad('When cross-team input lags', `I emailed Team X, but they haven't replied yet.`, `Passive — waiting on email is treated as the end of the effort, not the start.`)}
+    ${exampleGood('When cross-team input lags', `Team X was unresponsive on email, so I hopped into their Slack channel and scheduled 5 minutes with their lead to unblock us.`, `Escalates through a second channel rather than stalling — shows initiative to actually get unblocked.`)}
+  </div>
+  <div class="example-pair">
+    ${exampleBad('When project scope shifts', `They keep changing what they want; I can't finish.`, `Frames the shift as someone else's problem, with no proposed path forward.`)}
+    ${exampleGood('When project scope shifts', `Given the shift in scope, I recalculated our deliverables and presented a Phase 1 vs. Phase 2 roadmap to keep us aligned.`, `Absorbs the change and turns it into a clear, re-planned path — no drama, just a new plan.`)}
+  </div>
+
+  <div class="card">
+    <p style="color:var(--ink-soft); font-size:13px; margin:0;"><b style="color:var(--ink);">Why:</b> leaders promote engineers who take responsibility for end-to-end outcomes, not those who hide behind process gaps or blame third parties.</p>
+  </div>
+</section>
+
+<!-- MODULE 4: BUILDER -->
+<section class="panel" id="panel-builder">
+  <div class="module-tag">Live Tool</div>
+  <h2 class="section-title">The 3-Option Recommendation Builder</h2>
+  <p class="lede">Take your own current blocker and structure it into a recommendation your manager can approve in seconds.</p>
+
+  <div class="card builder-grid">
+    <div>
+      <label class="field-label">The Problem (+ impact)</label>
+      <textarea class="field-input" id="rProblem" placeholder="e.g. We hit a latency bottleneck with the search indexing service."></textarea>
+      <label class="field-label">Option A — The Quick Fix</label>
+      <textarea class="field-input" id="rOptionA" placeholder="Low effort, temporary, with trade-offs"></textarea>
+      <label class="field-label">Option B — The Recommended Path</label>
+      <textarea class="field-input" id="rOptionB" placeholder="Balanced effort, scalable, with trade-offs"></textarea>
+      <label class="field-label">Option C — The Complete Overhaul</label>
+      <textarea class="field-input" id="rOptionC" placeholder="High effort, long timeline, with trade-offs"></textarea>
+      <label class="field-label">Your Recommendation + Why</label>
+      <textarea class="field-input" id="rRecommend" placeholder="e.g. I recommend Option B because..."></textarea>
+    </div>
+    <div>
+      <label class="field-label">Live Preview</label>
+      <div class="assembled-preview" id="recPreview">Your recommendation script will assemble here as you type...</div>
+      <div class="checks" id="recChecks"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 5: REAL-TALK -->
+<section class="panel" id="panel-realtalk">
+  <div class="module-tag">Interactive Value Segment · "Corporate Real-Talk" Open Q&amp;A Panel (25 min)</div>
+  <h2 class="section-title">Real Office Dynamics, Real Fixes</h2>
+  <p class="lede">Sample scenarios to open the floor — tap each to reveal the ownership fix.</p>
+  <div id="realtalkList"></div>
+</section>
+
+<!-- MODULE 6: ASSIGNMENT -->
+<section class="panel" id="panel-assignment">
+  <div class="module-tag">Session Homework &amp; Leadership Takeaways</div>
+  <h2 class="section-title">Your Action Assignment</h2>
+  <p class="lede">Three tasks to put ownership thinking into practice this week.</p>
+
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="assignProgress"></div></div>
+
+  <div class="task" data-task="1">
+    <input type="checkbox">
+    <div><h3>Use the 3-Option Framework on Your Next Blocker</h3><p>Before asking for help, structure the problem with Option A/B/C and a recommendation.</p></div>
+  </div>
+  <div class="task" data-task="2">
+    <input type="checkbox">
+    <div><h3>Draft a 1-Page Proposal</h3><p>Audit your current work, identify one unassigned problem or documentation gap, and propose a fix.</p></div>
+  </div>
+  <div class="task" data-task="3">
+    <input type="checkbox">
+    <div><h3>Have an Alignment Chat With Your Lead</h3><p>Ask: "What is the single highest-priority outcome for our team this quarter, and how can my work best support it?"</p></div>
+  </div>
+</section>
+
+`;
+
+/* 3-Option Recommendation Builder */
+const rProblem = document.getElementById('rProblem');
+const rOptionA = document.getElementById('rOptionA');
+const rOptionB = document.getElementById('rOptionB');
+const rOptionC = document.getElementById('rOptionC');
+const rRecommend = document.getElementById('rRecommend');
+const recPreview = document.getElementById('recPreview');
+const recChecks = document.getElementById('recChecks');
+
+function renderRec(){
+  const problem = rProblem.value.trim(), a = rOptionA.value.trim(), b = rOptionB.value.trim(), c = rOptionC.value.trim(), rec = rRecommend.value.trim();
+  if(![problem,a,b,c,rec].some(v=>v)){
+    recPreview.textContent = 'Your recommendation script will assemble here as you type...';
+  } else {
+    recPreview.textContent = `${problem || '[The problem + impact]'} I analyzed three options: Option A ${a || '[quick fix]'}, Option B ${b || '[recommended path]'}, and Option C ${c || '[complete overhaul]'}. ${rec || '[Your recommendation, and why]'}`;
+  }
+  const allOptionsFilled = a.length > 0 && b.length > 0 && c.length > 0;
+  const recLower = rec.toLowerCase();
+  const recNamesOption = rec.length > 0 && (recLower.includes('option a') || recLower.includes('option b') || recLower.includes('option c'));
+  const problemOK = problem.length > 0;
+
+  recChecks.innerHTML = `
+    <div class="check-row ${problem.length===0 ? '' : (problemOK?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Problem is stated up front</b><span>${problem.length===0 ? 'Start typing to check.' : 'Gives your manager the context in one line.'}</span></div>
+    </div>
+    <div class="check-row ${(!a && !b && !c) ? '' : (allOptionsFilled?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>All 3 options are filled in</b><span>${(!a && !b && !c) ? 'Start typing to check.' : allOptionsFilled ? 'A real range of trade-offs is visible.' : 'Fill in all three — a partial set of options undercuts the framework.'}</span></div>
+    </div>
+    <div class="check-row ${rec.length===0 ? '' : (recNamesOption?'pass':'fail')}">
+      <div class="check-dot"></div>
+      <div class="check-text"><b>Recommendation names a specific option</b><span>${rec.length===0 ? 'Start typing to check.' : recNamesOption ? 'Clear which option you\'re backing.' : 'Explicitly say "Option A/B/C" — don\'t make them guess which one you recommend.'}</span></div>
+    </div>
+  `;
+}
+[rProblem, rOptionA, rOptionB, rOptionC, rRecommend].forEach(f => f.addEventListener('input', renderRec));
+renderRec();
+
+/* Real-talk accordion */
+const realtalkList = document.getElementById('realtalkList');
+REALTALK.forEach(item=>{
+  const div = document.createElement('div');
+  div.className = 'qa-item';
+  div.innerHTML = `
+    <div class="qa-q"><div><span class="qa-scenario-tag">${item.tag}</span>${item.title}</div><span class="qa-arrow">▾</span></div>
+    <div class="qa-a"><b>The Problem:</b> ${item.problem}<br><br><b>The Ownership Fix:</b> ${item.fix}</div>
+  `;
+  div.querySelector('.qa-q').onclick = ()=> div.classList.toggle('open');
+  realtalkList.appendChild(div);
+});
+
+/* Assignment checklist */
+document.querySelectorAll('.task').forEach(task=>{
+  const cb = task.querySelector('input');
+  const toggle = ()=>{ task.classList.toggle('done', cb.checked); updateProgress(); };
+  cb.addEventListener('change', toggle);
+  task.addEventListener('click', (e)=>{ if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); } });
+});
+function updateProgress(){
+  const total = document.querySelectorAll('.task').length;
+  const done = document.querySelectorAll('.task.done').length;
+  document.getElementById('assignProgress').style.width = (done/total*100) + '%';
+}
+
+document.getElementById('aboutToggle')?.addEventListener('click', function(){
+  const bio = document.getElementById('aboutBio');
+  const showing = bio.classList.toggle('show');
+  this.textContent = showing ? 'About the mentor ▴' : 'About the mentor ▾';
+});
+
+showTab('spectrum');
+</script>
+</body>
+</html>
