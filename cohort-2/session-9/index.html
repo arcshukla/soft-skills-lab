@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Session 9 — Taking Ownership & Thinking Beyond Tasks</title>
+<title>Session 9 — Advanced Interview Dynamics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -55,15 +55,38 @@
   .rule-letter{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:#fff; background:var(--brand); width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
   .rule-card h3{margin:0 0 4px; font-size:15px;}
   .rule-card p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
-  .rule-card .rule-quote{display:block; margin-top:6px; font-style:italic; color:var(--brand); font-size:13px;}
+  .step{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:none;}
+  .step-num{font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--brand-soft); font-size:14px; width:26px; flex-shrink:0;}
+  .step h3{margin:0 0 4px; font-size:14.5px;}
+  .step p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.5;}
+
+  .arc-row{display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:14px 0 6px;}
+  .arc-step{flex:1; min-width:130px; background:var(--brand-wash); border-radius:10px; padding:12px 14px; text-align:center;}
+  .arc-step .arc-num{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; color:var(--brand-soft); text-transform:uppercase;}
+  .arc-step .arc-label{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13.5px; color:var(--brand); margin-top:2px;}
+  .arc-arrow{display:flex; align-items:center; color:var(--brand-soft); font-size:18px; padding:0 2px;}
+  @media(max-width:680px){.arc-arrow{display:none;}}
+
+  /* ---------- vault ---------- */
+  .filter-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .filter-chip{font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700; cursor:pointer; padding:8px 14px; border-radius:100px; border:1px solid var(--line); background:var(--card); color:var(--ink-soft);}
+  .filter-chip.active{background:var(--brand); color:#fff; border-color:var(--brand);}
+  .filter-chip:hover:not(.active){border-color:var(--brand-soft); color:var(--brand);}
+  .vault-count{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px; font-family:'IBM Plex Mono',monospace;}
+  .vault-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:10px;}
+  .vault-cat{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--brand-soft); margin-bottom:6px;}
+  .vault-q{font-size:14.5px; font-weight:700; font-style:italic; margin-bottom:8px; line-height:1.4;}
+  .vault-sample{background:var(--brand-wash); border-radius:8px; padding:10px 12px; font-size:12.5px; color:var(--ink); line-height:1.5;}
+  .vault-sample b{color:var(--brand); font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.03em; display:block; margin-bottom:3px; font-weight:700;}
 
   /* ---------- builder ---------- */
   .builder-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
   @media(max-width:760px){.builder-grid{grid-template-columns:1fr;}}
   .field-label{font-size:12px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace; margin-bottom:5px; display:block;}
-  textarea.field-input{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); font-family:'Inter',sans-serif; font-size:13.5px; margin-bottom:14px; color:var(--ink); resize:vertical; min-height:48px;}
+  textarea.field-input{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); font-family:'Inter',sans-serif; font-size:13.5px; margin-bottom:14px; color:var(--ink); resize:vertical; min-height:52px;}
   textarea.field-input:focus{outline:none; border-color:var(--brand-soft);}
-  .assembled-preview{background:var(--brand-wash); border-radius:12px; padding:16px; font-size:13.5px; color:var(--ink); line-height:1.6; min-height:120px; white-space:pre-wrap;}
+  .assembled-preview{background:var(--brand-wash); border-radius:12px; padding:16px; font-size:13.5px; color:var(--ink); line-height:1.6; min-height:100px; white-space:pre-wrap;}
   .checks{display:flex; flex-direction:column; gap:10px; margin-top:14px;}
   .check-row{display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 13px; font-size:13px;}
   .check-dot{width:9px; height:9px; border-radius:50%; background:#C7CDD4; flex-shrink:0;}
@@ -72,18 +95,24 @@
   .check-row .check-text b{display:block; font-weight:600; margin-bottom:1px;}
   .check-row .check-text span{color:var(--ink-soft); font-size:12px;}
 
-  /* ---------- Q&A accordion ---------- */
-  .qa-item{border:1px solid var(--line); border-radius:10px; margin-bottom:10px; overflow:hidden;}
-  .qa-q{padding:15px 18px; font-size:14px; font-weight:700; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:var(--card); gap:12px;}
-  .qa-q:hover{background:var(--brand-wash);}
-  .qa-q .qa-scenario-tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; color:var(--brand-soft); text-transform:uppercase; display:block; margin-bottom:4px;}
-  .qa-a{padding:0 18px; max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; font-size:13.5px; color:var(--ink-soft); line-height:1.6; background:var(--paper);}
-  .qa-item.open .qa-a{padding:14px 18px 18px; max-height:260px;}
-  .qa-a b{color:var(--ink);}
-  .qa-arrow{transition:transform .2s ease; color:var(--brand-soft); flex-shrink:0;}
-  .qa-item.open .qa-arrow{transform:rotate(180deg);}
+  /* ---------- stage timer ---------- */
+  .sprint-stage-list{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .sprint-stage-chip{flex:1; min-width:110px; text-align:center; padding:10px 8px; border-radius:9px; background:var(--paper); border:1px solid var(--line); font-size:11.5px; font-family:'IBM Plex Mono',monospace; font-weight:700; text-transform:uppercase; color:var(--ink-soft);}
+  .sprint-stage-chip.active{background:var(--brand); color:#fff; border-color:var(--brand);}
+  .sprint-stage-chip.done{background:var(--good-bg); color:var(--good); border-color:var(--good-line);}
+  .sprint-stage-chip .stage-time{display:block; font-size:10px; margin-top:2px; opacity:.8;}
+  .timer-display{font-family:'IBM Plex Mono',monospace; font-size:44px; font-weight:600; color:var(--ink); text-align:center; padding:10px 0 6px;}
+  .timer-zone{text-align:center; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:.03em; padding:8px; border-radius:8px; margin-bottom:16px; background:var(--brand-wash); color:var(--brand);}
+  .timer-buttons{display:flex; gap:10px; justify-content:center; margin-bottom:6px;}
+  .timer-btn{font-family:'Inter',sans-serif; font-weight:700; font-size:14px; cursor:pointer; padding:11px 22px; border-radius:9px; border:none;}
+  .timer-btn.start{background:var(--brand); color:#fff;}
+  .timer-btn.next{background:var(--good); color:#fff;}
+  .timer-btn.reset{background:var(--paper); color:var(--ink-soft); border:1px solid var(--line);}
 
   /* ---------- checklist ---------- */
+  .audit-item{display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--line); border-radius:9px; margin-bottom:8px; background:var(--card); cursor:pointer; font-size:13.5px;}
+  .audit-item input{width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
+  .audit-item.done{opacity:.55; text-decoration:line-through;}
   .task{display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:var(--card); cursor:pointer;}
   .task input{margin-top:3px; width:16px; height:16px; accent-color:var(--brand); cursor:pointer;}
   .task h3{margin:0 0 3px; font-size:14px;}
@@ -92,6 +121,11 @@
   .task.done h3{text-decoration:line-through;}
   .progress-bar-track{height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:16px 0 20px;}
   .progress-bar-fill{height:100%; background:var(--brand); width:0%; transition:width .35s ease;}
+
+  .grad-card{text-align:center; padding:32px 22px;}
+  .grad-badge{width:56px; height:56px; border-radius:50%; background:var(--brand-wash); color:var(--brand); display:flex; align-items:center; justify-content:center; margin:0 auto 14px;}
+  .grad-recap{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px;}
+  .grad-chip{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; color:var(--brand); background:var(--brand-wash); padding:6px 12px; border-radius:100px;}
 
   footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:12px;}
   .about-strip{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; margin-top:40px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;}
@@ -124,9 +158,9 @@
 <div class="app">
   <div class="hub-strip"><a href="../index.html">&larr; GeeksForGeeks Soft Skill Cohort - 2</a><span>Session 9 of 10</span></div>
   <div class="topbar">
-    <div class="eyebrow">PHASE 4: LONG-TERM CAREER SUCCESS · SESSION 9 OF 10</div>
+    <div class="eyebrow">SOFT SKILLS SERIES · SESSION 9 OF 10</div>
     <div class="masthead">
-      <h1>Taking Ownership &amp; Thinking Beyond Tasks</h1>
+      <h1>Advanced Interview Dynamics &amp; Series Graduation</h1>
       <div class="progress-pill" id="progressPill">Module 1 of 6</div>
     </div>
     <nav class="tabs" id="tabs"></nav>
@@ -156,18 +190,39 @@
 
 <script>
 const MODULES = [
-  {id:'spectrum', label:'The Ownership Spectrum'},
-  {id:'managingup', label:'Managing Up'},
-  {id:'accountability', label:'The Accountability Mindset'},
-  {id:'builder', label:'3-Option Recommendation Builder'},
-  {id:'realtalk', label:'Corporate Real-Talk'},
-  {id:'assignment', label:'Action Assignment'},
+  {id:'pitch', label:'Why Should We Hire You?'},
+  {id:'qa', label:'Strategic Closing Q&A'},
+  {id:'salary', label:'Salary & Compensation'},
+  {id:'builder', label:'Live Pitch Builder'},
+  {id:'workshop', label:'Extended Mock Interview'},
+  {id:'graduation', label:'Series Graduation'},
 ];
 
-const REALTALK = [
-  {tag:'Scenario 1', title:'Working with an Overbearing Micro-Manager', problem:'Your lead demands constant updates every 2 hours and micromanages every line of code.', fix:'Over-communicate before they ask. Send a proactive 9:00 AM status note detailing your exact focus for the day and when you\'ll post updates. Proactive transparency eliminates a manager\'s anxiety and earns you autonomy.'},
-  {tag:'Scenario 2', title:'Inheriting a Messy, Undocumented Codebase', problem:'You are assigned a legacy module with zero documentation and buggy code, but are still expected to ship features fast.', fix:'Treat the lack of documentation as your first high-visibility contribution. As you reverse-engineer the codebase, write the missing documentation and present a lightweight refactoring plan alongside your feature delivery.'},
-  {tag:'Scenario 3', title:'Feeling Unheard in Team Architecture Discussions', problem:'You have a great idea for a system improvement, but senior engineers talk over you during syncs.', fix:'Move from verbal suggestions to a brief written RFC. A well-structured 1-page doc with data, diagrams, and trade-offs carries far more weight than an interrupted comment in a noisy meeting.'},
+const salaryWords = ['range','benchmark','market','fit','open','discuss','flexible','total compensation','levels.fyi','ambitionbox'];
+
+/* Expanded closing-question vault — deck's 4 plus one extra per category */
+const QVAULT = [
+  {cat:'culture', q:'What is the balance on this team between shipping new features quickly vs. refactoring technical debt?', why:'Shows you understand real-world engineering realities and care about long-term codebase health.'},
+  {cat:'culture', q:'How does the team decide what goes into a sprint versus what gets deprioritized?', why:'Shows interest in planning and prioritization philosophy, not just the code itself.'},
+  {cat:'architecture', q:'What is the biggest operational bottleneck your engineering team faced during the last high-traffic period?', why:'Demonstrates system-level thinking and positions you as a peer ready to help solve real scaling challenges.'},
+  {cat:'architecture', q:'How is the system architected to handle failure — what happens when a critical dependency goes down?', why:'Signals a resilience mindset and systems thinking beyond just the happy path.'},
+  {cat:'metrics', q:'If I am hired, what does success look like for this role in the first 90 days?', why:'Signals an immediate focus on delivery, ownership, and measurable business performance.'},
+  {cat:'metrics', q:"What separates someone who's great in this role from someone who's just doing fine?", why:'Shows you want to excel, not just meet the bar — and often reveals unwritten expectations.'},
+  {cat:'closing', q:"Is there any skill or topic we discussed today that you'd like me to elaborate on or clarify further?", why:'The safety net — gives you a final chance to address hidden hesitation before they submit their evaluation.'},
+  {cat:'closing', q:'Based on our conversation, do you have any hesitations about my fit for this role that I could address right now?', why:'A bolder version of the safety net — directly surfaces objections while there is still time to respond.'},
+];
+const QCATEGORIES = [
+  {id:'all', label:'All Questions'},
+  {id:'culture', label:'Engineering Culture'},
+  {id:'architecture', label:'System Architecture'},
+  {id:'metrics', label:'Role Success Metrics'},
+  {id:'closing', label:'Closing Signal'},
+];
+
+const mockStages = [
+  {label:'The Pitch', seconds:3*60, note:'"Why should we hire you?" — the 3-part pitch, delivered live.'},
+  {label:'Pivot & Closing Q&A', seconds:4*60, note:'Student asks 2-3 strategic questions to the interviewer.'},
+  {label:'Compensation Anchor', seconds:3*60, note:'"What are your salary expectations?" — range anchoring script.'},
 ];
 
 const tabsEl = document.getElementById('tabs');
@@ -188,200 +243,295 @@ function showTab(id){
 
 const main = document.getElementById('main');
 function exampleBad(title, bubble, why){
-  return `<div class="example bad"><div class="example-label">✕ Task-Follower — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+  return `<div class="example bad"><div class="example-label">✕ Bad — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
 }
 function exampleGood(title, bubble, why){
-  return `<div class="example good"><div class="example-label">✓ Ownership — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
+  return `<div class="example good"><div class="example-label">✓ Good — ${title}</div><div class="bubble">${bubble}</div><div class="example-why">${why}</div></div>`;
 }
 
 main.innerHTML = `
 
-<!-- MODULE 1: OWNERSHIP SPECTRUM -->
-<section class="panel" id="panel-spectrum">
+<!-- MODULE 1: WHY SHOULD WE HIRE YOU -->
+<section class="panel" id="panel-pitch">
   <div class="module-tag">Module 1</div>
-  <h2 class="section-title">The Ownership Spectrum</h2>
-  <p class="lede">Most early-career professionals wait to be handed step-by-step instructions. Senior leaders look for engineers operating at Level 3 and Level 4.</p>
-
-  <div class="rule-card card"><div class="rule-letter">1</div><div><h3>Passive Execution</h3><p>Waiting to be told exactly what to do.<span class="rule-quote">"Tell me what to do."</span></p></div></div>
-  <div class="rule-card card"><div class="rule-letter">2</div><div><h3>Surfacing Problems, No Solutions</h3><p>Noticing an issue but handing it back unsolved.<span class="rule-quote">"I found a problem, what should I do?"</span></p></div></div>
-  <div class="rule-card card"><div class="rule-letter">3</div><div><h3>Proactive Ownership</h3><p>Bringing the problem alongside real options.<span class="rule-quote">"Here is the problem, and here are 2 viable solutions with trade-offs."</span></p></div></div>
-  <div class="rule-card card"><div class="rule-letter">4</div><div><h3>Full Autonomy</h3><p>Diagnosing, deciding, executing, and monitoring — end to end.<span class="rule-quote">"I noticed a risk, analyzed options, executed Solution A, and monitored the metrics."</span></p></div></div>
+  <h2 class="section-title">Mastering "Why Should We Hire You?"</h2>
+  <p class="lede">Most candidates list generic soft skills or repeat their resume bullets. The fix: an Intersection Pitch — the exact overlay of your technical capability, domain interest, and immediate ability to solve their active business pain.</p>
 
   <div class="card">
-    <p style="color:var(--ink-soft); font-size:13px; margin:0;"><b style="color:var(--ink);">Why:</b> managers and leads are constantly context-switching. A problem with no options doubles their workload. A recommendation with trade-offs turns a 30-minute troubleshooting session into a 10-second "Approved."</p>
-  </div>
-
-  <div class="card">
-    <h3 style="margin-top:0">The 3-Option Recommendation Framework</h3>
-    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-4px;">Never just say "this isn't working." Structure every blocker this way:</p>
-    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">A</div><div><h3>The Quick Fix</h3><p>Low effort, temporary band-aid, with trade-offs.</p></div></div>
-    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">B</div><div><h3>The Recommended Path</h3><p>Balanced effort, scalable, with trade-offs.</p></div></div>
-    <div class="rule-card" style="margin-bottom:0;"><div class="rule-letter" style="background:var(--brand-soft);">C</div><div><h3>The Complete Overhaul</h3><p>High effort, long timeline, with trade-offs.</p></div></div>
+    <h3 style="margin-top:0">The 3-Part Pitch Formula</h3>
+    <div class="arc-row">
+      <div class="arc-step"><div class="arc-num">01</div><div class="arc-label">Technical Fit</div></div>
+      <div class="arc-arrow">→</div>
+      <div class="arc-step"><div class="arc-num">02</div><div class="arc-label">Immediate Value</div></div>
+      <div class="arc-arrow">→</div>
+      <div class="arc-step"><div class="arc-num">03</div><div class="arc-label">Growth Alignment</div></div>
+    </div>
+    <p style="color:var(--ink-soft); font-size:13px; margin-top:14px; margin-bottom:0;"><b style="color:var(--ink);">Why:</b> hiring managers don't hire the longest resume — they hire the candidate who reduces their team's immediate risk and workload. Framing around their active problem makes you the lowest-risk, highest-value choice.</p>
   </div>
 
   <div class="example-pair">
-    ${exampleBad('The unhelpful escalation', `This isn't working. The search is too slow. Can someone help?`, `<b>Why it fails:</b> hands the problem back with zero analysis — the manager now has to do the diagnostic work themselves.`)}
-    ${exampleGood('The 3-option recommendation', `We hit a latency bottleneck with the search indexing service. I analyzed three options: Option A reduces payload size, Option B adds a Redis caching layer, and Option C rewrites the query architecture. I recommend Option B because it solves 90% of the latency within our current sprint timeline. Let me know if you agree, and I'll execute.`, `<b>Why it works:</b> full strategic thinking, a clear recommendation, and a decision the manager can approve in seconds.`)}
+    ${exampleBad('Generic soft-skills list', `I am hard-working, passionate, and a fast learner, and I think I'd be a great addition to your team.`, `<b>Why it fails:</b> could be said by any candidate for any job — no technical specificity, no reference to this team's actual problem.`)}
+    ${exampleGood('The Intersection Pitch', `I bring 4 years of experience building high-throughput backend systems, which directly matches your team's current focus on scaling the payments pipeline, and I thrive in environments scaling fast-growing fintech products.`, `<b>Why it works:</b> names a specific technical fit, ties it to their active project, and closes with genuine domain alignment.`)}
   </div>
 </section>
 
-<!-- MODULE 2: MANAGING UP -->
-<section class="panel" id="panel-managingup">
+<!-- MODULE 2: CLOSING Q&A -->
+<section class="panel" id="panel-qa">
   <div class="module-tag">Module 2</div>
-  <h2 class="section-title">Managing Up &amp; Building Rapid Stakeholder Trust</h2>
-  <p class="lede">Managing up is not brown-nosing or doing your boss's job. It's predicting your manager's priorities, removing obstacles for them, and communicating in a way that minimizes their stress.</p>
+  <h2 class="section-title">Strategic Closing Q&amp;A</h2>
+  <p class="lede">"What does a typical day look like?" wastes valuable airtime. Closing questions should demonstrate business acumen, architectural curiosity, and leadership potential. Filter the vault by what you want to signal.</p>
+
+  <div class="example-pair">
+    ${exampleBad('The wasted question', `So, um, what's the team culture like here? And what does a typical day look like?`, `<b>Why it fails:</b> answerable from the careers page — signals you didn't prepare anything specific to this conversation.`)}
+    ${exampleGood('The high-impact question', `What is the biggest operational bottleneck your engineering team faced during the last high-traffic period?`, `<b>Why it works:</b> demonstrates system-level thinking and positions you as a peer ready to help solve real challenges.`)}
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The Closing Question Vault</h3>
+    <div class="filter-row" id="filterRow"></div>
+    <div class="vault-count" id="vaultCount"></div>
+    <div id="vaultList"></div>
+  </div>
+</section>
+
+<!-- MODULE 3: SALARY -->
+<section class="panel" id="panel-salary">
+  <div class="module-tag">Module 3</div>
+  <h2 class="section-title">Salary &amp; Compensation Conversation Basics</h2>
+  <p class="lede">The core rules of pre-offer compensation discussions.</p>
 
   <div class="rule-card card">
     <div class="rule-letter">A</div>
-    <div><h3>Never Let Your Manager Discover a Missed Deadline From Someone Else</h3><p>Bad news delivered early is an operational update; bad news delivered late is an excuse.</p></div>
+    <div><h3>Defer Rigid Single Numbers Early</h3><p>Locking into a specific number before understanding the full scope of the role — and before they fall in love with your profile — caps your leverage.</p></div>
   </div>
-  <div class="example-pair">
-    ${exampleBad('The surprise delay', `[Manager finds out in a leadership meeting that the project is 2 weeks behind, from someone else]`, `<b>Why it fails:</b> a manager blindsided in front of leadership loses trust in you immediately, regardless of the reason for the delay.`)}
-    ${exampleGood('Early notification', `Wanted to flag early — we're tracking about a week behind on the migration due to an unexpected schema conflict. Here's the revised timeline and what I'm doing to mitigate the slip.`, `<b>Why it works:</b> delivered early, with a timeline and mitigation plan — reads as an update, not an excuse.`)}
-  </div>
-
   <div class="rule-card card">
     <div class="rule-letter">B</div>
-    <div><h3>Align With Your Manager's KPIs</h3><p>If your manager is under pressure to reduce infrastructure costs, pitching an expensive new framework won't land well. Understand what success looks like for their team's metrics.</p></div>
+    <div><h3>Use Range Anchoring Based on Market Data</h3><p>Stating a market-backed range signals you know your industry value while keeping the door open for total rewards — bonuses, equity, learning allowances.</p></div>
+  </div>
+
+  <div class="example-pair">
+    ${exampleBad('Rigid single number', `My expected salary is exactly 12 LPA, no less.`, `<b>Why it fails:</b> a rigid number this early caps your leverage before the full scope of the role — or their enthusiasm for you — is established.`)}
+    ${exampleGood('Range anchoring script', `Based on market benchmarks for a Senior Engineer role at this scale, I am seeing ranges between ₹18 and ₹24 LPA. However, my primary focus right now is finding the right technical fit, and I am open to discussing the total compensation package once we agree there's a strong mutual fit.`, `<b>Why it works:</b> shows market awareness via a real range, while keeping the conversation focused on fit, not just a number.`)}
   </div>
 </section>
 
-<!-- MODULE 3: ACCOUNTABILITY -->
-<section class="panel" id="panel-accountability">
-  <div class="module-tag">Module 3</div>
-  <h2 class="section-title">The Accountability Mindset</h2>
-  <p class="lede">Extreme ownership vs. blame shifting — the same event, described two different ways.</p>
-
-  <div class="example-pair">
-    ${exampleBad('When a bug hits production', `The requirements were vague, and QA didn't catch it.`, `Shifts blame to two other parties — leaves no sign that anything will change next time.`)}
-    ${exampleGood('When a bug hits production', `I missed this edge case during unit testing. I've patched it and added an automated test to prevent recurrence.`, `Owns the miss and closes the loop with a permanent system fix.`)}
-  </div>
-  <div class="example-pair">
-    ${exampleBad('When cross-team input lags', `I emailed Team X, but they haven't replied yet.`, `Passive — waiting on email is treated as the end of the effort, not the start.`)}
-    ${exampleGood('When cross-team input lags', `Team X was unresponsive on email, so I hopped into their Slack channel and scheduled 5 minutes with their lead to unblock us.`, `Escalates through a second channel rather than stalling — shows initiative to actually get unblocked.`)}
-  </div>
-  <div class="example-pair">
-    ${exampleBad('When project scope shifts', `They keep changing what they want; I can't finish.`, `Frames the shift as someone else's problem, with no proposed path forward.`)}
-    ${exampleGood('When project scope shifts', `Given the shift in scope, I recalculated our deliverables and presented a Phase 1 vs. Phase 2 roadmap to keep us aligned.`, `Absorbs the change and turns it into a clear, re-planned path — no drama, just a new plan.`)}
-  </div>
-
-  <div class="card">
-    <p style="color:var(--ink-soft); font-size:13px; margin:0;"><b style="color:var(--ink);">Why:</b> leaders promote engineers who take responsibility for end-to-end outcomes, not those who hide behind process gaps or blame third parties.</p>
-  </div>
-</section>
-
-<!-- MODULE 4: BUILDER -->
+<!-- MODULE 4: PITCH BUILDER -->
 <section class="panel" id="panel-builder">
   <div class="module-tag">Live Tool</div>
-  <h2 class="section-title">The 3-Option Recommendation Builder</h2>
-  <p class="lede">Take your own current blocker and structure it into a recommendation your manager can approve in seconds.</p>
+  <h2 class="section-title">The Intersection Pitch Builder</h2>
+  <p class="lede">Build your own "Why should we hire you?" pitch field by field and watch it assemble live.</p>
 
   <div class="card builder-grid">
     <div>
-      <label class="field-label">The Problem (+ impact)</label>
-      <textarea class="field-input" id="rProblem" placeholder="e.g. We hit a latency bottleneck with the search indexing service."></textarea>
-      <label class="field-label">Option A — The Quick Fix</label>
-      <textarea class="field-input" id="rOptionA" placeholder="Low effort, temporary, with trade-offs"></textarea>
-      <label class="field-label">Option B — The Recommended Path</label>
-      <textarea class="field-input" id="rOptionB" placeholder="Balanced effort, scalable, with trade-offs"></textarea>
-      <label class="field-label">Option C — The Complete Overhaul</label>
-      <textarea class="field-input" id="rOptionC" placeholder="High effort, long timeline, with trade-offs"></textarea>
-      <label class="field-label">Your Recommendation + Why</label>
-      <textarea class="field-input" id="rRecommend" placeholder="e.g. I recommend Option B because..."></textarea>
+      <label class="field-label">Technical Fit</label>
+      <textarea class="field-input" id="fFit" placeholder="e.g. I bring 4 years of experience in distributed systems..."></textarea>
+      <label class="field-label">Immediate Value</label>
+      <textarea class="field-input" id="fValue" placeholder="...which directly matches your team's current focus on..."></textarea>
+      <label class="field-label">Growth Alignment</label>
+      <textarea class="field-input" id="fGrowth" placeholder="...and I thrive in environments scaling..."></textarea>
     </div>
     <div>
       <label class="field-label">Live Preview</label>
-      <div class="assembled-preview" id="recPreview">Your recommendation script will assemble here as you type...</div>
-      <div class="checks" id="recChecks"></div>
+      <div class="assembled-preview" id="pitchPreview">Your pitch will assemble here as you type...</div>
+      <div class="checks" id="pitchChecks"></div>
     </div>
   </div>
 </section>
 
-<!-- MODULE 5: REAL-TALK -->
-<section class="panel" id="panel-realtalk">
-  <div class="module-tag">Interactive Value Segment · "Corporate Real-Talk" Open Q&amp;A Panel (25 min)</div>
-  <h2 class="section-title">Real Office Dynamics, Real Fixes</h2>
-  <p class="lede">Sample scenarios to open the floor — tap each to reveal the ownership fix.</p>
-  <div id="realtalkList"></div>
+<!-- MODULE 5: WORKSHOP -->
+<section class="panel" id="panel-workshop">
+  <div class="module-tag">Interactive Value Segment (25 min)</div>
+  <h2 class="section-title">Extended Mock Interviews &amp; Feedback Loops</h2>
+  <p class="lede">Two 10-minute extended mock interviews with selected volunteers, simulating a full closing loop.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">10-Minute Stage Timer</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin-top:-6px;">Three stages, auto-advancing — start it as the mock interview begins.</p>
+    <div class="sprint-stage-list" id="stageList"></div>
+    <div class="timer-display" id="timerDisplay">03:00</div>
+    <div class="timer-zone" id="timerZone">The Pitch — "Why should we hire you?"</div>
+    <div class="timer-buttons">
+      <button class="timer-btn start" id="startBtn">Start</button>
+      <button class="timer-btn next" id="nextBtn">Skip to Next Stage</button>
+      <button class="timer-btn reset" id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">The Detailed Feedback Loop (5 min per student)</h3>
+    <div class="audit-item" data-item="1"><input type="checkbox"><span><b>Tone &amp; Authority</b> — did they sound like a peer, or a passive applicant?</span></div>
+    <div class="audit-item" data-item="2"><input type="checkbox"><span><b>Value Alignment</b> — was the pitch tailored to a real problem, or just a list of skills?</span></div>
+    <div class="audit-item" data-item="3"><input type="checkbox"><span><b>Control</b> — how smoothly did they handle the salary anchor script?</span></div>
+  </div>
 </section>
 
-<!-- MODULE 6: ASSIGNMENT -->
-<section class="panel" id="panel-assignment">
-  <div class="module-tag">Session Homework &amp; Leadership Takeaways</div>
-  <h2 class="section-title">Your Action Assignment</h2>
-  <p class="lede">Three tasks to put ownership thinking into practice this week.</p>
+<!-- MODULE 6: GRADUATION -->
+<section class="panel" id="panel-graduation">
+  <div class="module-tag">Series Graduation Wrap-Up</div>
+  <h2 class="section-title">Action Items</h2>
+  <p class="lede">Three tasks to carry this series into your actual interviews.</p>
 
   <div class="progress-bar-track"><div class="progress-bar-fill" id="assignProgress"></div></div>
 
   <div class="task" data-task="1">
     <input type="checkbox">
-    <div><h3>Use the 3-Option Framework on Your Next Blocker</h3><p>Before asking for help, structure the problem with Option A/B/C and a recommendation.</p></div>
+    <div><h3>Write Your Personalized Pitch</h3><p>The 3-Part "Why Should We Hire You?" pitch, targeting a specific company and role.</p></div>
   </div>
   <div class="task" data-task="2">
     <input type="checkbox">
-    <div><h3>Draft a 1-Page Proposal</h3><p>Audit your current work, identify one unassigned problem or documentation gap, and propose a fix.</p></div>
+    <div><h3>Memorize 3 High-Impact Questions</h3><p>Select and memorize 3 questions from the Closing Question Vault for your next real interview.</p></div>
   </div>
   <div class="task" data-task="3">
     <input type="checkbox">
-    <div><h3>Have an Alignment Chat With Your Lead</h3><p>Ask: "What is the single highest-priority outcome for our team this quarter, and how can my work best support it?"</p></div>
+    <div><h3>Prepare Your Salary Benchmark Range</h3><p>Using Levels.fyi or AmbitionBox, before entering any active recruiter screens.</p></div>
+  </div>
+
+  <div class="card grad-card">
+    <div class="grad-badge">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+    </div>
+    <h3 style="margin:0 0 8px;">Series Complete</h3>
+    <p style="color:var(--ink-soft); font-size:13.5px; margin:0; max-width:520px; margin:0 auto;">From the profile a recruiter finds, to the story you tell, to the pressure you handle in the room, to how you close — you've now rehearsed every stage of the loop.</p>
+    <div class="grad-recap">
+      <span class="grad-chip">1 · Brand</span>
+      <span class="grad-chip">2 · Resume</span>
+      <span class="grad-chip">3 · Outbound</span>
+      <span class="grad-chip">4 · Interview Etiquette</span>
+      <span class="grad-chip">5 · Storytelling</span>
+      <span class="grad-chip">6 · Behavioral</span>
+      <span class="grad-chip">7 · Closing &amp; Comp</span>
+    </div>
   </div>
 </section>
 
 `;
 
-/* 3-Option Recommendation Builder */
-const rProblem = document.getElementById('rProblem');
-const rOptionA = document.getElementById('rOptionA');
-const rOptionB = document.getElementById('rOptionB');
-const rOptionC = document.getElementById('rOptionC');
-const rRecommend = document.getElementById('rRecommend');
-const recPreview = document.getElementById('recPreview');
-const recChecks = document.getElementById('recChecks');
+/* Closing Q&A vault filter */
+const filterRow = document.getElementById('filterRow');
+const vaultList = document.getElementById('vaultList');
+const vaultCount = document.getElementById('vaultCount');
+let activeQCat = 'all';
+QCATEGORIES.forEach(c=>{
+  const chip = document.createElement('button');
+  chip.className = 'filter-chip' + (c.id==='all' ? ' active' : '');
+  chip.textContent = c.label;
+  chip.dataset.cat = c.id;
+  chip.onclick = ()=>{
+    activeQCat = c.id;
+    document.querySelectorAll('.filter-chip').forEach(el=>el.classList.toggle('active', el.dataset.cat===c.id));
+    renderVault();
+  };
+  filterRow.appendChild(chip);
+});
+function renderVault(){
+  const filtered = activeQCat === 'all' ? QVAULT : QVAULT.filter(v=>v.cat===activeQCat);
+  vaultCount.textContent = `${filtered.length} question${filtered.length===1?'':'s'}`;
+  const catLabel = id => QCATEGORIES.find(c=>c.id===id).label;
+  vaultList.innerHTML = filtered.map(v => `
+    <div class="vault-card">
+      <div class="vault-cat">${catLabel(v.cat)}</div>
+      <div class="vault-q">"${v.q}"</div>
+      <div class="vault-sample"><b>Why it works</b>${v.why}</div>
+    </div>
+  `).join('');
+}
+renderVault();
 
-function renderRec(){
-  const problem = rProblem.value.trim(), a = rOptionA.value.trim(), b = rOptionB.value.trim(), c = rOptionC.value.trim(), rec = rRecommend.value.trim();
-  if(![problem,a,b,c,rec].some(v=>v)){
-    recPreview.textContent = 'Your recommendation script will assemble here as you type...';
+/* Pitch builder */
+const fFit = document.getElementById('fFit');
+const fValue = document.getElementById('fValue');
+const fGrowth = document.getElementById('fGrowth');
+const pitchPreview = document.getElementById('pitchPreview');
+const pitchChecks = document.getElementById('pitchChecks');
+function renderPitch(){
+  const fit = fFit.value.trim(), value = fValue.value.trim(), growth = fGrowth.value.trim();
+  if(!fit && !value && !growth){
+    pitchPreview.textContent = 'Your pitch will assemble here as you type...';
   } else {
-    recPreview.textContent = `${problem || '[The problem + impact]'} I analyzed three options: Option A ${a || '[quick fix]'}, Option B ${b || '[recommended path]'}, and Option C ${c || '[complete overhaul]'}. ${rec || '[Your recommendation, and why]'}`;
+    pitchPreview.textContent = `${fit || '[Technical Fit]'} ${value || '[Immediate Value]'} ${growth || '[Growth Alignment]'}`;
   }
-  const allOptionsFilled = a.length > 0 && b.length > 0 && c.length > 0;
-  const recLower = rec.toLowerCase();
-  const recNamesOption = rec.length > 0 && (recLower.includes('option a') || recLower.includes('option b') || recLower.includes('option c'));
-  const problemOK = problem.length > 0;
-
-  recChecks.innerHTML = `
-    <div class="check-row ${problem.length===0 ? '' : (problemOK?'pass':'fail')}">
+  const fitOK = fit.length > 0 && /\d/.test(fit);
+  const valueLower = value.toLowerCase();
+  const valueOK = value.length > 0 && (valueLower.includes('team') || valueLower.includes('your') || valueLower.includes('project') || valueLower.includes('focus'));
+  const growthOK = growth.length > 0;
+  pitchChecks.innerHTML = `
+    <div class="check-row ${fit.length===0 ? '' : (fitOK?'pass':'fail')}">
       <div class="check-dot"></div>
-      <div class="check-text"><b>Problem is stated up front</b><span>${problem.length===0 ? 'Start typing to check.' : 'Gives your manager the context in one line.'}</span></div>
+      <div class="check-text"><b>Technical Fit has a concrete marker</b><span>${fit.length===0 ? 'Start typing to check.' : fitOK ? 'A number (years, scale) makes this concrete.' : 'Add a number — years of experience, scale, or team size.'}</span></div>
     </div>
-    <div class="check-row ${(!a && !b && !c) ? '' : (allOptionsFilled?'pass':'fail')}">
+    <div class="check-row ${value.length===0 ? '' : (valueOK?'pass':'fail')}">
       <div class="check-dot"></div>
-      <div class="check-text"><b>All 3 options are filled in</b><span>${(!a && !b && !c) ? 'Start typing to check.' : allOptionsFilled ? 'A real range of trade-offs is visible.' : 'Fill in all three — a partial set of options undercuts the framework.'}</span></div>
+      <div class="check-text"><b>Immediate Value references THEM</b><span>${value.length===0 ? 'Start typing to check.' : valueOK ? 'Ties directly to their team or project.' : 'Reference their specific team, project, or focus — not just your own skills.'}</span></div>
     </div>
-    <div class="check-row ${rec.length===0 ? '' : (recNamesOption?'pass':'fail')}">
+    <div class="check-row ${growth.length===0 ? '' : (growthOK?'pass':'fail')}">
       <div class="check-dot"></div>
-      <div class="check-text"><b>Recommendation names a specific option</b><span>${rec.length===0 ? 'Start typing to check.' : recNamesOption ? 'Clear which option you\'re backing.' : 'Explicitly say "Option A/B/C" — don\'t make them guess which one you recommend.'}</span></div>
+      <div class="check-text"><b>Growth Alignment is present</b><span>${growth.length===0 ? 'Start typing to check.' : 'Closes the pitch with genuine domain or culture alignment.'}</span></div>
     </div>
   `;
 }
-[rProblem, rOptionA, rOptionB, rOptionC, rRecommend].forEach(f => f.addEventListener('input', renderRec));
-renderRec();
+[fFit, fValue, fGrowth].forEach(f => f.addEventListener('input', renderPitch));
+renderPitch();
 
-/* Real-talk accordion */
-const realtalkList = document.getElementById('realtalkList');
-REALTALK.forEach(item=>{
-  const div = document.createElement('div');
-  div.className = 'qa-item';
-  div.innerHTML = `
-    <div class="qa-q"><div><span class="qa-scenario-tag">${item.tag}</span>${item.title}</div><span class="qa-arrow">▾</span></div>
-    <div class="qa-a"><b>The Problem:</b> ${item.problem}<br><br><b>The Ownership Fix:</b> ${item.fix}</div>
-  `;
-  div.querySelector('.qa-q').onclick = ()=> div.classList.toggle('open');
-  realtalkList.appendChild(div);
+/* Mock interview stage timer */
+const stageList = document.getElementById('stageList');
+mockStages.forEach((s,i)=>{
+  const chip = document.createElement('div');
+  chip.className = 'sprint-stage-chip';
+  chip.id = 'stage-'+i;
+  chip.innerHTML = `${s.label}<span class="stage-time">${Math.round(s.seconds/60)} min</span>`;
+  stageList.appendChild(chip);
 });
+let currentStage = 0, stageSecondsLeft = mockStages[0].seconds, sprintInterval = null, sprintRunning = false;
+const timerDisplay = document.getElementById('timerDisplay');
+const timerZone = document.getElementById('timerZone');
+function formatTime(totalSeconds){ const m=Math.floor(totalSeconds/60), s=totalSeconds%60; return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+function renderStageChips(){
+  mockStages.forEach((s,i)=>{
+    const chip = document.getElementById('stage-'+i);
+    chip.classList.remove('active','done');
+    if(i < currentStage) chip.classList.add('done');
+    if(i === currentStage) chip.classList.add('active');
+  });
+}
+function loadStage(i){
+  currentStage = i;
+  stageSecondsLeft = mockStages[i].seconds;
+  timerDisplay.textContent = formatTime(stageSecondsLeft);
+  timerZone.textContent = `${mockStages[i].label} — ${mockStages[i].note}`;
+  renderStageChips();
+}
+loadStage(0);
+document.getElementById('startBtn').onclick = ()=>{
+  if(sprintRunning) return;
+  sprintRunning = true;
+  sprintInterval = setInterval(()=>{
+    stageSecondsLeft--;
+    if(stageSecondsLeft <= 0){
+      if(currentStage < mockStages.length-1){
+        loadStage(currentStage+1);
+      } else {
+        timerDisplay.textContent = '00:00';
+        timerZone.textContent = 'Mock interview complete — move to feedback loop';
+        clearInterval(sprintInterval);
+        sprintRunning = false;
+        renderStageChips();
+        document.getElementById('stage-'+currentStage).classList.add('done');
+      }
+    } else {
+      timerDisplay.textContent = formatTime(stageSecondsLeft);
+    }
+  }, 1000);
+};
+document.getElementById('nextBtn').onclick = ()=>{ if(currentStage < mockStages.length-1){ loadStage(currentStage+1); } };
+document.getElementById('resetBtn').onclick = ()=>{ clearInterval(sprintInterval); sprintRunning=false; loadStage(0); };
 
-/* Assignment checklist */
+/* Checklists */
+document.querySelectorAll('.audit-item').forEach(item=>{
+  const cb = item.querySelector('input');
+  const toggle = ()=> item.classList.toggle('done', cb.checked);
+  cb.addEventListener('change', toggle);
+  item.addEventListener('click', (e)=>{ if(e.target.tagName !== 'INPUT'){ cb.checked = !cb.checked; toggle(); } });
+});
 document.querySelectorAll('.task').forEach(task=>{
   const cb = task.querySelector('input');
   const toggle = ()=>{ task.classList.toggle('done', cb.checked); updateProgress(); };
@@ -400,7 +550,7 @@ document.getElementById('aboutToggle')?.addEventListener('click', function(){
   this.textContent = showing ? 'About the mentor ▴' : 'About the mentor ▾';
 });
 
-showTab('spectrum');
+showTab('pitch');
 </script>
 </body>
 </html>
